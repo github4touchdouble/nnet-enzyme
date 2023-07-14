@@ -4,7 +4,7 @@
 `touch notebooks/env.py`
 
 ```
-#ply_binary_classifier/notebooks/env.py
+#pbl_binary_classifier/notebooks/env.py
 
 import os
 
