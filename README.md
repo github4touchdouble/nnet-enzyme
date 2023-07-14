@@ -1,5 +1,5 @@
 # pbl_binary_classifier
-
+Zu Beginn:
 # HINWEIS: Environmental variables setzen
 `touch notebooks/env.py`
 
