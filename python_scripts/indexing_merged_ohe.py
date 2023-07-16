@@ -13,7 +13,8 @@ if __name__ == "__main__":
 
     # we cound just use a for loop:
     encoded_word = []
-    for i in range(0, len(merged_ohe), 3):
+    alphabet_size = 3
+    for i in range(0, len(merged_ohe), alphabet_size):
         index_key = np.argmax(merged_ohe[i:i+3])
         encoded_word.append(index_to_word[index_key])
     
