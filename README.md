@@ -13,3 +13,15 @@ def set():
     os.environ["ENZYMES"] = 'PATH/TO/CSV'
 ```
 Anschließend Kernel (neu) starten
+
+#### Nutzung 
+
+```
+#notebooks/bin.py
+
+import os
+from env import set
+set()
+
+[...]
+```
