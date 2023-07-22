@@ -28,12 +28,20 @@ def create_ohe_df(df):
     df = df[~df['Sequence'].str.contains('U')]
     ohe_seqences = []
     
+    
     for seq in df['Sequence']:
-        ohe_seqences.append(onehot(seq))
+        ohe_list = onehot(seq)
+        default_ohe_array = np.zeros((20440))
+        for i in range(len(ohe_list)):
+            default_ohe_array = np.insert(default_ohe_array, i, ohe_list.get(i))
+        ohe_seqences.append(default_ohe_array)
+
+
     
     # create a dataframe from the one hot encoded sequences
     df['OneHotEncoded'] = ohe_seqences
     df['OneHotEncoded'] = df['OneHotEncoded'].apply(lambda x: x.tolist())
+    # 20440
     return df
 
 def filter_diff_multi_enzymes(df):
@@ -53,6 +61,15 @@ def filter_diff_multi_enzymes(df):
     df = df[~df['EC number'].isin(to_remove)]
     return df
 
+def test():
+    x = np.zeros(1000)
+    y = [1.0 for i in range(1000) if i % 2 == 0]
+    print(x)
+    print(y)
+    for i in range(len(y)):
+        x = np.insert(x, i, y[i])
+
+    print(x)
 
 
 if __name__ == "__main__":
@@ -61,12 +78,13 @@ if __name__ == "__main__":
 
     # read in csv
     df = pd.read_csv(path_to_csv, sep=',')
-    
+    # 
     # filter out multi functional enzymes
     filtered_df = filter_diff_multi_enzymes(df)
 
     # create one hot encoded dataframe
     filtered_ohe_df = create_ohe_df(filtered_df)
+
 
     # save to csv
     filtered_ohe_df.to_csv(output_path, sep=',', index=False)
