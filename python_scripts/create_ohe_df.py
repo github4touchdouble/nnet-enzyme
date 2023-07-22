@@ -104,25 +104,22 @@ def collect_lengths(df) -> list[int]:
         lengths.append(len(seq))
     return lengths
 
-# NOTE: method I used to convert enzymes
+# NOTE: method I used to convert enzymes to one hot encoded sequences
 def enzymes():
     path_to_csv = '~/Desktop/Dataset/data/enzymes/csv/split30.csv'
     output_path = '~/Desktop/Dataset/data/enzymes/multi_ez_filtered/ohe_spli30.csv'
 
     # read in csv
-    df = pd.read_csv(path_to_csv, sep=',')
+    enzymes = pd.read_csv(path_to_csv, sep=',')
     # 
     # filter out multi functional enzymes
-    filtered_df = filter_diff_multi_enzymes(df)
+    filtered_enzymes = filter_diff_multi_enzymes(enzymes)
 
     # create one hot encoded dataframe
-    filtered_ohe_df = create_ohe_df(filtered_df)
+    create_ohe_arr(filtered_enzymes)
 
 
-    # save to csv
-    filtered_ohe_df.to_csv(output_path, sep=',', index=False)
-
-# NOTE: method I used to convert non_enzymes
+# NOTE: method I used to convert non_enzymes to one hot encoded sequences
 def non_enzymes():
     path_to_fasta = '/home/malte/Desktop/Dataset/data/non_enzyme/fasta/no_enzyme_train.fasta'
     output_path = '~/Desktop/Dataset/data/non_enzyme/ohe_train.csv'
@@ -137,7 +134,7 @@ def non_enzymes():
 
 
 if __name__ == "__main__":
-    non_enzymes()
+    enzymes()
 
 
 
