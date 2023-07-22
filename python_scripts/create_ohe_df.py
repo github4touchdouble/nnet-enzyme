@@ -56,10 +56,19 @@ def filter_diff_multi_enzymes(df):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv('~/Desktop/Dataset/data/enzymes/csv/split30.csv', sep=',')
+    path_to_csv = '~/Desktop/Dataset/data/enzymes/csv/split30.csv'
+    output_path = '~/Desktop/Dataset/data/enzymes/multi_ez_filtered/ohe_spli30.csv'
+
+    # read in csv
+    df = pd.read_csv(path_to_csv, sep=',')
+    
+    # filter out multi functional enzymes
     filtered_df = filter_diff_multi_enzymes(df)
+
+    # create one hot encoded dataframe
     filtered_ohe_df = create_ohe_df(filtered_df)
-    print(filtered_ohe_df)
-    filtered_ohe_df.to_csv('~/Desktop/Dataset/data/enzymes/multi_ez_filtered/ohe_spli30.csv', sep=',', index=False)
+
+    # save to csv
+    filtered_ohe_df.to_csv(output_path, sep=',', index=False)
 
 
