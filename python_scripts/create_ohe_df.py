@@ -111,7 +111,8 @@ def enzymes():
 
     # read in csv
     enzymes = pd.read_csv(path_to_csv, sep=',')
-    # 
+    enzymes.set_index('Entry', inplace=True)
+
     # filter out multi functional enzymes
     filtered_enzymes = filter_diff_multi_enzymes(enzymes)
 
