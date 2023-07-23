@@ -1,13 +1,15 @@
 from numpy import array
 import numpy as np
-from numpy import argmax
-import numpy
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 import pandas as pd
-import os
 import sys
-numpy.set_printoptions(threshold=sys.maxsize)
+import os
+from dotenv import load_dotenv
+
+load_dotenv() # load environment variables
+
+np.set_printoptions(threshold=sys.maxsize)
 
 # method for one hot encoding a sequence, retuns concatenated np array
 def onehot(sequence):
@@ -105,10 +107,8 @@ def collect_lengths(df) -> list[int]:
     return lengths
 
 # NOTE: method I used to convert enzymes to one hot encoded sequences
-def enzymes():
-    path_to_csv = '~/Desktop/Dataset/data/enzymes/csv/split30.csv'
-    output_path = '~/Desktop/Dataset/data/enzymes/multi_ez_filtered/ohe_spli30.csv'
-
+def enzymes(path_to_csv):
+    
     # read in csv
     enzymes = pd.read_csv(path_to_csv, sep=',')
     enzymes.set_index('Entry', inplace=True)
@@ -121,9 +121,7 @@ def enzymes():
 
 
 # NOTE: method I used to convert non_enzymes to one hot encoded sequences
-def non_enzymes():
-    path_to_fasta = '/home/malte/Desktop/Dataset/data/non_enzyme/fasta/no_enzyme_train.fasta'
-    output_path = '~/Desktop/Dataset/data/non_enzyme/ohe_train.csv'
+def non_enzymes(path_to_fasta):
     
     non_enzyme = read_fasta_to_df(path_to_fasta)
     non_enzyme['Sequence Length'] = collect_lengths(non_enzyme)
@@ -135,7 +133,10 @@ def non_enzymes():
 
 
 if __name__ == "__main__":
-    enzymes()
+    ENZYMES = os.getenv("ENZYMES")
+    NON_ENZYMES = os.getenv("NON_ENZYMES")
+    # enzymes(ENZYMES)
+    # non_enzymes(NON_ENZYMES)
 
 
 
