@@ -1,5 +1,6 @@
 from numpy import array
 import numpy as np
+import sys
 np.set_printoptions(threshold=sys.maxsize) # set numpy to print all values in array
 
 from sklearn.preprocessing import LabelEncoder
@@ -7,7 +8,6 @@ from sklearn.preprocessing import OneHotEncoder
 
 import pandas as pd
 
-import sys
 import os
 from dotenv import load_dotenv
 
@@ -20,14 +20,13 @@ def onehot(sequence):
     """
     seq_array = array(list(sequence)) 
     
-    #integer encode the sequence
+    # integer encode input sequence: A list of integers, where each integer maps to a unique character in vocabulary [1,2,3,17,...]
     label_encoder = LabelEncoder()
     integer_encoded_seq = label_encoder.fit_transform(seq_array) 
     
-    #one hot the sequence
     onehot_encoder = OneHotEncoder(sparse_output=False)
     
-    #reshape because that's what OneHotEncoder likes
+    # here we take the integer encoded sequence and transform it to a one hot encoded sequence: [[0. 0. 1.], [...],...]
     integer_encoded_seq = integer_encoded_seq.reshape(len(integer_encoded_seq), 1)
     onehot_encoded_seq = onehot_encoder.fit_transform(integer_encoded_seq)
     return np.concatenate(onehot_encoded_seq)
@@ -135,6 +134,7 @@ if __name__ == "__main__":
     NON_ENZYMES = os.getenv("NON_ENZYMES")
     # main_enzymes(ENZYMES)
     # main_non_enzymes(NON_ENZYMES)
+    print(onehot('MAGKQVRLVLLALGALVLLPTQGKVFGRCELAAAMKRHGLDNYRGYSLGNWVCAAKFESNFNTQATNRNTDGSTDYGILQINSRWWCNDGRTPGSRNLCNIPCSALLSSDITASVNCAKKIVSDGNGMNAWVAWRNRCKGTDVQAWIRGCRL'))
 
 
 
