@@ -1,10 +1,7 @@
 # Just testing some methods of indexing the merged one hot encoded data
 import numpy as np
-import env as env
-import os
 
 if __name__ == "__main__":
-    
     # manualy creating a dummy one hot encoded data
     # ususally we would use the one hot encoder from sklearn
     word = "BAC"
@@ -23,6 +20,3 @@ if __name__ == "__main__":
     
     print("".join(encoded_word)) # gives BAC, we could also create the string in the for loop, 
                                  # but our ohe sequences are also represented as list
-
-
-
