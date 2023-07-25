@@ -1,6 +1,6 @@
+import sys
 from numpy import array
 import numpy as np
-import sys
 np.set_printoptions(threshold=sys.maxsize) # set numpy to print all values in array
 
 from sklearn.preprocessing import LabelEncoder
@@ -43,7 +43,7 @@ def create_ohe_seqs(df):
     
     for index, row  in df.iterrows():
         ohe_list = onehot(row['Sequence'])
-        default_ohe_array = np.zeros((20440))
+        default_ohe_array = np.zeros((20440)) # 1022 * 20 = 20440 (max length of sequence * 20 possible AAs)
         for i in range(len(ohe_list)):
             if ohe_list[i] != 0.:
                 default_ohe_array[i] += ohe_list[i] 
