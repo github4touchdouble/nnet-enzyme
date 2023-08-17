@@ -38,7 +38,7 @@ def create_ohe_seqs(df):
     """
     # remove all unwanted AAs
     df = df[~df['Sequence'].str.contains('X')]
-    df = df[~df['Sequence'].str.contains('O')]
+    # df = df[~df['Sequence'].str.contains('O')]
     df = df[~df['Sequence'].str.contains('U')]
     
     for index, row  in df.iterrows():
@@ -55,9 +55,9 @@ def filter_diff_multi_enzymes(df):
     remove multi functional enzymes (enzymes with 2 ore more ec numbers that differ in their 1st 
     digit) from input dataframe
     """
-    negative_df = df[df['EC number'].str.contains(';')]
+    multifunc_enzymes = df[df['EC number'].str.contains(';')]
     to_remove = []
-    for ec in negative_df['EC number']:
+    for ec in multifunc_enzymes['EC number']:
         ec = ec.split(';')
         if ec[0][0] != ec[1][0]:
             to_remove.append(ec)
