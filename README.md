@@ -29,3 +29,14 @@ load_dotenv() # load environment variables
 abs_path_to_split30 = os.getenv("CSV30_ENZYMES")
 abs_path_to_non_enzyme_fasta = os.getenv("FASTA_NON_ENZYMES")
 ```
+
+### Adding .env to .gitignore
+
+Make sure to add the .env file to the .gitignore file so that the environment variables are not pushed to the repository.
+
+In .gitignore add the following line:
+
+```
+.env
+```
+
