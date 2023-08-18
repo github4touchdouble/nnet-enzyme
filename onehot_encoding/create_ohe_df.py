@@ -1,6 +1,6 @@
+import sys
 from numpy import array
 import numpy as np
-import sys
 np.set_printoptions(threshold=sys.maxsize) # set numpy to print all values in array
 
 from sklearn.preprocessing import LabelEncoder
@@ -38,12 +38,12 @@ def create_ohe_seqs(df):
     """
     # remove all unwanted AAs
     df = df[~df['Sequence'].str.contains('X')]
-    df = df[~df['Sequence'].str.contains('O')]
+    # df = df[~df['Sequence'].str.contains('O')]
     df = df[~df['Sequence'].str.contains('U')]
     
     for index, row  in df.iterrows():
         ohe_list = onehot(row['Sequence'])
-        default_ohe_array = np.zeros((20440))
+        default_ohe_array = np.zeros((20440)) # 1022 * 20 = 20440 (max length of sequence * 20 possible AAs)
         for i in range(len(ohe_list)):
             if ohe_list[i] != 0.:
                 default_ohe_array[i] += ohe_list[i] 
@@ -55,9 +55,9 @@ def filter_diff_multi_enzymes(df):
     remove multi functional enzymes (enzymes with 2 ore more ec numbers that differ in their 1st 
     digit) from input dataframe
     """
-    negative_df = df[df['EC number'].str.contains(';')]
+    multifunc_enzymes = df[df['EC number'].str.contains(';')]
     to_remove = []
-    for ec in negative_df['EC number']:
+    for ec in multifunc_enzymes['EC number']:
         ec = ec.split(';')
         if ec[0][0] != ec[1][0]:
             to_remove.append(ec)
@@ -130,8 +130,9 @@ def main_non_enzymes(path_to_fasta):
 
 
 if __name__ == "__main__":
-    ENZYMES = os.getenv("ENZYMES")
-    NON_ENZYMES = os.getenv("NON_ENZYMES")
+    ENZYMES = os.getenv("CSV30_ENZYMES")
+    NON_ENZYMES = os.getenv("FASTA_NON_ENZYMES")
+    print(ENZYMES)
     # main_enzymes(ENZYMES)
     # main_non_enzymes(NON_ENZYMES)
     print(onehot('MAGKQVRLVLLALGALVLLPTQGKVFGRCELAAAMKRHGLDNYRGYSLGNWVCAAKFESNFNTQATNRNTDGSTDYGILQINSRWWCNDGRTPGSRNLCNIPCSALLSSDITASVNCAKKIVSDGNGMNAWVAWRNRCKGTDVQAWIRGCRL'))
