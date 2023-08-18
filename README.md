@@ -1,6 +1,6 @@
 # pbl_binary_classifier
 
-## HINWEIS: Environmental variables setzen
+## IMPORTANT: Setting up the environment
 
 **Create an own .env file in the root directory of the project** 
 
@@ -25,12 +25,11 @@ PROTT5_NON_ENZYMES_SPLIT_X='PATH/TO/NON_ENZYME/PROTT5/SPLIT_X'
 PROTT5_ENZYMES_SPLIT_X='PATH/TO/ENZYME/PROTT5/SPLIT_X'
 ```
 
-Make sure to replace the X in the last two lines with the number of the split you want to use. Also make 
+Make sure to replace the X in the last couple of lines with the number of the split you want to use. Also make 
 sure to adapt to the naming scheme of the files on your system. The file variables need to be the same for all of us,
 but the paths they point to are unique to each of us.
 
 ### Using the environment variables in the code
-
 ```python
 import os
 from dotenv import load_dotenv
@@ -46,7 +45,6 @@ abs_path_to_non_enzyme_fasta = os.getenv("FASTA_NON_ENZYMES")
 Make sure to add the .env file to the .gitignore file so that the environment variables are not pushed to the repository.
 
 In .gitignore add the following line:
-
 ```
 .env
 ```
