@@ -20,7 +20,7 @@ def read_csv(path):  #read the protein mass table
             masses[char] = mass
     return masses
 
-protein_masses=read_csv(r'/home/trucbui/PBL/Dataset/Dataset/mass.tsv')
+protein_masses=read_csv(r'/home/trucbui/PBLGit/random_forest/mass.tsv')
 
 
 def readfasta(fasta, is_enzyme):
