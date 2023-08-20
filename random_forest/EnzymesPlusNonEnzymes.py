@@ -126,4 +126,4 @@ def writecsv(seqlist1, seqlist2, csv_path):
         out.close()
 
 
-writecsv(enzyme_seqs, non_enzyme_seqs , r"/home/trucbui/PycharmProjects/PBL2324/venv/Dataset/Dataset/binary_classification_train.csv")
+writecsv(enzyme_seqs, non_enzyme_seqs , r"/home/trucbui/PBLGit/random_forest/binary_classification_train.csv")
