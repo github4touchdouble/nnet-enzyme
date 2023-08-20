@@ -80,8 +80,8 @@ def find_motif(seq_list):
 """
 ok this is not really promising I guess
 """
-print(find_motif(enzyme_only_seqs))
-print(find_motif(non_enzyme_only_seqs))
+#print(find_motif(enzyme_only_seqs))
+#print(find_motif(non_enzyme_only_seqs))
 
 # Find out the most common last amino acid of the enzymes and non-enzymes set
 def most_common_last_aa(seq_list):
@@ -126,4 +126,4 @@ def writecsv(seqlist1, seqlist2, csv_path):
         out.close()
 
 
-writecsv(enzyme_seqs, non_enzyme_seqs , r"/home/trucbui/PBL/Dataset/Dataset/binary_classification_train.csv")
+writecsv(enzyme_seqs, non_enzyme_seqs , r"/home/trucbui/PycharmProjects/PBL2324/venv/Dataset/Dataset/binary_classification_train.csv")
