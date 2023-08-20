@@ -111,16 +111,16 @@ print(non_enzymes_common_last_aa)
 
 def writecsv(seqlist1, seqlist2, csv_path):
     with open(csv_path, "w") as out:
-        out.write("Label" + "\t" + "Header" + "\t" + "Sequence" +"\t" + "Sequence length" + "\t" + "Mass" + "\t" +
+        out.write("Label" + "\t" + "Header" + "\t" + "Sequence length" + "\t" + "Mass" + "\t" +
                   "Most frequent aa" + "\t" + "Last aa is " +enzymes_common_last_aa[0] +
                   "\t" + "Last aa is " +non_enzymes_common_last_aa[0]+ "\n")
-        for i in range(4):
-            for (a,header,seq,mass) in seqlist1:
-                out.write(str(a)+"\t"+ header+ "\t" +seq + "\t"+ str(len(seq))+ "\t" + str(mass) +"\t" +
-                          collections.Counter(seq).most_common(1)[0][0] + "\t" + str(int(seq[-1:]==enzymes_common_last_aa[0])) +
-                          "\t" + str(int(seq[-1:]==non_enzymes_common_last_aa[0])) +"\n")
+
+        for (a,header,seq,mass) in seqlist1:
+            out.write(str(a)+"\t"+ header+ "\t" + str(len(seq))+ "\t" + str(mass) +"\t" +
+                      collections.Counter(seq).most_common(1)[0][0] + "\t" + str(int(seq[-1:]==enzymes_common_last_aa[0])) +
+                      "\t" + str(int(seq[-1:]==non_enzymes_common_last_aa[0])) +"\n")
         for (a,header,seq,mass) in seqlist2:
-            out.write(str(a) + "\t" + header + "\t" + seq + "\t" + str(len(seq)) + "\t" + str(mass) + "\t" +
+            out.write(str(a) + "\t" + header + "\t"  + str(len(seq)) + "\t" + str(mass) + "\t" +
                       collections.Counter(seq).most_common(1)[0][0] + "\t" + str(int(seq[-1:] == enzymes_common_last_aa[0])) +
                       "\t" + str(int(seq[-1:] == non_enzymes_common_last_aa[0])) + "\n")
         out.close()
