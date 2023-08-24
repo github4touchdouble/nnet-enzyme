@@ -5,4 +5,5 @@ matplotlib
 seaborn
 random
 Bio
-dotenv
+python-dotenv
+h5py
