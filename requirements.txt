@@ -3,7 +3,6 @@ numpy
 scikit-learn
 matplotlib
 seaborn
-random
 Bio
 python-dotenv
 h5py
