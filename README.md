@@ -52,3 +52,12 @@ In `.gitignore` add the following line:
 .env
 ```
 
+# Meta data
+
+A metadata .csv file is located under `metadata/lable_dict.csv`. It contains the following columns:
+
+| Header | EC Number |
+|--------|-----------|
+| ...    | ...       |
+
+When matching the EC number (as label) to our embeddings, we can just use this file as a lookup table. This way we save storage space and time.
