@@ -1,6 +1,9 @@
 import pandas as pd
 import h5py
 import numpy as np
+import pandas as pd
+import torch
+from torch.utils.data import Dataset
 
 
 def read_fasta_to_df(file: str) -> pd.DataFrame:
@@ -97,3 +100,35 @@ def load_ml_df(path_to_enzyme_esm2: str, path_to_non_enzyme_esm2: str) -> pd.Dat
     print(len(non_enzymes))
 
     return pd.concat([enzymes, non_enzymes])
+
+
+
+class H5Dataset(Dataset):
+    def __init__(self, h5_file: str, csv_file: str):
+        self.h5_file = h5_file
+        self.ec_numbers = self._load_ec_numbers(csv_file)
+
+        with h5py.File(self.h5_file, "r") as hdf_handle:
+            self.length = len(hdf_handle.keys())
+            self.keys = list(hdf_handle.keys())
+
+    def _load_ec_numbers(self, csv_file: str) -> dict:
+        df = pd.read_csv(csv_file)
+        ec_dict = {}
+        for _, row in df.iterrows():
+            ec_dict[row["Entry"]] = row["EC number"]
+        return ec_dict
+
+    def __len__(self):
+        return self.length
+
+    def __getitem__(self, index: int):
+        with h5py.File(self.h5_file, "r") as hdf_handle:
+            key = self.keys[index]
+            emb = torch.tensor(hdf_handle[key], dtype=torch.float32).reshape(-1)
+            header = key
+            ec_number = self.ec_numbers.get(header, pd.NA)
+
+        return emb, header, ec_number
+
+

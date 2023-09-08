@@ -61,3 +61,32 @@ A metadata .csv file is located under `metadata/lable_dict.csv`. It contains the
 | ...    | ...       |
 
 When matching the EC number (as label) to our embeddings, we can just use this file as a lookup table. This way we save storage space and time.
+
+
+# Reading embeddings with script of Tobias
+
+First import the H5Dataset class Tobias provided:
+
+```python
+form data_manipulation import H5Dataset
+```
+
+Then create a dataset object and a dataloader object:
+
+```python
+# replace X with the number of the split you want to use
+path_enzyme_csv = os.getenv("CSVX_ENZYMES") 
+path_enzyme_h5 = os.getenv("ESM2_ENZYMES_SPLIT_X")
+
+h5_dataset = H5Dataset(
+    path_enzyme_h5, path_enzyme_csv
+)
+loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
+
+# Iterate over batches
+for batch in loader:
+    emb, header, ec_number = batch
+    print(header, ec_number)
+    print(emb)
+    break
+```
