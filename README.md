@@ -68,25 +68,13 @@ When matching the EC number (as label) to our embeddings, we can just use this f
 First import the H5Dataset class Tobias provided:
 
 ```python
-form data_manipulation import H5Dataset
+form data_manipulation import load_ml_data
 ```
-
-Then create a dataset object and a dataloader object:
-
+Then use this method to load the data:
 ```python
-# replace X with the number of the split you want to use
-path_enzyme_csv = os.getenv("CSVX_ENZYMES") 
-path_enzyme_h5 = os.getenv("ESM2_ENZYMES_SPLIT_X")
+enzyme_csv = os.getenv("CSVX_ENZYMES") # replace X with the number of the split you want to use
+enzyme_esm2 = os.getenv("ESM2_ENZYMES_SPLIT_X") # replace X with the number of the split you want to use
+class_depth = 2 # 1 for class 1, 2 for class 1-2, 3 for class 1-3, 4 for class 1-4
 
-h5_dataset = H5Dataset(
-    path_enzyme_h5, path_enzyme_csv
-)
-loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
-
-# Iterate over batches
-for batch in loader:
-    emb, header, ec_number = batch
+X, y = load_ml_data(path_to_esm2=enzyme_esm2, path_tp_enzyme_csv=enzyme_csv, class_depth=1)
 ```
-
-Here ´emb´, ´header´ and ´ec_number´ are 3 separate tupels containing 32 entries each (since our batch size is equal to 32).
-
