@@ -86,7 +86,7 @@ loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
 # Iterate over batches
 for batch in loader:
     emb, header, ec_number = batch
-    print(header, ec_number)
-    print(emb)
-    break
 ```
+
+Here ´emb´, ´header´ and ´ec_number´ are 3 separate tupels containing 32 entries each (since our batch size is equal to 32).
+

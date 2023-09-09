@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
+import time
 
 
 def read_fasta_to_df(file: str) -> pd.DataFrame:
@@ -131,4 +132,74 @@ class H5Dataset(Dataset):
 
         return emb, header, ec_number
 
+
+class H5Dataset(Dataset):
+    def __init__(self, h5_file: str, csv_file: str):
+        self.h5_file = h5_file
+        self.ec_numbers = self._load_ec_numbers(csv_file)
+
+        with h5py.File(self.h5_file, "r") as hdf_handle:
+            self.length = len(hdf_handle.keys())
+            self.keys = list(hdf_handle.keys())
+
+    def _load_ec_numbers(self, csv_file: str) -> dict:
+        df = pd.read_csv(csv_file)
+        ec_dict = {}
+        for _, row in df.iterrows():
+            ec_dict[row["Entry"]] = row["EC number"]
+        return ec_dict
+
+    def __len__(self):
+        return self.length
+
+    def __getitem__(self, index: int):
+        with h5py.File(self.h5_file, "r") as hdf_handle:
+            key = self.keys[index]
+            emb = torch.tensor(hdf_handle[key], dtype=torch.float32).reshape(-1)
+            header = key
+            ec_number = self.ec_numbers.get(header, pd.NA)
+
+        return emb, header, ec_number
+
+
+def load_ml_data(path_to_esm2: str, path_tp_enzyme_csv: str, class_depth: int = 4):
+    """
+    Reads in the embeddings and the EC numbers from the h5 file and the csv file and labels them accordingly.
+    :param path_to_esm2: path to the h5 file
+    :param path_tp_enzyme_csv: path to the csv file
+    :param class_depth: depth of the EC numbers
+    :return: X: embeddings, y: EC numbers (labels)
+    """
+
+    h5_dataset = H5Dataset( path_to_esm2, path_tp_enzyme_csv)
+
+    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
+
+    # Iterate over batches
+    X = []
+    y = []
+
+    t0 = time.time()
+
+    for batch in loader:
+        emb, _, ec_numbers = batch
+        wanted_ec_class = [".".join(ec_number.split(".")[:class_depth]) for ec_number in ec_numbers] # here we extract te ec number based on the class depth
+        
+        X.append(emb.numpy())
+        y.extend(list(wanted_ec_class))
+
+    # Convert the lists to numpy arrays
+    X = np.vstack(X)
+    y = np.array(y)
+
+    t1 = time.time()
+    
+    total = (t1-t0) / 60
+
+    print(f"Data loaded in: {round(total, 3)} min")
+    
+    return X, y
+
+# if __name__ == "__main__":
+#     load_ml_data(path_to_esm2="/home/malte/Desktop/Dataset/data/enzymes/esm2/split10_esm2_3b.h5", path_tp_enzyme_csv="/home/malte/Desktop/Dataset/data/enzymes/csv/split10.csv", class_depth=2)
 
