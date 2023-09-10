@@ -1,4 +1,0 @@
-.env
-knn_gzip/gzip_data/*
-.gitignore
-data_manipulation/__pycache__/*
