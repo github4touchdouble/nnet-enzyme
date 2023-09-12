@@ -58,7 +58,8 @@ def filter_unwanted_seqs(df: pd.DataFrame, enzymes: bool) -> pd.DataFrame:
         df = df[~df['EC number'].isin(to_remove)]
     else:
 
-        df = df[df["Sequence"].apply(len) <= 1022] # if were working with non_enzymes we need to limit the sequence length
+        df = df[
+            df["Sequence"].apply(len) <= 1022]  # if were working with non_enzymes we need to limit the sequence length
 
     return df
 
@@ -102,8 +103,6 @@ def read_esm2(path_to_esm2: str, is_enzyme: bool) -> pd.DataFrame:
 #
 #     return pd.concat([enzymes, non_enzymes])
 
-
-
 class H5Dataset(Dataset):
     def __init__(self, h5_file: str, csv_file: str):
         self.h5_file = h5_file
@@ -133,21 +132,13 @@ class H5Dataset(Dataset):
         return emb, header, ec_number
 
 
-class H5Dataset(Dataset):
-    def __init__(self, h5_file: str, csv_file: str):
+class H5ESM2(Dataset):
+    def __init__(self, h5_file: str):
         self.h5_file = h5_file
-        self.ec_numbers = self._load_ec_numbers(csv_file)
 
         with h5py.File(self.h5_file, "r") as hdf_handle:
             self.length = len(hdf_handle.keys())
             self.keys = list(hdf_handle.keys())
-
-    def _load_ec_numbers(self, csv_file: str) -> dict:
-        df = pd.read_csv(csv_file)
-        ec_dict = {}
-        for _, row in df.iterrows():
-            ec_dict[row["Entry"]] = row["EC number"]
-        return ec_dict
 
     def __len__(self):
         return self.length
@@ -157,9 +148,8 @@ class H5Dataset(Dataset):
             key = self.keys[index]
             emb = torch.tensor(hdf_handle[key], dtype=torch.float32).reshape(-1)
             header = key
-            ec_number = self.ec_numbers.get(header, pd.NA)
 
-        return emb, header, ec_number
+        return emb, header
 
 
 def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
@@ -167,7 +157,6 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
     Reads in the embeddings and the EC numbers from the h5 file and the csv file and labels them accordingly.
     :param path_to_esm2: path to the h5 file
     :param path_to_enzyme_csv: path to the csv file
-    :param class_depth: depth of the EC numbers
     :return: X: embeddings, y: EC numbers (labels)
     """
 
@@ -183,8 +172,9 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
 
     for batch in loader:
         emb, _, ec_numbers = batch
-        wanted_ec_class = [int(ec_number.split(".")[0]) - 1 for ec_number in ec_numbers] # here we convert ec to int and do -1
-        
+        wanted_ec_class = [int(ec_number.split(".")[0]) - 1 for ec_number in
+                           ec_numbers]  # here we convert ec to int and do -1
+
         X.append(emb.numpy())
         y.extend(list(wanted_ec_class))
 
@@ -193,13 +183,9 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
     y = np.array(y)
 
     t1 = time.time()
-    
-    total = (t1-t0) / 60
+
+    total = (t1 - t0) / 60
 
     print(f"Data loaded in: {round(total, 3)} min")
-    
+
     return X, y
-
-# if __name__ == "__main__":
-#     load_ml_data(path_to_esm2="/home/malte/Desktop/Dataset/data/enzymes/esm2/split10_esm2_3b.h5", path_tp_enzyme_csv="/home/malte/Desktop/Dataset/data/enzymes/csv/split10.csv", class_depth=2)
-
