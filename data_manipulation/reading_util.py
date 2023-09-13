@@ -7,13 +7,37 @@ from torch.utils.data import Dataset
 import time
 
 
+def read_esm2(path_to_esm2: str, is_enzyme: bool, ignore_headers: list) -> pd.DataFrame:
+    """
+    :param path_to_esm2: Absolute path to esm2 file
+    :return: A dataframe
+    """
+    with h5py.File(path_to_esm2) as hdf_handle:
+        headers = []
+        embeddings = []
+
+        for header, emb in hdf_handle.items():
+            if header not in ignore_headers:
+                headers.append(header)
+                embeddings.append(np.array(list(emb)))
+
+        df = pd.DataFrame(data={"Entry": headers, "Embedding": embeddings})
+
+        if is_enzyme:
+            df["Label"] = 1
+        else:
+            df["Label"] = -1
+
+        return df
+
+
 def read_fasta_to_df(file: str) -> pd.DataFrame:
     """
     method for reading in fasta file and converting it to a pandas dataframe
     :param file: Abs path to fasta file
     :return: A df with all seqs and ids
     """
-    fasta_dict = {"Entry": "Sequence"}
+    fasta_dict = {}
 
     with open(file, "r") as f:
         lines = f.readlines()
@@ -26,12 +50,12 @@ def read_fasta_to_df(file: str) -> pd.DataFrame:
             current_key = line[1::]
         else:
             fasta_dict[current_key] += line
+
     f.close()
 
+
     # Set the first row as column names
-    df = pd.DataFrame.from_dict(fasta_dict, orient="index")
-    df.columns = df.iloc[0]
-    df = df[1:]
+    df = pd.DataFrame(fasta_dict.items(), columns=['Entry', 'Sequence'])
 
     return df
 
@@ -51,57 +75,73 @@ def filter_unwanted_seqs(df: pd.DataFrame, enzymes: bool) -> pd.DataFrame:
     if enzymes:
         multifunc_enzymes = df[df['EC number'].str.contains(';')]
         to_remove = []
-        for ec in multifunc_enzymes['EC number']:
-            ec = ec.split(';')
-            if ec[0][0] != ec[1][0]:
-                to_remove.append(ec)
-        df = df[~df['EC number'].isin(to_remove)]
-    else:
+        for multi_ec in multifunc_enzymes['EC number']:
+            ec = multi_ec.split(';')
+            test_set = set()
 
+            for i in range(len(ec)):
+               test_set.add(ec[i][0])
+
+            if len(test_set) > 1: # If this len(set) != 1 we have a multi func enzyme of different main classes
+                to_remove.append(ec)
+
+        df = df[~df['EC number'].isin(to_remove)]
+
+    else:
         df = df[
             df["Sequence"].apply(len) <= 1022]  # if were working with non_enzymes we need to limit the sequence length
 
     return df
 
 
-def read_esm2(path_to_esm2: str, is_enzyme: bool) -> pd.DataFrame:
+def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
     """
-    :param path_to_esm2: Absolute path to esm2 file
-    :return: A dataframe
+    :param path_to_csv: Absolute path to csv file
+    :param is_enzyme: If we pass enzymes we also need to filter out multifunctional enzymes
+    :return: A list of headers to ignore when reading in the esm2 embeddings
     """
-    with h5py.File(path_to_esm2) as hdf_handle:
-        headers = []
-        embeddings = []
+    if is_enzyme:
+        df = pd.read_csv(path_to_csv, sep=",")
+    else:
+        df = read_fasta_to_df(path_to_csv)
+    to_remove = []
 
-        for header, emb in hdf_handle.items():
-            headers.append(header)
-            embeddings.append(np.array(list(emb)))
+    remove_O = df[df['Sequence'].str.contains('O')]["Entry"]
+    remove_U = df[df['Sequence'].str.contains('U')]["Entry"]
 
-        df = pd.DataFrame(data={"Entry": headers, "Embedding": embeddings})
+    print(len(remove_O), "Sequences with aa O in ", path_to_csv)
+    print(len(remove_U), "Sequences with aa U in ", path_to_csv)
 
-        if is_enzyme:
-            df["Label"] = 1
-        else:
-            df["Label"] = -1
+    to_remove.extend(remove_O.to_list())
+    to_remove.extend(remove_U.to_list())
 
-        return df
+    # for enzymes remove multifunctional enzymes
+    if is_enzyme:
+        multifunc_enzymes = df[df['EC number'].str.contains(';')]
+        remove_multif = []
+        for index, row in multifunc_enzymes.iterrows():
 
+            ec = row["EC number"].split(';') # split the ec numbers by ; meaning ec = ["1.2.3.4", "2.2.3.44"] for 1.2.3.4;2.2.3.44. This would be removed
+            header = row["Entry"]
+           
+            test_set = set()
+            for i in range(len(ec)):
+               test_set.add(int(ec[i][0]))
 
-# def load_ml_df(path_to_enzyme_esm2: str, path_to_non_enzyme_esm2: str) -> pd.DataFrame:
-#     """
-#     reads both esm2 embeddings (enzymes, non_enzymes) and concatenates to main machine learning df
-#     :param path_to_enzyme_esm2: Absolut path to enzyme esm2
-#     :param path_to_non_enzyme_esm2: Absolut path to non_enzyme esm2
-#     :return: A dataframe which can be the split to training and test data set
-#     """
-#
-#     enzymes = read_esm2(path_to_enzyme_esm2, True)
-#     non_enzymes = read_esm2(path_to_non_enzyme_esm2, False)
-#
-#     print(len(enzymes))
-#     print(len(non_enzymes))
-#
-#     return pd.concat([enzymes, non_enzymes])
+            if len(test_set) > 1: # If this len(set) != 1 we have a multi func enzyme of different main classes
+                remove_multif.append(header)
+
+        to_remove.extend(remove_multif)
+        print(f"{len(remove_multif)} multifunctional enzymes with diff ec main classes in ", path_to_csv)
+
+    else:
+        remove_seq_cutoff = df[df["Sequence"].apply(len) >= 1022]["Entry"]  # if were working with non_enzymes we need to limit the sequence length
+        print(len(remove_seq_cutoff), "Non enzymes are longer than 1022 cutoff")
+        to_remove.extend(remove_seq_cutoff.to_list())
+
+    print(f"{len(to_remove)} entries will be ignored")
+    return to_remove
+
 
 class H5Dataset(Dataset):
     def __init__(self, h5_file: str, csv_file: str):
@@ -160,6 +200,8 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
     :return: X: embeddings, y: EC numbers (labels)
     """
 
+    to_remove = filter_unwanted_esm2(path_to_enzyme_csv, True)
+
     h5_dataset = H5Dataset(path_to_esm2, path_to_enzyme_csv)
 
     loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
@@ -171,12 +213,13 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
     t0 = time.time()
 
     for batch in loader:
-        emb, _, ec_numbers = batch
-        wanted_ec_class = [int(ec_number.split(".")[0]) - 1 for ec_number in
-                           ec_numbers]  # here we convert ec to int and do -1
+        emb, header, ec_numbers = batch
+        if header not in to_remove:
+            wanted_ec_class = [int(ec_number.split(".")[0]) - 1 for ec_number in
+                               ec_numbers]  # here we convert ec to int and do -1
 
-        X.append(emb.numpy())
-        y.extend(list(wanted_ec_class))
+            X.append(emb.numpy())
+            y.extend(list(wanted_ec_class))
 
     # Convert the lists to numpy arrays
     X = np.vstack(X)
