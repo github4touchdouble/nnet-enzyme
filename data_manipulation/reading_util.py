@@ -109,8 +109,8 @@ def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
     remove_O = df[df['Sequence'].str.contains('O')]["Entry"]
     remove_U = df[df['Sequence'].str.contains('U')]["Entry"]
 
-    print(len(remove_O), "Sequences with aa O in ", path_to_csv)
-    print(len(remove_U), "Sequences with aa U in ", path_to_csv)
+    print("LOG: ",len(remove_O), "Sequences with aa O in ", path_to_csv)
+    print("LOG: ",len(remove_U), "Sequences with aa U in ", path_to_csv)
 
     to_remove.extend(remove_O.to_list())
     to_remove.extend(remove_U.to_list())
@@ -132,14 +132,14 @@ def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
                 remove_multif.append(header)
 
         to_remove.extend(remove_multif)
-        print(f"{len(remove_multif)} multifunctional enzymes with diff ec main classes in ", path_to_csv)
+        print(f"LOG: {len(remove_multif)} multifunctional enzymes with diff ec main classes in ", path_to_csv)
 
     else:
-        remove_seq_cutoff = df[df["Sequence"].apply(len) >= 1022]["Entry"]  # if were working with non_enzymes we need to limit the sequence length
-        print(len(remove_seq_cutoff), "Non enzymes are longer than 1022 cutoff")
+        remove_seq_cutoff = df[df["Sequence"].apply(len) > 1022]["Entry"]  # if were working with non_enzymes we need to limit the sequence length
+        print("LOG: ", len(remove_seq_cutoff), "Non enzymes are longer than 1022 cutoff")
         to_remove.extend(remove_seq_cutoff.to_list())
 
-    print(f"{len(to_remove)} entries will be ignored")
+    print(f"LOG:, {len(to_remove)} entries will be ignored")
     return to_remove
 
 
@@ -229,6 +229,51 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
 
     total = (t1 - t0) / 60
 
-    print(f"Data loaded in: {round(total, 3)} min")
+    print(f"LOG: Data loaded in: {round(total, 3)} min")
+    print(f"LOG: ESM2 of enzymes: {len(X)}")
+    print(f"LOG: Labels of enzymes: {len(X)}")
 
     return X, y
+
+
+def load_non_enz_esm2(non_enzymes_fasta_path: str, non_enzymes_esm2_path: str):
+    """
+    Used for reading in esm2 embeddings of non_enzymes, since we don't have a .csv file
+    Filters sequences longer than cutoff at 1022, sequences containing either O od U as aa
+    :param non_enzymes_fasta_path: Path to non_enzyme_fasta
+    :param non_enzymes_esm2_path: Path to non_enzyme_esm2
+    :return: X_neg, y_neg
+    """
+
+    non_enz_to_remove = filter_unwanted_esm2(non_enzymes_fasta_path, False)
+
+    h5_esm2 = H5ESM2(non_enzymes_esm2_path)
+
+    loader = torch.utils.data.DataLoader(h5_esm2, batch_size=32, shuffle=True)
+
+    # Iterate over batches
+    X_neg = []
+
+    t0 = time.time()
+
+    for batch in loader:
+        emb, header = batch
+        if header not in non_enz_to_remove:
+            X_neg.append(emb.numpy())
+
+    t1 = time.time()
+
+    # Convert the lists to numpy arrays
+    X_neg = np.vstack(X_neg)
+
+    y_neg = [7 for emb in range(len(X_neg))]  # adding labels for non enzymes:
+    # (0-6 → enzyme; 7 → non_enzyme)
+    y_neg = np.array(y_neg)
+
+    total = (t1 - t0) / 60
+
+    print(f"LOG: Non Enzymes data loaded in: {round(total, 3)} min")
+    print(f"LOG: ESM2 of non enzymes: {len(X_neg)}")
+    print(f"LOG: Labels of non enzymes: {len(y_neg)}")
+
+    return X_neg, y_neg
