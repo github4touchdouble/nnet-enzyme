@@ -109,8 +109,8 @@ def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
     remove_O = df[df['Sequence'].str.contains('O')]["Entry"]
     remove_U = df[df['Sequence'].str.contains('U')]["Entry"]
 
-    print("LOG: ",len(remove_O), "Sequences with aa O in ", path_to_csv)
-    print("LOG: ",len(remove_U), "Sequences with aa U in ", path_to_csv)
+    print(f"LOG: {len(remove_O)} Sequences with aa O in {path_to_csv}")
+    print(f"LOG: {len(remove_U)} Sequences with aa U in {path_to_csv}")
 
     to_remove.extend(remove_O.to_list())
     to_remove.extend(remove_U.to_list())
@@ -136,10 +136,10 @@ def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
 
     else:
         remove_seq_cutoff = df[df["Sequence"].apply(len) > 1022]["Entry"]  # if were working with non_enzymes we need to limit the sequence length
-        print("LOG: ", len(remove_seq_cutoff), "Non enzymes are longer than 1022 cutoff")
+        print(f"LOG: {len(remove_seq_cutoff)} non enzymes are longer than 1022 cutoff")
         to_remove.extend(remove_seq_cutoff.to_list())
 
-    print(f"LOG:, {len(to_remove)} entries will be ignored")
+    print(f"LOG: {len(to_remove)} entries will be ignored")
     return to_remove
 
 
