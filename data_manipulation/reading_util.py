@@ -132,7 +132,7 @@ def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
                 remove_multif.append(header)
 
         to_remove.extend(remove_multif)
-        print(f"LOG: {len(remove_multif)} multifunctional enzymes with diff ec main classes in ", path_to_csv)
+        print(f"LOG: {len(remove_multif)} multifunctional enzymes with diff ec main classes in {path_to_csv}")
 
     else:
         remove_seq_cutoff = df[df["Sequence"].apply(len) > 1022]["Entry"]  # if were working with non_enzymes we need to limit the sequence length
@@ -215,11 +215,10 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
     for batch in loader:
         emb, header, ec_numbers = batch
         if header not in to_remove:
-            wanted_ec_class = [int(ec_number.split(".")[0]) - 1 for ec_number in
-                               ec_numbers]  # here we convert ec to int and do -1
+            ec_class = [int(ec_number.split(".")[0]) - 1 for ec_number in ec_numbers]  # here we convert ec to int and do -1
 
             X.append(emb.numpy())
-            y.extend(list(wanted_ec_class))
+            y.extend(list(ec_class))
 
     # Convert the lists to numpy arrays
     X = np.vstack(X)
