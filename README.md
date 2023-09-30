@@ -52,17 +52,6 @@ In `.gitignore` add the following line:
 .env
 ```
 
-# Meta data
-
-A metadata .csv file is located under `metadata/lable_dict.csv`. It contains the following columns:
-
-| Header | EC Number |
-|--------|-----------|
-| ...    | ...       |
-
-When matching the EC number (as label) to our embeddings, we can just use this file as a lookup table. This way we save storage space and time.
-
-
 # Reading embeddings with script of Tobias
 
 First import the H5Dataset class Tobias provided:
@@ -71,10 +60,23 @@ First import the H5Dataset class Tobias provided:
 form data_manipulation import load_ml_data
 ```
 Then use this method to load the data:
+## Loading enzyme esm2 embeddings
 ```python
 enzyme_csv = os.getenv("CSVX_ENZYMES") # replace X with the number of the split you want to use
 enzyme_esm2 = os.getenv("ESM2_ENZYMES_SPLIT_X") # replace X with the number of the split you want to use
-class_depth = 2 # 1 for class 1, 2 for class 1-2, 3 for class 1-3, 4 for class 1-4
 
-X, y = load_ml_data(path_to_esm2=enzyme_esm2, path_tp_enzyme_csv=enzyme_csv, class_depth=1)
+X_enzymes, y_enzymes = load_ml_data(path_to_esm2=enzyme_esm2, path_tp_enzyme_csv=enzyme_csv)
+```
+## Loading non enzyme esm2 embeddings
+Since we don't have a `.csv` for our non enzymes, we need to use the `load_non_enzyme_esm2` method instead:
+```python
+path_to_non_ez_fasta = os.getenv("FASTA_NON_ENZYMES")
+path_to_non_ez_esm2 = os.getenv("ESM2_NON_ENZYMES")
+X_non_enzymes, y_non_enzymes  = load_non_enzyme_esm2(non_enzymes_fasta_path = path_to_non_ez_fasta, non_enzymes_esm2_path=path_to_non_ez_esm2)
+```
+**Now we can merge the two datasets:**
+```python
+# Combine data
+X = np.vstack((X_enzymes, X_non_enzymes))
+y = np.hstack((y_enzymes, y_non_enzymes))
 ```

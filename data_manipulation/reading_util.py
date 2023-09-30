@@ -265,7 +265,7 @@ def load_non_enz_esm2(non_enzymes_fasta_path: str, non_enzymes_esm2_path: str):
     # Convert the lists to numpy arrays
     X_neg = np.vstack(X_neg)
 
-    y_neg = [7 for emb in range(len(X_neg))]  # adding labels for non enzymes:
+    y_neg = [7 for _ in range(len(X_neg))]  # adding labels for non enzymes:
     # (0-6 → enzyme; 7 → non_enzyme)
     y_neg = np.array(y_neg)
 
