@@ -1,10 +1,7 @@
-import pandas as pd
-import matplotlib.pyplot as plt
 import h5py
 import numpy as np
 import pandas as pd
 import torch
-from sklearn.metrics import classification_report, confusion_matrix
 from torch.utils.data import Dataset
 import time
 
@@ -283,10 +280,13 @@ def load_non_enz_esm2(non_enzymes_fasta_path: str, non_enzymes_esm2_path: str):
 
 def load_and_extract_2nd_class(path_to_esm2: str, path_to_enzyme_csv: str, wanted_ec_class: int):
     """
-    Reads in the embeddings and the EC numbers from the h5 file and the csv file and labels them accordingly.
+    Reads in the embeddings and the EC numbers from the h5 file and the csv file and labels them accordingly based on the wanted_ec_class.
     :param path_to_esm2: path to the h5 file
     :param path_to_enzyme_csv: path to the csv file
-    :return: X: embeddings, y: EC numbers (labels)
+    :param wanted_ec_class: The main class of which we want to extract the second class
+    :return: X: embeddings, y: EC numbers (labels) ready to use for cnn
+    :return: sec_to_label: dict mapping the second class to a label (we use this for the output layer in cnn, since it has to be continuous (e.g. 0,1,2,3,4,5,6,7))
+    :return: label_to_sec: dict mapping the label to the second class (we need this inorder to map the predictions back to the second class)
     """
 
     to_remove = filter_unwanted_esm2(path_to_enzyme_csv, True)
@@ -335,78 +335,3 @@ def load_and_extract_2nd_class(path_to_esm2: str, path_to_enzyme_csv: str, wante
 
 
 
-def plot_report(report, y, predictions):
-    """
-    Plots results of model
-    :param report: Report of model
-    """
-
-    class_0_metrics = report.split('\n')[2].split()[1:]
-    class_1_metrics = report.split('\n')[3].split()[1:]
-    class_2_metrics = report.split('\n')[4].split()[1:]
-    class_3_metrics = report.split('\n')[5].split()[1:]
-    class_4_metrics = report.split('\n')[6].split()[1:]
-    class_5_metrics = report.split('\n')[7].split()[1:]
-    class_6_metrics = report.split('\n')[8].split()[1:]
-    class_7_metrics = report.split('\n')[9].split()[1:]
-
-    metrics = [class_0_metrics,
-               class_1_metrics,
-               class_2_metrics,
-               class_3_metrics,
-               class_4_metrics,
-               class_5_metrics,
-               class_6_metrics,
-               class_7_metrics
-               ]
-
-    precs = []
-    recs = []
-    f1_s = []
-
-    for class_m in metrics:
-        precision = float(class_m[0])
-        recall = float(class_m[1])
-        f1_score = float(class_m[2])
-        precs.append(precision)
-        recs.append(recall)
-        f1_s.append(f1_score)
-
-    class_names = [1, 2, 3, 4, 5, 6, 7, 0]
-
-    # Create subplots for accuracy, precision, and F1
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
-
-    # Plot accuracy for each class
-    ax1.bar(class_names, recs)
-    ax1.set_title("Recall")
-    ax1.set_xlabel("Main Class")
-
-
-    # Plot precision for each class
-    ax2.bar(class_names, precs)
-    ax2.set_title("Precision")
-    ax2.set_xlabel("Main Class")
-
-    # Plot F1 score for each class
-    ax3.bar(class_names, f1_s)
-    ax3.set_title("F1 Score")
-    ax3.set_xlabel("Main Class")
-
-    # Adjust layout
-    plt.tight_layout()
-
-    # Show the plots
-    plt.show()
-
-
-    conf_matrix = confusion_matrix(y, predictions)
-
-    # Create a confusion matrix heatmap
-    plt.figure(figsize=(10, 7))
-    sns.set(font_scale=1.2)  # Adjust font size as needed
-    sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=class_names, yticklabels=class_names)
-    plt.xlabel("Predicted")
-    plt.ylabel("Actual")
-    plt.title("Confusion Matrix")
-    plt.show()
