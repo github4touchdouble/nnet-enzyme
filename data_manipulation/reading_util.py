@@ -1,8 +1,10 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 import h5py
 import numpy as np
 import pandas as pd
 import torch
+from sklearn.metrics import classification_report, confusion_matrix
 from torch.utils.data import Dataset
 import time
 
@@ -230,7 +232,7 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
 
     print(f"LOG: Data loaded in: {round(total, 3)} min")
     print(f"LOG: ESM2 of enzymes: {len(X)}")
-    print(f"LOG: Labels of enzymes: {len(X)}")
+    print(f"LOG: Labels of enzymes: {len(y)}")
 
     return X, y
 
@@ -276,3 +278,135 @@ def load_non_enz_esm2(non_enzymes_fasta_path: str, non_enzymes_esm2_path: str):
     print(f"LOG: Labels of non enzymes: {len(y_neg)}")
 
     return X_neg, y_neg
+
+
+
+def load_and_extract_2nd_class(path_to_esm2: str, path_to_enzyme_csv: str, wanted_ec_class: int):
+    """
+    Reads in the embeddings and the EC numbers from the h5 file and the csv file and labels them accordingly.
+    :param path_to_esm2: path to the h5 file
+    :param path_to_enzyme_csv: path to the csv file
+    :return: X: embeddings, y: EC numbers (labels)
+    """
+
+    to_remove = filter_unwanted_esm2(path_to_enzyme_csv, True)
+
+    h5_dataset = H5Dataset(path_to_esm2, path_to_enzyme_csv)
+
+    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
+
+    # Iterate over batches
+    X = []
+    y = []
+
+    t0 = time.time()
+
+    for batch in loader:
+        emb, header, ec_numbers = batch
+        if header not in to_remove:
+            ec_classes = [int(ec_number.split(".")[0]) for ec_number in ec_numbers]  # extract the main class, then we check if it is the wanted class
+            sec_ec_classes = [int(ec_number.split(".")[1]) for ec_number in ec_numbers]
+            for index, ec_class in enumerate(ec_classes):
+                if ec_class == wanted_ec_class:
+                    sec_ec_class = sec_ec_classes[index]
+                    X.append(emb[index].numpy()) # we append the embedding of the wanted class
+                    y.append(sec_ec_class)
+
+    # Convert the lists to numpy arrays
+    X = np.vstack(X)
+    # y = np.array(y)
+
+    # Now we create a dict numbering the ec classes since we use them as labels for our output layer in cnn
+    label_to_sec = {i: sec_ec_class for i, sec_ec_class in enumerate(set(y))}
+    sec_to_label = {sec_ec_class: i for i, sec_ec_class in enumerate(set(y))}
+
+    y_cnn_labels = [sec_to_label[sec_ec_class] for sec_ec_class in y]
+    y_cnn_labels = np.array(y_cnn_labels)
+
+    t1 = time.time()
+
+    total = (t1 - t0) / 60
+
+    print(f"LOG: Data loaded in: {round(total, 3)} min")
+    print(f"LOG: ESM2 of enzymes: {len(X)}")
+    print(f"LOG: Labels of enzymes: {len(y)}")
+
+    return X, y_cnn_labels, sec_to_label, label_to_sec
+
+
+
+def plot_report(report, y, predictions):
+    """
+    Plots results of model
+    :param report: Report of model
+    """
+
+    class_0_metrics = report.split('\n')[2].split()[1:]
+    class_1_metrics = report.split('\n')[3].split()[1:]
+    class_2_metrics = report.split('\n')[4].split()[1:]
+    class_3_metrics = report.split('\n')[5].split()[1:]
+    class_4_metrics = report.split('\n')[6].split()[1:]
+    class_5_metrics = report.split('\n')[7].split()[1:]
+    class_6_metrics = report.split('\n')[8].split()[1:]
+    class_7_metrics = report.split('\n')[9].split()[1:]
+
+    metrics = [class_0_metrics,
+               class_1_metrics,
+               class_2_metrics,
+               class_3_metrics,
+               class_4_metrics,
+               class_5_metrics,
+               class_6_metrics,
+               class_7_metrics
+               ]
+
+    precs = []
+    recs = []
+    f1_s = []
+
+    for class_m in metrics:
+        precision = float(class_m[0])
+        recall = float(class_m[1])
+        f1_score = float(class_m[2])
+        precs.append(precision)
+        recs.append(recall)
+        f1_s.append(f1_score)
+
+    class_names = [1, 2, 3, 4, 5, 6, 7, 0]
+
+    # Create subplots for accuracy, precision, and F1
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+
+    # Plot accuracy for each class
+    ax1.bar(class_names, recs)
+    ax1.set_title("Recall")
+    ax1.set_xlabel("Main Class")
+
+
+    # Plot precision for each class
+    ax2.bar(class_names, precs)
+    ax2.set_title("Precision")
+    ax2.set_xlabel("Main Class")
+
+    # Plot F1 score for each class
+    ax3.bar(class_names, f1_s)
+    ax3.set_title("F1 Score")
+    ax3.set_xlabel("Main Class")
+
+    # Adjust layout
+    plt.tight_layout()
+
+    # Show the plots
+    plt.show()
+
+
+    conf_matrix = confusion_matrix(y, predictions)
+
+    # Create a confusion matrix heatmap
+    plt.figure(figsize=(10, 7))
+    sns.set(font_scale=1.2)  # Adjust font size as needed
+    sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=class_names, yticklabels=class_names)
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+    plt.title("Confusion Matrix")
+    plt.show()
