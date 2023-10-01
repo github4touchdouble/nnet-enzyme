@@ -6,3 +6,9 @@ seaborn
 Bio
 python-dotenv
 h5py
+
+tqdm
+argparse
+torch
+transformers
+sentencepiece
