@@ -52,25 +52,3 @@ def apply_prott5(args_prott5, args_enzymes):
                 bin["Embedding"].append(p5_rec["Embedding"])
                 bin["Sequence"].append(enz_rec["Sequence"])
     return bin
-
-
-class Enzyme:
-    def __init__(self, header, ec_class, ec_number, seq):
-        self.header = header
-        self.ec_class = ec_class
-        self.ec_number = ec_number
-        self.seq = seq
-
-
-def read_enzyme_csv(path_to_csv: str) -> dict():
-    enzymes_map = dict()
-    with open(path_to_csv, "r") as path:
-        line = path.readline()
-        for line in path.readlines():
-            field = line.strip().split(",")
-            header = field[2]
-            ec_class = field[1]
-            ec_number = field[3]
-            seq = field[4]
-            enzymes_map[header] = Enzyme(header, ec_class, ec_number, seq)
-    return enzymes_map
