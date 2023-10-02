@@ -3,6 +3,10 @@ import pandas as pd
 
 
 def enzyme_split30_preprocessing(args):
+    """
+    :param args: DataFrame
+    :return: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Sequence: [<seq>,<...>,...]}
+    """
     def clean(args):
         # filter out enzymes with multiple ec numbers
         args = args[args["EC number"].str.contains(";") == False]
@@ -27,7 +31,7 @@ def enzyme_split30_preprocessing(args):
 def read_h5(path_to_h5):
     """
     :param path_to_h5: FIle path as String
-    :return: Dataframe {ID: <ID>. Embedding: [<emb>,<...>,...]}
+    :return: DataFrame {ID: <ID>. Embedding: [<emb>,<...>,...]}
     """
 
     bin = {"ID": [], "Embedding": []}
@@ -42,6 +46,11 @@ def read_h5(path_to_h5):
 
 
 def apply_prott5(args_prott5, args_enzymes):
+    """
+    :param args_prott5: DataFrame
+    :param args_enzymes: DataFrame
+    :return: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Embedding: [<emb>,<...>,...], Sequence: [<seq>,<...>,...]}
+    """
     bin = {"ID": [], "Enzyme class": [], "EC number": [], "Embedding": [], "Sequence": []}
     for p5_row, p5_rec in args_prott5.iterrows():
         for enz_row, enz_rec in args_enzymes.iterrows():
