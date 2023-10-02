@@ -44,6 +44,30 @@ def read_h5(path_to_h5):
     return pd.DataFrame(bin)
 
 
+def read_fasta(path_to_fasta):
+    bin = {"ID": [], "Sequence": []}
+    with open(path_to_fasta, "r") as f:
+        b = {"row_id": None, "row_seq": None}
+        for row in f:
+            if row.startswith(">") and b["row_id"] is None:
+                b["row_id"] = row.rstrip()[1:]
+            elif not row.startswith(">") and b["row_id"] is None:
+                b["row_seq"] = row.rstrip()
+            else:
+                raise ValueError("")
+
+            if b["row_id"] is not None and b["row_seq"] is not None:
+                # copy/paste contents of b to bin
+                bin["ID"].append(b["row_id"])
+                bin["Sequence"].append(b["row_seq"])
+                # reset b
+                b["row_id"] = None
+                b["row_seq"] = None
+
+    return pd.DataFrame(bin)
+
+
+
 def apply_prott5(args_prott5, args_enzymes):
     """
     :param args_prott5: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...]}
