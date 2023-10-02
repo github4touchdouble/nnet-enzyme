@@ -41,9 +41,7 @@ def read_h5(path_to_h5):
             bin["ID"].append(id)
             bin["Embedding"].append(list(emb)[0])
 
-    bin = pd.DataFrame(bin)
-
-    return bin
+    return pd.DataFrame(bin)
 
 
 def apply_prott5(args_prott5, args_enzymes):
@@ -62,4 +60,4 @@ def apply_prott5(args_prott5, args_enzymes):
                 bin["EC number"].append(enz_rec["EC number"])
                 bin["Embedding"].append(p5_rec["Embedding"])
                 bin["Sequence"].append(enz_rec["Sequence"])
-    return bin
+    return pd.DataFrame(bin)
