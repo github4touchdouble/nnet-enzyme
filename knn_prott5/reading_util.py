@@ -4,8 +4,8 @@ import pandas as pd
 
 def enzyme_split30_preprocessing(args):
     """
-    :param args: DataFrame {Entry: <Entry>, EC number: [<ecn>,<...>,...], Sequence: [<seq>,<...>,...]}
-    :return: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Sequence: [<seq>,<...>,...]}
+    :param args: DataFrame {Entry: <Entry>, EC number: <ecn>, Sequence: <seq>}
+    :return: DataFrame {ID: <ID>, Enzyme class: <ec>, EC number: <ecn>, Sequence: <seq>}
     """
 
     def clean(args):
@@ -45,16 +45,21 @@ def read_h5(path_to_h5):
 
 
 def read_fasta(path_to_fasta):
+    """
+    :param path_to_fasta: FIle path as String
+    :return: DataFrame {ID: <ID>. Sequence: <seq>}
+    """
+
     bin = {"ID": [], "Sequence": []}
     with open(path_to_fasta, "r") as f:
         b = {"row_id": None, "row_seq": None}
         for row in f:
             if row.startswith(">") and b["row_id"] is None:
                 b["row_id"] = row.rstrip()[1:]
-            elif not row.startswith(">") and b["row_id"] is None:
+            elif not row.startswith(">") and b["row_seq"] is None:
                 b["row_seq"] = row.rstrip()
             else:
-                raise ValueError("")
+                raise ValueError(f"{b} and {row}")
 
             if b["row_id"] is not None and b["row_seq"] is not None:
                 # copy/paste contents of b to bin
@@ -67,12 +72,11 @@ def read_fasta(path_to_fasta):
     return pd.DataFrame(bin)
 
 
-
 def apply_prott5(args_prott5, args_enzymes):
     """
     :param args_prott5: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...]}
-    :param args_enzymes: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Sequence: [<seq>,<...>,...]}
-    :return: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Embedding: [<emb>,<...>,...], Sequence: [<seq>,<...>,...]}
+    :param args_enzymes: DataFrame {ID: <ID>, Enzyme class: <ec>, EC number: <ecn>, Sequence: <seq>}
+    :return: DataFrame {ID: <ID>, Enzyme class: <ec>, EC number: <ecn>, Embedding: [<emb>,<...>,...], Sequence: <seq>}
     """
 
     bin = {"ID": [], "Enzyme class": [], "EC number": [], "Embedding": [], "Sequence": []}
