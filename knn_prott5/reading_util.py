@@ -4,7 +4,7 @@ import pandas as pd
 
 def enzyme_split30_preprocessing(args):
     """
-    :param args: DataFrame
+    :param args: DataFrame {Entry: <Entry>, EC number: [<ecn>,<...>,...], Sequence: [<seq>,<...>,...]}
     :return: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Sequence: [<seq>,<...>,...]}
     """
 
@@ -48,8 +48,8 @@ def read_h5(path_to_h5):
 
 def apply_prott5(args_prott5, args_enzymes):
     """
-    :param args_prott5: DataFrame
-    :param args_enzymes: DataFrame
+    :param args_prott5: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...]}
+    :param args_enzymes: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Sequence: [<seq>,<...>,...]}
     :return: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Embedding: [<emb>,<...>,...], Sequence: [<seq>,<...>,...]}
     """
 
