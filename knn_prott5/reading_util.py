@@ -1,5 +1,6 @@
 import h5py
 import pandas as pd
+import numpy as np
 
 
 def enzyme_split30_preprocessing(args):
@@ -72,20 +73,17 @@ def read_fasta(path_to_fasta):
     return pd.DataFrame(bin)
 
 
-def apply_prott5(args_prott5, args_enzymes):
+def apply_prott5(args_prott5, args_proteins):
     """
     :param args_prott5: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...]}
-    :param args_enzymes: DataFrame {ID: <ID>, Enzyme class: <ec>, EC number: <ecn>, Sequence: <seq>}
-    :return: DataFrame {ID: <ID>, Enzyme class: <ec>, EC number: <ecn>, Embedding: [<emb>,<...>,...], Sequence: <seq>}
+    :param args_proteins: DataFrame {ID: <ID>, ...}
+    :return: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...], ...}
     """
-
-    bin = {"ID": [], "Enzyme class": [], "EC number": [], "Embedding": [], "Sequence": []}
+    args_proteins["Embedding"] = np.nan
     for p5_row, p5_rec in args_prott5.iterrows():
-        for enz_row, enz_rec in args_enzymes.iterrows():
-            if enz_rec["ID"] == p5_rec["ID"]:
-                bin["ID"].append(enz_rec["ID"])
-                bin["Enzyme class"].append(enz_rec["Enzyme class"])
-                bin["EC number"].append(enz_rec["EC number"])
-                bin["Embedding"].append(p5_rec["Embedding"])
-                bin["Sequence"].append(enz_rec["Sequence"])
-    return pd.DataFrame(bin)
+        for enz_row, prots_rec in args_proteins.iterrows():
+            if prots_rec["ID"] == p5_rec["ID"]:
+                prots_rec["Embedding"] = p5_rec["Embedding"]
+    return pd.DataFrame(args_proteins)
+
+
