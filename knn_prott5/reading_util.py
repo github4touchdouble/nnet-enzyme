@@ -7,6 +7,7 @@ def enzyme_split30_preprocessing(args):
     :param args: DataFrame
     :return: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Sequence: [<seq>,<...>,...]}
     """
+
     def clean(args):
         # filter out enzymes with multiple ec numbers
         args = args[args["EC number"].str.contains(";") == False]
@@ -51,6 +52,7 @@ def apply_prott5(args_prott5, args_enzymes):
     :param args_enzymes: DataFrame
     :return: DataFrame {ID: <ID>, Enzyme class: [<ec>,<...>,...], EC number: [<ecn>,<...>,...], Embedding: [<emb>,<...>,...], Sequence: [<seq>,<...>,...]}
     """
+
     bin = {"ID": [], "Enzyme class": [], "EC number": [], "Embedding": [], "Sequence": []}
     for p5_row, p5_rec in args_prott5.iterrows():
         for enz_row, enz_rec in args_enzymes.iterrows():
