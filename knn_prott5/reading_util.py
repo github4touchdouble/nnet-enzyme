@@ -79,11 +79,6 @@ def apply_prott5(args_prott5, args_proteins):
     :param args_proteins: DataFrame {ID: <ID>, ...}
     :return: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...], ...}
     """
-    args_proteins["Embedding"] = np.nan
-    for p5_row, p5_rec in args_prott5.iterrows():
-        for enz_row, prots_rec in args_proteins.iterrows():
-            if prots_rec["ID"] == p5_rec["ID"]:
-                prots_rec["Embedding"] = p5_rec["Embedding"]
-    return pd.DataFrame(args_proteins)
 
-
+    bin = pd.merge(args_prott5, args_proteins, on="ID", how="inner")
+    return bin
