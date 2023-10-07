@@ -203,19 +203,18 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
 
     h5_dataset = H5Dataset(path_to_esm2, path_to_enzyme_csv)
 
-    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
+    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=False)
 
     # Iterate over batches
     X = []
     y = []
 
     t0 = time.time()
-
     for batch in loader:
         emb, header, ec_numbers = batch
         if header not in to_remove:
-            ec_class = [int(ec_number.split(".")[0]) - 1 for ec_number in ec_numbers]  # here we convert ec to int and do -1
 
+            ec_class = [int(ec_number.split(".")[0]) - 1 for ec_number in ec_numbers]  # here we convert ec to int and do -1
             X.append(emb.numpy())
             y.extend(list(ec_class))
 
@@ -334,4 +333,52 @@ def load_and_extract_2nd_class(path_to_esm2: str, path_to_enzyme_csv: str, wante
     return X, y_cnn_labels, sec_to_label, label_to_sec
 
 
+def load_all_sub_classes(path_to_esm2: str, path_to_enzyme_csv: str, allowed_labels: dict):
+    """
+    Method which loads enzyme labels with a depth of 2 (1.1, 1.2, ...) and labels them accordingly.
+    """
 
+    to_remove = filter_unwanted_esm2(path_to_enzyme_csv, True)
+
+    h5_dataset = H5Dataset(path_to_esm2, path_to_enzyme_csv)
+
+    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
+
+    # Iterate over batches
+    X = []
+    y = []
+
+    t0 = time.time()
+
+    for batch in loader:
+        emb, header, ec_numbers = batch
+        if header not in to_remove:
+
+            # Making sure to get the fist and second ec class and then concatenate them back together to float
+            ec_classes = [ec_number.split(".")[0] + "." + ec_number.split(".")[1] for ec_number in ec_numbers]
+
+            # Converting classes to labels
+            ec_labels = [allowed_labels[ec_number] for ec_number in ec_classes]
+
+            X.extend(emb) # we append the embedding of the wanted class
+            y.extend(ec_labels)
+
+    # X = X.extend(X)
+    # y = y.extend(y)
+
+    # Convert the lists to numpy arrays
+    X = np.vstack(X)
+    y = np.array(y)
+
+    # Now we create a dict numbering the ec classes since we use them as labels for our output layer in cnn
+    label_to_sec = {i: sec_ec_class for i, sec_ec_class in enumerate(allowed_labels.keys())}
+
+    t1 = time.time()
+
+    total = (t1 - t0) / 60
+
+    print(f"LOG: Data loaded in: {round(total, 3)} min")
+    print(f"LOG: ESM2 of enzymes: {len(X)}")
+    print(f"LOG: Labels of enzymes: {len(y)}")
+
+    return X, y, label_to_sec
