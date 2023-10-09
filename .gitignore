@@ -1,7 +1,0 @@
-.env
-.idea/*
-.gitignore
-knn_gzip/gzip_data/*
-data_manipulation/__pycache__/*
-tf_cnn_esm2/2nd_ec_class_pred/Plots/S30/*
-tf_cnn_esm2/2nd_ec_class_pred/Plots/S100/*
