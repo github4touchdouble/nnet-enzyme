@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, style="rounded", color="black", fontname="helvetica"] ;
+edge [fontname="helvetica"] ;
+0 [label="PCA 40 <= -0.2\ngini = 0.5\nsamples = 33781\nvalue = [27580, 25842]"] ;
+1 [label="PCA 21 <= -0.4\ngini = 0.4\nsamples = 1648\nvalue = [1709, 866]"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="PCA 89 <= 0.0\ngini = 0.4\nsamples = 56\nvalue = [31, 65]"] ;
+1 -> 2 ;
+3 [label="gini = 0.1\nsamples = 40\nvalue = [5, 62]"] ;
+2 -> 3 ;
+4 [label="gini = 0.2\nsamples = 16\nvalue = [26, 3]"] ;
+2 -> 4 ;
+5 [label="PCA 354 <= -0.0\ngini = 0.4\nsamples = 1592\nvalue = [1678, 801]"] ;
+1 -> 5 ;
+6 [label="gini = 0.3\nsamples = 394\nvalue = [475, 132]"] ;
+5 -> 6 ;
+7 [label="gini = 0.5\nsamples = 1198\nvalue = [1203, 669]"] ;
+5 -> 7 ;
+8 [label="Mass <= 22347.5\ngini = 0.5\nsamples = 32133\nvalue = [25871, 24976]"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="PCA 129 <= -0.1\ngini = 0.3\nsamples = 8160\nvalue = [10620, 2366]"] ;
+8 -> 9 ;
+10 [label="gini = 0.4\nsamples = 850\nvalue = [896, 436]"] ;
+9 -> 10 ;
+11 [label="gini = 0.3\nsamples = 7310\nvalue = [9724, 1930]"] ;
+9 -> 11 ;
+12 [label="PCA 6 <= 0.2\ngini = 0.5\nsamples = 23973\nvalue = [15251, 22610]"] ;
+8 -> 12 ;
+13 [label="gini = 0.4\nsamples = 17713\nvalue = [9429, 18488]"] ;
+12 -> 13 ;
+14 [label="gini = 0.5\nsamples = 6260\nvalue = [5822, 4122]"] ;
+12 -> 14 ;
+}
