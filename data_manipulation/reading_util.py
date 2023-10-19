@@ -246,7 +246,7 @@ def load_non_enz_esm2(non_enzymes_fasta_path: str, non_enzymes_esm2_path: str):
 
     h5_esm2 = H5ESM2(non_enzymes_esm2_path)
 
-    loader = torch.utils.data.DataLoader(h5_esm2, batch_size=32, shuffle=True)
+    loader = torch.utils.data.DataLoader(h5_esm2, batch_size=32, shuffle=False)
 
     # Iterate over batches
     X_neg = []
@@ -292,7 +292,7 @@ def load_and_extract_2nd_class(path_to_esm2: str, path_to_enzyme_csv: str, wante
 
     h5_dataset = H5Dataset(path_to_esm2, path_to_enzyme_csv)
 
-    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
+    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=False)
 
     # Iterate over batches
     X = []
@@ -342,7 +342,7 @@ def load_all_sub_classes(path_to_esm2: str, path_to_enzyme_csv: str, allowed_lab
 
     h5_dataset = H5Dataset(path_to_esm2, path_to_enzyme_csv)
 
-    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=True)
+    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=False)
 
     # Iterate over batches
     X = []
