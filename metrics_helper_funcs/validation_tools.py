@@ -10,8 +10,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import multilabel_confusion_matrix
 from sklearn.metrics import matthews_corrcoef
-import tensorflow_addons as tfa
-import tensorflow as tf
 
 
 # All methods used for validating the performance of our classifiers
@@ -20,7 +18,8 @@ import tensorflow as tf
 # TODO Acc; MCC multiclass;
 # DONE: percent wise per row conf
 
-def plot_confiusion_matrix(y_true, y_pred, plot_title, lable_to_class_dict=None, hide_inner_labels=False):
+def plot_confiusion_matrix(y_true, y_pred, plot_title, lable_to_class_dict=None, hide_inner_labels=False,
+                           lable_size=10):
     if lable_to_class_dict == None:
         class_labels = set(y_true)
     else:
@@ -45,11 +44,11 @@ def plot_confiusion_matrix(y_true, y_pred, plot_title, lable_to_class_dict=None,
 
                 plt.text(j + 0.5, i + 0.5, text, ha='center', va='center', color=text_color, fontsize=14)
 
-    plt.xlabel("Predicted", fontsize=17)
-    plt.ylabel("Actual", fontsize=17)
-    plt.xticks(fontsize=17)
-    plt.yticks(fontsize=17)
-
+    plt.xlabel("Predicted", fontsize=lable_size)
+    plt.ylabel("Actual", fontsize=lable_size)
+    plt.xticks(fontsize=lable_size)
+    plt.yticks(fontsize=lable_size)
+    plt.yticks([i + 0.5 for i in range(len(class_labels))], class_labels, rotation=0)
     plt.title(f"{plot_title} (Percentwise Color)", fontsize=17)
     plt.show()
 
@@ -75,36 +74,35 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names):
 
         score_df = pd.concat([score_df, pd.DataFrame(data_to_append)])
 
-    # Calculate upper and lower error bounds
-    score_df["Lower Bound"] = score_df["Mean Score"] - score_df["SE"]
-    score_df["Upper Bound"] = score_df["Mean Score"] + score_df["SE"]
-
     # Set the style and context for the plot
+    sns.set()
+    sns.set_palette("Set2")
+    sns.set(font_scale=1.5)  # Adjust font size as needed
     sns.set(style="whitegrid")
     sns.set_context("talk")
 
     # Create the bar plot with custom error bars and hue="Model"
     plt.figure(figsize=(12, 6))
-    ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df)
+    ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, **{'width': 0.3})
 
     # Customize the plot labels
     ax.set(xlabel="Metric", ylabel="Mean Score")
     ax.set_title("Performance Metrics with Custom Error Bars by Model")
 
-    # Show the legend
-    plt.legend(title="Model", loc="lower right")
+    plt.legend(title="Model", loc="upper left", bbox_to_anchor=(1, 1))
+    print(score_df)
 
     # Manually add error bars using the calculated bounds
     for i, bar in enumerate(ax.patches):
         metric_data = score_df.iloc[i]
         x = bar.get_x() + bar.get_width() / 2
         y = bar.get_height()
-        lower_bound = metric_data["Lower Bound"]
-        upper_bound = metric_data["Upper Bound"]
+        lower_bound = metric_data["CI_0"]
+        upper_bound = metric_data["CI_1"]
 
         plt.plot([x, x], [lower_bound, upper_bound], color="black")
-        plt.plot([x - 0.1, x + 0.1], [lower_bound, lower_bound], color="black")
-        plt.plot([x - 0.1, x + 0.1], [upper_bound, upper_bound], color="black")
+        plt.plot([x - 0.01, x + 0.01], [lower_bound, lower_bound], color="black")
+        plt.plot([x - 0.01, x + 0.01], [upper_bound, upper_bound], color="black")
 
     plt.tight_layout()
     plt.show()
@@ -146,29 +144,16 @@ def round_to_significance(x, significance):
     return round(x, -sig_position), round(significance, -sig_position + 1)
 
 
-def calculate_f1(y_true, y_pred):
+def calculate_micro_f1(y_true, y_pred):
     return f1_score(y_true, y_pred, average='micro'), "Micro F1-Score"
+
+
+def calculate_macro_f1(y_true, y_pred):
+    return f1_score(y_true, y_pred, average='macro'), "Macro F1-Score"
 
 
 def calculate_accuracy(y_true, y_pred):
     return accuracy_score(y_true, y_pred), "Accuracy"
-
-
-def calculate_multiclass_mcc(y_true, y_pred):
-    if (len(set(y_true)) != 2):
-        # Our labels need to be one hot encoded
-        print(len(np.unique(y_true)))
-        print(len(set(y_true)))
-        y_true_enc = tf.keras.utils.to_categorical(y_true, num_classes=len(np.unique(y_true)))
-        y_pred_enc = tf.keras.utils.to_categorical(y_pred, num_classes=len(np.unique(y_true)))
-
-        mcc_metric = tfa.metrics.MatthewsCorrelationCoefficient(num_classes=len(np.unique(y_true)))
-        mcc_metric.update_state(y_true_enc, y_pred_enc)
-        mcc_score = mcc_metric.result().numpy()
-    else:
-        mcc_score = matthews_corrcoef(y_true, y_pred)
-
-    return mcc_score, "MCC"
 
 
 if __name__ == '__main__':
@@ -192,9 +177,9 @@ if __name__ == '__main__':
          6, 6, 6, 6, 5, 6, 5, 5, 5, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
 
     y_pred_model_3 = np.array(
-        [1, 1, 3, 2, 1, 1, 1, 0, 2, 0, 3, 0, 1, 0, 1, 1, 3, 2, 1, 1, 1, 0, 2, 0, 3, 0, 1, 0, 1, 1, 3, 2, 2, 1, 0, 0, 2,
-         0, 2, 0, 1, 0, 1, 1, 2, 2, 1, 1, 0, 0, 1, 0, 2, 1, 2, 0, 4, 5, 6, 4, 5, 6, 4, 5, 6, 3, 5, 5, 3, 5, 1, 0, 4, 6,
-         6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 6, 6, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6])
+        [0, 0, 2, 1, 0, 0, 0, 0, 1, 0, 2, 0, 1, 0, 1, 1, 3, 2, 1, 1, 1, 0, 2, 0, 3, 0, 1, 0, 1, 1, 3, 2, 2, 1, 0, 0, 2,
+         0, 2, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 2, 1, 2, 0, 4, 5, 6, 4, 5, 6, 4, 5, 6, 3, 5, 5, 3, 5, 1, 0, 4, 6,
+         6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 4, 4, 4, 4, 4, 4, 3, 5, 6, 6, 6, 6, 6])
 
     lable_to_class = {
         0: "Non Enzyme",
@@ -213,7 +198,8 @@ if __name__ == '__main__':
 
     y_trues = [y_true_model_1, y_true_model_2, y_true_model_3]
     y_preds = [y_pred_model_1, y_pred_model_2, y_pred_model_3]
-    metric_funcs = [calculate_accuracy, calculate_f1]
-    model_names = ["Binary Class", "FNN", "CNN"]  # Names used for plotting
+
+    metric_funcs = [calculate_accuracy, calculate_micro_f1]
+    model_names = ["Binary", "FNN 1", "FNN 2"]  # Names used for plotting
 
     plot_bootstrapped_score(y_trues, y_preds, scoring_funcs=metric_funcs, model_names=model_names)

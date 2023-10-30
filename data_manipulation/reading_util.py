@@ -108,8 +108,8 @@ def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
     remove_O = df[df['Sequence'].str.contains('O')]["Entry"]
     remove_U = df[df['Sequence'].str.contains('U')]["Entry"]
 
-    print(f"LOG: {len(remove_O)} Sequences with aa O in {path_to_csv}")
-    print(f"LOG: {len(remove_U)} Sequences with aa U in {path_to_csv}")
+    print(f"\033[32mLOG:\033[0m\n {len(remove_O)} Sequences with aa O in {path_to_csv}")
+    print(f"\033[32mLOG:\033[0m\n {len(remove_U)} Sequences with aa U in {path_to_csv}")
 
     to_remove.extend(remove_O.to_list())
     to_remove.extend(remove_U.to_list())
@@ -131,14 +131,14 @@ def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
                 remove_multif.append(header)
 
         to_remove.extend(remove_multif)
-        print(f"LOG: {len(remove_multif)} multifunctional enzymes with diff ec main classes in {path_to_csv}")
+        print(f"\033[32mLOG:\033[0m\n {len(remove_multif)} multifunctional enzymes with diff ec main classes in {path_to_csv}")
 
     else:
         remove_seq_cutoff = df[df["Sequence"].apply(len) > 1022]["Entry"]  # if were working with non_enzymes we need to limit the sequence length
-        print(f"LOG: {len(remove_seq_cutoff)} non enzymes are longer than 1022 cutoff")
+        print(f"\033[32mLOG:\033[0m\n {len(remove_seq_cutoff)} non enzymes are longer than 1022 cutoff")
         to_remove.extend(remove_seq_cutoff.to_list())
 
-    print(f"LOG: {len(to_remove)} entries will be ignored")
+    print(f"\033[32mLOG:\033[0m\n {len(to_remove)} entries will be ignored")
     return to_remove
 
 
@@ -226,9 +226,9 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
 
     total = (t1 - t0) / 60
 
-    print(f"LOG: Data loaded in: {round(total, 3)} min")
-    print(f"LOG: ESM2 of enzymes: {len(X)}")
-    print(f"LOG: Labels of enzymes: {len(y)}")
+    print(f"\033[32mLOG:\033[0m\n Data loaded in: {round(total, 3)} min")
+    print(f"\033[32mLOG:\033[0m\n ESM2 of enzymes: {len(X)}")
+    print(f"\033[32mLOG:\033[0m\n Labels of enzymes: {len(y)}")
 
     return X, y
 
@@ -269,9 +269,9 @@ def load_non_enz_esm2(non_enzymes_fasta_path: str, non_enzymes_esm2_path: str):
 
     total = (t1 - t0) / 60
 
-    print(f"LOG: Non Enzymes data loaded in: {round(total, 3)} min")
-    print(f"LOG: ESM2 of non enzymes: {len(X_neg)}")
-    print(f"LOG: Labels of non enzymes: {len(y_neg)}")
+    print(f"\033[32mLOG:\033[0m\n Non Enzymes data loaded in: {round(total, 3)} min")
+    print(f"\033[32mLOG:\033[0m\n ESM2 of non enzymes: {len(X_neg)}")
+    print(f"\033[32mLOG:\033[0m\n Labels of non enzymes: {len(y_neg)}")
 
     return X_neg, y_neg
 
@@ -326,9 +326,9 @@ def load_and_extract_2nd_class(path_to_esm2: str, path_to_enzyme_csv: str, wante
 
     total = (t1 - t0) / 60
 
-    print(f"LOG: Data loaded in: {round(total, 3)} min")
-    print(f"LOG: ESM2 of enzymes: {len(X)}")
-    print(f"LOG: Labels of enzymes: {len(y)}")
+    print(f"\033[32mLOG:\033[0m\n Data loaded in: {round(total, 3)} min")
+    print(f"\033[32mLOG:\033[0m\n ESM2 of enzymes: {len(X)}")
+    print(f"\033[32mLOG:\033[0m\n Labels of enzymes: {len(y)}")
 
     return X, y_cnn_labels, sec_to_label, label_to_sec
 
@@ -377,8 +377,8 @@ def load_all_sub_classes(path_to_esm2: str, path_to_enzyme_csv: str, allowed_lab
 
     total = (t1 - t0) / 60
 
-    print(f"LOG: Data loaded in: {round(total, 3)} min")
-    print(f"LOG: ESM2 of enzymes: {len(X)}")
-    print(f"LOG: Labels of enzymes: {len(y)}")
+    print(f"\033[32mLOG:\033[0m\n Data loaded in: {round(total, 3)} min")
+    print(f"\033[32mLOG:\033[0m\n ESM2 of enzymes: {len(X)}")
+    print(f"\033[32mLOG:\033[0m\n Labels of enzymes: {len(y)}")
 
     return X, y, label_to_sec
