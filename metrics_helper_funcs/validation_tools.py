@@ -76,10 +76,9 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names):
 
     # Set the style and context for the plot
     sns.set()
-    sns.set_palette("Set2")
     sns.set(font_scale=1.5)  # Adjust font size as needed
     sns.set(style="whitegrid")
-    sns.set_context("talk")
+    sns.set_palette("Set2")
 
     # Create the bar plot with custom error bars and hue="Model"
     plt.figure(figsize=(12, 6))
