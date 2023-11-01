@@ -78,11 +78,15 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names):
     sns.set()
     sns.set(font_scale=1.5)  # Adjust font size as needed
     sns.set(style="whitegrid")
-    sns.set_palette("Set2")
+    # color_palette = ["#2aa5a5", "#fc4b00", "#7647fa", "#ffe512", "#ed174f", "#008365", "#c2837a"]
+    color_palette = ["#b2182b", "#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166a"]
+    color_palette = [
+        "#d73027", "#fc8d59", "#91bfdb", "#4575b4", "#d8b365", "#5ab4ac", "#af8dc3"
+    ]
 
     # Create the bar plot with custom error bars and hue="Model"
     plt.figure(figsize=(12, 6))
-    ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, **{'width': 0.3})
+    ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, **{'width': 0.3}, palette=color_palette)
 
     # Customize the plot labels
     ax.set(xlabel="Metric", ylabel="Mean Score")
@@ -180,6 +184,46 @@ if __name__ == '__main__':
          0, 2, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 2, 1, 2, 0, 4, 5, 6, 4, 5, 6, 4, 5, 6, 3, 5, 5, 3, 5, 1, 0, 4, 6,
          6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 4, 4, 4, 4, 4, 4, 3, 5, 6, 6, 6, 6, 6])
 
+    y_true_model_4 = np.array(
+        [0, 1, 3, 2, 1, 1, 0, 0, 1, 0, 2, 0, 0, 0, 0, 1, 3, 2, 1, 1, 1, 1, 2, 2, 3, 1, 1, 0, 0, 1, 3, 2, 1, 1, 1, 1, 2,
+         2, 3, 1, 1, 1, 1, 2, 4, 3, 2, 2, 2, 2, 1, 3, 2, 1, 1, 0, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6,
+         6, 6, 6, 6, 5, 6, 5, 5, 5, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
+
+    y_pred_model_4 = np.array(
+        [0, 0, 2, 1, 0, 0, 0, 0, 1, 0, 2, 0, 1, 0, 1, 1, 3, 2, 1, 1, 1, 0, 2, 0, 3, 0, 1, 0, 1, 1, 3, 2, 2, 1, 0, 0, 2,
+         1, 3, 1, 2, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 1, 3, 2, 3, 1, 5, 6, 6, 4, 5, 6, 4, 5, 6, 3, 5, 5, 3, 5, 1, 0, 4, 6,
+         6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 4, 4, 4, 4, 5, 5, 3, 5, 6, 6, 6, 6, 6])
+
+    y_true_model_5 = np.array(
+        [0, 1, 3, 2, 1, 1, 0, 0, 1, 0, 2, 0, 0, 0, 0, 1, 3, 2, 1, 1, 1, 1, 2, 2, 3, 1, 1, 0, 0, 1, 3, 2, 1, 1, 1, 1, 2,
+         2, 3, 1, 1, 1, 1, 2, 4, 3, 2, 2, 2, 2, 1, 3, 2, 1, 1, 0, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6,
+         6, 6, 6, 6, 5, 6, 5, 5, 5, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
+
+    y_pred_model_5 = np.array(
+        [0, 0, 2, 1, 0, 0, 0, 0, 1, 0, 2, 0, 1, 0, 1, 1, 3, 2, 1, 1, 1, 0, 2, 0, 3, 0, 1, 0, 1, 1, 3, 2, 2, 1, 0, 0, 2,
+         1, 3, 1, 2, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 1, 3, 2, 3, 1, 5, 6, 6, 4, 5, 6, 4, 5, 6, 3, 5, 5, 3, 5, 1, 0, 4, 6,
+         6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 4, 4, 4, 4, 5, 5, 3, 5, 6, 6, 6, 6, 6])
+    y_true_model_6 = np.array(
+        [0, 1, 3, 2, 1, 1, 0, 0, 1, 0, 2, 0, 0, 0, 0, 1, 3, 2, 1, 1, 1, 1, 2, 2, 3, 1, 1, 0, 0, 1, 3, 2, 1, 1, 1, 1, 2,
+         2, 3, 1, 1, 1, 1, 2, 4, 3, 2, 2, 2, 2, 1, 3, 2, 1, 1, 0, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6,
+         6, 6, 6, 6, 5, 6, 5, 5, 5, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
+
+    y_pred_model_6 = np.array(
+        [0, 0, 2, 1, 0, 0, 0, 0, 1, 0, 2, 0, 1, 0, 1, 1, 3, 2, 1, 1, 1, 0, 2, 0, 3, 0, 1, 0, 1, 1, 3, 2, 2, 1, 0, 0, 2,
+         1, 3, 1, 2, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 1, 3, 2, 3, 1, 5, 6, 6, 4, 5, 6, 4, 5, 6, 3, 5, 5, 3, 5, 1, 0, 4, 6,
+         6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 4, 4, 4, 4, 5, 5, 3, 5, 6, 6, 6, 6, 6])
+
+
+    y_true_model_7 = np.array(
+        [0, 1, 3, 2, 1, 1, 0, 0, 1, 0, 2, 0, 0, 0, 0, 1, 3, 2, 1, 1, 1, 1, 2, 2, 3, 1, 1, 0, 0, 1, 3, 2, 1, 1, 1, 1, 2,
+         2, 3, 1, 1, 1, 1, 2, 4, 3, 2, 2, 2, 2, 1, 3, 2, 1, 1, 0, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6,
+         6, 6, 6, 6, 5, 6, 5, 5, 5, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
+
+    y_pred_model_7 = np.array(
+        [0, 0, 2, 1, 0, 0, 0, 0, 1, 0, 2, 0, 1, 0, 1, 1, 3, 2, 1, 1, 1, 0, 2, 0, 3, 0, 1, 0, 1, 1, 3, 2, 2, 1, 0, 0, 2,
+         1, 3, 1, 2, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 1, 3, 2, 3, 1, 5, 6, 6, 4, 5, 6, 4, 5, 6, 3, 5, 5, 3, 5, 1, 0, 4, 6,
+         6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 4, 4, 4, 4, 5, 5, 3, 5, 6, 6, 6, 6, 6])
+
     lable_to_class = {
         0: "Non Enzyme",
         1: "Enzyme"
@@ -195,10 +239,10 @@ if __name__ == '__main__':
         6: 7
     }
 
-    y_trues = [y_true_model_1, y_true_model_2, y_true_model_3]
-    y_preds = [y_pred_model_1, y_pred_model_2, y_pred_model_3]
+    y_trues = [y_true_model_1, y_true_model_2, y_true_model_3, y_true_model_4, y_true_model_5, y_true_model_6, y_true_model_7]
+    y_preds = [y_pred_model_1, y_pred_model_2, y_pred_model_3, y_pred_model_4, y_pred_model_5, y_pred_model_6, y_pred_model_7]
 
-    metric_funcs = [calculate_accuracy, calculate_micro_f1]
-    model_names = ["Binary", "FNN 1", "FNN 2"]  # Names used for plotting
+    metric_funcs = [calculate_accuracy, calculate_micro_f1, calculate_macro_f1]
+    model_names = ["Binary", "FNN 1", "FNN 2", "O.o", "f", "g", "l"]  # Names used for plotting
 
     plot_bootstrapped_score(y_trues, y_preds, scoring_funcs=metric_funcs, model_names=model_names)
