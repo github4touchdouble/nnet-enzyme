@@ -41,8 +41,8 @@ def plot_confiusion_matrix(y_true, y_pred, plot_title, lable_to_class_dict=None,
             for j in range(len(class_labels)):
                 text = f"{conf_matrix[i, j]}\n({conf_matrix_percent[i, j]:.2f}%)"
                 text_color = 'white' if conf_matrix_percent[i, j] > 40 else 'black'
-
                 plt.text(j + 0.5, i + 0.5, text, ha='center', va='center', color=text_color, fontsize=14)
+
 
     plt.xlabel("Predicted", fontsize=lable_size)
     plt.ylabel("Actual", fontsize=lable_size)
@@ -81,7 +81,7 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names):
     # color_palette = ["#2aa5a5", "#fc4b00", "#7647fa", "#ffe512", "#ed174f", "#008365", "#c2837a"]
     color_palette = ["#b2182b", "#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166a"]
     color_palette = [
-        "#d73027", "#fc8d59", "#91bfdb", "#4575b4", "#d8b365", "#5ab4ac", "#af8dc3"
+        "#d73027",  "#91bfdb", "#fc8d59", "#4575b4", "#d8b365", "#5ab4ac", "#af8dc3"
     ]
 
     # Create the bar plot with custom error bars and hue="Model"
@@ -153,6 +153,9 @@ def calculate_micro_f1(y_true, y_pred):
 
 def calculate_macro_f1(y_true, y_pred):
     return f1_score(y_true, y_pred, average='macro'), "Macro F1-Score"
+
+def calculate_weighted_f1(y_true, y_pred):
+    return f1_score(y_true, y_pred, average='weighted'), "Weighted F1-Score"
 
 
 def calculate_accuracy(y_true, y_pred):
