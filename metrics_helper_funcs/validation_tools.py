@@ -14,9 +14,6 @@ from sklearn.metrics import matthews_corrcoef
 
 # All methods used for validating the performance of our classifiers
 
-# TODO confidence score; baseline
-# TODO Acc; MCC multiclass;
-# DONE: percent wise per row conf
 
 def plot_confiusion_matrix(y_true, y_pred, plot_title, lable_to_class_dict=None, hide_inner_labels=False,
                            lable_size=10):
@@ -81,7 +78,7 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names):
     # color_palette = ["#2aa5a5", "#fc4b00", "#7647fa", "#ffe512", "#ed174f", "#008365", "#c2837a"]
     color_palette = ["#b2182b", "#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166a"]
     color_palette = [
-        "#d73027",  "#91bfdb", "#fc8d59", "#4575b4", "#d8b365", "#5ab4ac", "#af8dc3"
+        "#d73027","#4575b4", "#fc8d59", "#91bfdb",  "#d8b365", "#5ab4ac", "#af8dc3"
     ]
 
     # Create the bar plot with custom error bars and hue="Model"
