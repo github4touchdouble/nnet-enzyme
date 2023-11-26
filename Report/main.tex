@@ -1,5 +1,6 @@
 \documentclass{bioinfo}
 \copyrightyear{2015} \pubyear{2015}
+\usepackage{lipsum}
 
 \access{Advance Access Publication Date: Day Month Year}
 \appnotes{Manuscript Category}
@@ -55,28 +56,16 @@ Throughout the developing of our models, we used a variety of different input fe
 
 \section{Introduction}
 
-Text Text Text Text Text Text  Text Text.  Text Text Text
+\lipsum[1]
 %\enlargethispage{12pt}
 
 \section{Approach}
-Text Text Text Text Text Text  Text Text.  Text Text Text
+\lipsum[1]
 
 \begin{methods}
 \section{Methods}
-Text Text Text Text Text Text  Text Text.  Text Text Text
+\lipsum[1]
 
-
-\begin{itemize}
-\item for bulleted list, use itemize
-\item for bulleted list, use itemize
-\item for bulleted list, use itemize\vspace*{1pt}
-\end{itemize}
-
-\subsection{This is subheading}
-Text Text Text Text Text Text  Text Text.  Text Text Text
-
-\subsubsection{This is subsubheading}
-Text Text Text Text Text Text  Text Text.  Text Text Text
 
 
 \end{methods}
@@ -88,19 +77,42 @@ Text Text Text Text Text Text  Text Text.  Text Text Text
 %\caption{Caption, caption.}\label{fig:02}
 %\end{figure}
 \section{Discussion}
-Text Text Text Text Text Text  Text Text.  Text Text Text 
+\lipsum[1]
 
 \section{Conclusion}
-Text Text Text Text Text Text  Text Text.  Text Text Text
+\lipsum[1]
 
-\begin{enumerate}
-\item this is item, use enumerate
-\item this is item, use enumerate
-\item this is item, use enumerate
-\end{enumerate}
+\section{Supplementary Information}
+\lipsum[1]
+
+\subsection{K-nearest neighbors algorithm using ncd vectors}
+An uncommon way of transforming string like input features into numerical values is the normalized compression distance (ncd) algorithm. 
+The ncd algorithm is based on the idea that the similarity of two strings can be measured by the amount of information needed to describe one string given the other string.
+The ncd of two strings $x$ and $y$ is defined as follows:
+\begin{equation}
+	\text{ncd}(x,y) = \frac{C(xy)-\min(C(x),C(y))}{\max(C(x),C(y))}
+\end{equation}
+where $C(x)$ is the length of the compressed string $x$  and $C(xy)$ is the length of the concatenated string $xy$. 
+
+We implemented this algorithm in python and used it to transform $n$ input sequences into numerical vectors with $n$ dimensions by 
+calculating the ncd of each sequence with every other sequence. These vectors were then used as input for the  k-nearest neighbors algorithm.
+The results of this approach are shown in figure \ref{fig:01}. While the performance on the validation dataset is comparable to the performance of the baseline model, 
+the performance on the test dataset is significantly worse. This has two reasons. First, as %TODO: find source on gzip algorithm
+shows, the ncd algorithm is not suited for biological sequences. Second, the test dataset is highly imbalanced, which makes it hard to beat the baseline model, 
+since the baseline model predicts the labels based on the lable distribution of the training dataset, which was also highly imbalanced.
+TODO: Yet it is interesting to see that the ncd algorithm is able to achieve a comparable performance on the validation dataset, which is balanced,
+
+\begin{figure}[!thbp]
+\includegraphics[width=0.5\textwidth]{~/Desktop/Dataset/plots/gzip_res/test_perf.png}
+\caption{Performance on test dataset compared to baseline}\label{fig:01}
+\end{figure}
+
+
+
 
 \section*{Acknowledgements}
 
+\lipsum[1]
 
 \section*{Funding}
 
