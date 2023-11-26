@@ -1,0 +1,109 @@
+\documentclass{bioinfo}
+\copyrightyear{2015} \pubyear{2015}
+
+\access{Advance Access Publication Date: Day Month Year}
+\appnotes{Manuscript Category}
+
+\begin{document}
+\firstpage{1}
+
+\subtitle{Subject Section}
+
+\title[short Title]{This is a title}
+\author[Sample \textit{et~al}.]{Corresponding Author\,$^{\text{\sfb 1,}*}$, Co-Author\,$^{\text{\sfb 2}}$ and Co-Author\,$^{\text{\sfb 2,}*}$}
+\address{$^{\text{\sf 1}}$Department, Institution, City, Post Code, Country and \\
+$^{\text{\sf 2}}$Department, Institution, City, Post Code,
+Country.}
+
+\corresp{$^\ast$To whom correspondence should be addressed.}
+
+\history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
+
+\editor{Associate Editor: XXXXXXX}
+
+\abstract{\textbf{Motivation:} \\
+	\textbf{Results:}\\
+\textbf{Availability:} \\
+\textbf{Contact:} \href{name@bio.com}{name@bio.com}\\
+\textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics}
+online.}
+
+\maketitle
+
+\section{Abstract}
+
+The accurate prediction of enzyme commission numbers (EC numbers) is not only crucial for 
+the classification and understanding of newly discovered enzymes but also for completing the annotation of already known enzymes.
+Therefore, developing a reliable method for predicting EC numbers is of great importance.
+
+However, due to insufficient data, enzyme function prediction using machine learning is an ongoing challenge.
+In this paper, we propose several methods for predicting enzymes in three different problem categories (Table~\ref{Tab:01}).
+Throughout the developing of our models, we used a variety of different input features and machine learning algorithms, of which the best will be thoroughly reviewed in this paper.
+\begin{center}
+\begin{table}[!htbp]
+\processtable{Description of subproblem categories\label{Tab:01}} {\begin{tabular}{@{}llll@{}}\toprule 
+		Level & Description & Best performing method & F1 score\\\midrule
+		0 & Binary classification & Random Forest & score\\
+		1 & Main class classification & Feedforward neuronal network & score \\
+		2 & Subclass classification & Feedforward neuronal network & score \\\botrule
+\end{tabular}}{}
+\end{table}
+\end{center}
+
+
+
+
+\section{Introduction}
+
+Text Text Text Text Text Text  Text Text.  Text Text Text
+%\enlargethispage{12pt}
+
+\section{Approach}
+Text Text Text Text Text Text  Text Text.  Text Text Text
+
+\begin{methods}
+\section{Methods}
+Text Text Text Text Text Text  Text Text.  Text Text Text
+
+
+\begin{itemize}
+\item for bulleted list, use itemize
+\item for bulleted list, use itemize
+\item for bulleted list, use itemize\vspace*{1pt}
+\end{itemize}
+
+\subsection{This is subheading}
+Text Text Text Text Text Text  Text Text.  Text Text Text
+
+\subsubsection{This is subsubheading}
+Text Text Text Text Text Text  Text Text.  Text Text Text
+
+
+\end{methods}
+
+%\centerline{\includegraphics{fig01.eps}}
+
+%\begin{figure}[!tpb]%figure2
+%%\centerline{\includegraphics{fig02.eps}}
+%\caption{Caption, caption.}\label{fig:02}
+%\end{figure}
+\section{Discussion}
+Text Text Text Text Text Text  Text Text.  Text Text Text 
+
+\section{Conclusion}
+Text Text Text Text Text Text  Text Text.  Text Text Text
+
+\begin{enumerate}
+\item this is item, use enumerate
+\item this is item, use enumerate
+\item this is item, use enumerate
+\end{enumerate}
+
+\section*{Acknowledgements}
+
+
+\section*{Funding}
+
+This work has been supported by the... Text Text  Text Text.\vspace*{-12pt}
+
+\end{document}
