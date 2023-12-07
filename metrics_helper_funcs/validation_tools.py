@@ -50,7 +50,7 @@ def plot_confiusion_matrix(y_true, y_pred, plot_title, lable_to_class_dict=None,
     plt.show()
 
 
-def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names):
+def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, plot_title="Performance Metrics with Custom Error Bars by Model"):
     score_df = pd.DataFrame(columns=["Model", "Metric", "Mean Score", "SE", "CI_0", "CI_1"])
 
     for i in range(len(y_trues)):
@@ -86,10 +86,11 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names):
     ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, **{'width': 0.3}, palette=color_palette)
 
     # Customize the plot labels
-    ax.set(xlabel="Metric", ylabel="Mean Score")
-    ax.set_title("Performance Metrics with Custom Error Bars by Model")
+    ax.set_xlabel("Metric", fontsize=16)
+    ax.set_ylabel("Mean Score", fontsize=16)
+    ax.set_title(plot_title, fontsize=18)
 
-    plt.legend(title="Model", loc="upper left", bbox_to_anchor=(1, 1))
+    plt.legend(title="Model", loc="upper left", bbox_to_anchor=(1, 1), fontsize=15)
     print(score_df)
 
     # Manually add error bars using the calculated bounds
@@ -104,7 +105,10 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names):
         plt.plot([x - 0.01, x + 0.01], [lower_bound, lower_bound], color="black")
         plt.plot([x - 0.01, x + 0.01], [upper_bound, upper_bound], color="black")
 
+    # Manually adjust tick label font sizes if needed
+    ax.tick_params(axis='both', which='major', labelsize=15)
     plt.tight_layout()
+
     plt.show()
 
 
@@ -239,10 +243,10 @@ if __name__ == '__main__':
         6: 7
     }
 
-    y_trues = [y_true_model_1, y_true_model_2, y_true_model_3, y_true_model_4, y_true_model_5, y_true_model_6, y_true_model_7]
-    y_preds = [y_pred_model_1, y_pred_model_2, y_pred_model_3, y_pred_model_4, y_pred_model_5, y_pred_model_6, y_pred_model_7]
+    y_trues = [y_true_model_1, y_true_model_2, y_true_model_3, y_true_model_4]
+    y_preds = [y_pred_model_1, y_pred_model_2, y_pred_model_3, y_pred_model_4]
 
     metric_funcs = [calculate_accuracy, calculate_micro_f1, calculate_macro_f1]
-    model_names = ["Binary", "FNN 1", "FNN 2", "O.o", "f", "g", "l"]  # Names used for plotting
+    model_names = ["Binary", "FNN 1", "FNN 2", "test"]  # Names used for plotting
 
     plot_bootstrapped_score(y_trues, y_preds, scoring_funcs=metric_funcs, model_names=model_names)
