@@ -87,16 +87,16 @@ Throughout the developing of our models, we used a variety of different input fe
 
 \subsection{K-nearest neighbors algorithm using ncd vectors}
 An less popular approach of transforming string like input features into numerical values is the normalized compression distance (ncd) algorithm. 
-The ncd algorithm is based on the idea that the similarity of two strings can be measured by the amount of information needed to describe one string given the other string.
-The ncd of two strings $x$ and $y$ is defined as follows:
+The ncd algorithm is based on the idea that the similarity of two strings can be measured by the amount of information needed to describe one string given the other string. The ncd of two strings $x$ and $y$ is defined as follows:
 \begin{equation}
 	\text{ncd}(x,y) = \frac{C(xy)-\min(C(x),C(y))}{\max(C(x),C(y))}
 \end{equation}
 where $C(x)$ is the length of the compressed string $x$  and $C(xy)$ is the length of the concatenated string $xy$. 
 
-We implemented this algorithm in python and used it to transform $n$ input sequences into numerical vectors with $n$ dimensions by 
+We implemented this algorithm in python and used it to transform $n$ input sequences into $n$-dimensinal numerical vectors by 
 calculating the ncd of each sequence with every other sequence. These vectors were then used as input for the  k-nearest neighbors algorithm.
-The results of this approach are shown in figure \ref{fig:01}. While the performance on the validation dataset is comparable to the performance of the baseline model, 
+The results of this approach are shown in figure \ref{fig:01}. 
+The model outperformed the baseline model on the validation set with a F1 score of $0.73$ TODO: Redo gzip knn and make a plot where we can see performance on validation set and test set
 the performance on the test dataset is significantly worse. This has two reasons. First, as TODO: find source on gzip algorithm
 shows, the ncd algorithm is not suited for biological sequences. Second, the test dataset is highly imbalanced, which makes it hard to beat the baseline model, 
 since the baseline model predicts the labels based on the lable distribution of the training dataset, which was also highly imbalanced.
@@ -110,7 +110,6 @@ TODO: Yet it is interesting to see that the ncd algorithm is able to achieve a c
 
 
 
-\section*{Acknowledgements}
 
 \lipsum[1]
 
