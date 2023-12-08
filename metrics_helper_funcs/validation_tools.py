@@ -41,12 +41,12 @@ def plot_confiusion_matrix(y_true, y_pred, plot_title, lable_to_class_dict=None,
                 plt.text(j + 0.5, i + 0.5, text, ha='center', va='center', color=text_color, fontsize=14)
 
 
-    plt.xlabel("Predicted", fontsize=lable_size)
-    plt.ylabel("Actual", fontsize=lable_size)
-    plt.xticks(fontsize=lable_size)
-    plt.yticks(fontsize=lable_size)
+    plt.xlabel("Predicted", fontsize=15)
+    plt.ylabel("Actual", fontsize=15)
+    plt.xticks(fontsize=15)
+    plt.yticks(fontsize=15)
     plt.yticks([i + 0.5 for i in range(len(class_labels))], class_labels, rotation=0)
-    plt.title(f"{plot_title} (Percentwise Color)", fontsize=17)
+    plt.title(f"{plot_title} (Percentwise Color)", fontsize=18)
     plt.show()
 
 
@@ -73,17 +73,17 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, plot_t
 
     # Set the style and context for the plot
     sns.set()
-    sns.set(font_scale=1.5)  # Adjust font size as needed
-    sns.set(style="whitegrid")
+    sns.set_palette("colorblind")
+    sns.set("poster", style="darkgrid")
     # color_palette = ["#2aa5a5", "#fc4b00", "#7647fa", "#ffe512", "#ed174f", "#008365", "#c2837a"]
-    color_palette = ["#b2182b", "#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166a"]
-    color_palette = [
-        "#d73027","#4575b4", "#fc8d59", "#91bfdb",  "#d8b365", "#5ab4ac", "#af8dc3"
-    ]
+    # color_palette = ["#b2182b", "#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166a"]
+    # color_palette = [
+    #     "#d73027","#4575b4", "#fc8d59", "#91bfdb",  "#d8b365", "#5ab4ac", "#af8dc3"
+    # ]
 
     # Create the bar plot with custom error bars and hue="Model"
     plt.figure(figsize=(12, 6))
-    ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, **{'width': 0.3}, palette=color_palette)
+    ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, **{'width': 0.3})
 
     # Customize the plot labels
     ax.set_xlabel("Metric", fontsize=16)
