@@ -74,7 +74,8 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, plot_t
     # Set the style and context for the plot
     sns.set()
     sns.set_palette("colorblind")
-    # sns.set("poster")
+    if (len(scoring_funcs) <= 2):
+        sns.set("poster")
     sns.set_style("whitegrid")
     # color_palette = ["#2aa5a5", "#fc4b00", "#7647fa", "#ffe512", "#ed174f", "#008365", "#c2837a"]
     # color_palette = ["#b2182b", "#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166a"]
