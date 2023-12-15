@@ -52,7 +52,6 @@ def read_fasta_to_df(file: str) -> pd.DataFrame:
 
     f.close()
 
-
     # Set the first row as column names
     df = pd.DataFrame(fasta_dict.items(), columns=['Entry', 'Sequence'])
 
@@ -79,9 +78,9 @@ def filter_unwanted_seqs(df: pd.DataFrame, enzymes: bool) -> pd.DataFrame:
             test_set = set()
 
             for i in range(len(ec)):
-               test_set.add(ec[i][0])
+                test_set.add(ec[i][0])
 
-            if len(test_set) > 1: # If this len(set) != 1 we have a multi func enzyme of different main classes
+            if len(test_set) != len(multi_ec):  # If this len(set) != 1 we have a multi func enzyme of different main classes
                 to_remove.append(ec)
 
         df = df[~df['EC number'].isin(to_remove)]
@@ -93,8 +92,9 @@ def filter_unwanted_seqs(df: pd.DataFrame, enzymes: bool) -> pd.DataFrame:
     return df
 
 
-def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
+def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool, is_binary=False):
     """
+    :param is_binary:
     :param path_to_csv: Absolute path to csv file
     :param is_enzyme: If we pass enzymes we also need to filter out multifunctional enzymes
     :return: A list of headers to ignore when reading in the esm2 embeddings
@@ -115,25 +115,24 @@ def filter_unwanted_esm2(path_to_csv: str, is_enzyme: bool):
     to_remove.extend(remove_U.to_list())
 
     # for enzymes remove multifunctional enzymes
-    if is_enzyme:
+    if is_enzyme and not is_binary:
         multifunc_enzymes = df[df['EC number'].str.contains(';')]
         remove_multif = []
         for index, row in multifunc_enzymes.iterrows():
 
             ec = row["EC number"].split(';') # split the ec numbers by ; meaning ec = ["1.2.3.4", "2.2.3.44"] for 1.2.3.4;2.2.3.44. This would be removed
             header = row["Entry"]
-           
             test_set = set()
             for i in range(len(ec)):
-               test_set.add(int(ec[i][0]))
+                test_set.add(int(ec[i][0]))
 
-            if len(test_set) > 1: # If this len(set) != 1 we have a multi func enzyme of different main classes
+            if len(test_set) != 1:# If this len(set) != 1 we have a multi func enzyme of different main classes
                 remove_multif.append(header)
 
         to_remove.extend(remove_multif)
         print(f"\033[32mLOG:\033[0m\n {len(remove_multif)} multifunctional enzymes with diff ec main classes in {path_to_csv}")
 
-    else:
+    elif not is_enzyme:
         remove_seq_cutoff = df[df["Sequence"].apply(len) > 1022]["Entry"]  # if were working with non_enzymes we need to limit the sequence length
         print(f"\033[32mLOG:\033[0m\n {len(remove_seq_cutoff)} non enzymes are longer than 1022 cutoff")
         to_remove.extend(remove_seq_cutoff.to_list())
@@ -190,6 +189,50 @@ class H5ESM2(Dataset):
 
         return emb, header
 
+def load_ml_data_emb_binary(path_to_esm2: str, path_to_enzyme_csv: str):
+    """
+    Reads in the embeddings and the EC numbers from the h5 file and the csv file and labels them accordingly.
+    :param path_to_esm2: path to the h5 file
+    :param path_to_enzyme_csv: path to the csv file
+    :return: X: embeddings, y: EC numbers (labels)
+    """
+
+    to_remove = filter_unwanted_esm2(path_to_enzyme_csv, True, is_binary=True)
+
+    h5_dataset = H5Dataset(path_to_esm2, path_to_enzyme_csv)
+
+    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=False)
+
+    # Iterate over batches
+    X = []
+    y = []
+
+    t0 = time.time()
+    total_count = 0
+    for batch in loader:
+        total_count += 1
+        embs, headers, ec_numbers = batch
+        for i in range(len(headers)):
+            if headers[i] not in to_remove:
+                # here we convert ec to int and do -1
+                ec_class = int(ec_numbers[i].split(".")[0]) - 1
+                X.append(embs[i].numpy())
+                y.append(ec_class)
+
+    # Convert the lists to numpy arrays
+    X = np.vstack(X)
+    y = np.array(y)
+
+    t1 = time.time()
+
+    total = (t1 - t0) / 60
+
+    print("Total count: ", total_count)
+    print(f"\033[32mLOG:\033[0m\n Data loaded in: {round(total, 3)} min")
+    print(f"\033[32mLOG:\033[0m\n ESM2 of enzymes: {len(X)}")
+    print(f"\033[32mLOG:\033[0m\n Labels of enzymes: {len(y)}")
+
+    return X, y
 
 def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
     """
@@ -210,13 +253,16 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
     y = []
 
     t0 = time.time()
+    total_count = 0
     for batch in loader:
-        emb, header, ec_numbers = batch
-        if header not in to_remove:
-
-            ec_class = [int(ec_number.split(".")[0]) - 1 for ec_number in ec_numbers]  # here we convert ec to int and do -1
-            X.append(emb.numpy())
-            y.extend(list(ec_class))
+        total_count += 1
+        embs, headers, ec_numbers = batch
+        for i in range(len(headers)):
+            if headers[i] not in to_remove:
+                # here we convert ec to int and do -1
+                ec_class = int(ec_numbers[i].split(".")[0]) - 1
+                X.append(embs[i].numpy())
+                y.append(ec_class)
 
     # Convert the lists to numpy arrays
     X = np.vstack(X)
@@ -226,6 +272,7 @@ def load_ml_data_emb(path_to_esm2: str, path_to_enzyme_csv: str):
 
     total = (t1 - t0) / 60
 
+    print("Total count: ", total_count)
     print(f"\033[32mLOG:\033[0m\n Data loaded in: {round(total, 3)} min")
     print(f"\033[32mLOG:\033[0m\n ESM2 of enzymes: {len(X)}")
     print(f"\033[32mLOG:\033[0m\n Labels of enzymes: {len(y)}")
@@ -254,9 +301,11 @@ def load_non_enz_esm2(non_enzymes_fasta_path: str, non_enzymes_esm2_path: str):
     t0 = time.time()
 
     for batch in loader:
-        emb, header = batch
-        if header not in non_enz_to_remove:
-            X_neg.append(emb.numpy())
+        embs, headers = batch
+        for i in range(len(headers)):
+            # check if the header is in the list of headers to remove
+            if headers[i] not in non_enz_to_remove:
+                X_neg.append(embs[i].numpy())  # if not we append the embedding
 
     t1 = time.time()
 
@@ -274,63 +323,6 @@ def load_non_enz_esm2(non_enzymes_fasta_path: str, non_enzymes_esm2_path: str):
     print(f"\033[32mLOG:\033[0m\n Labels of non enzymes: {len(y_neg)}")
 
     return X_neg, y_neg
-
-
-
-def load_and_extract_2nd_class(path_to_esm2: str, path_to_enzyme_csv: str, wanted_ec_class: int):
-    """
-    Reads in the embeddings and the EC numbers from the h5 file and the csv file and labels them accordingly based on the wanted_ec_class.
-    :param path_to_esm2: path to the h5 file
-    :param path_to_enzyme_csv: path to the csv file
-    :param wanted_ec_class: The main class of which we want to extract the second class
-    :return: X: embeddings, y: EC numbers (labels) ready to use for cnn
-    :return: sec_to_label: dict mapping the second class to a label (we use this for the output layer in cnn, since it has to be continuous (e.g. 0,1,2,3,4,5,6,7))
-    :return: label_to_sec: dict mapping the label to the second class (we need this inorder to map the predictions back to the second class)
-    """
-
-    to_remove = filter_unwanted_esm2(path_to_enzyme_csv, True)
-
-    h5_dataset = H5Dataset(path_to_esm2, path_to_enzyme_csv)
-
-    loader = torch.utils.data.DataLoader(h5_dataset, batch_size=32, shuffle=False)
-
-    # Iterate over batches
-    X = []
-    y = []
-
-    t0 = time.time()
-
-    for batch in loader:
-        emb, header, ec_numbers = batch
-        if header not in to_remove:
-            ec_classes = [int(ec_number.split(".")[0]) for ec_number in ec_numbers]  # extract the main class, then we check if it is the wanted class
-            sec_ec_classes = [int(ec_number.split(".")[1]) for ec_number in ec_numbers]
-            for index, ec_class in enumerate(ec_classes):
-                if ec_class == wanted_ec_class:
-                    sec_ec_class = sec_ec_classes[index]
-                    X.append(emb[index].numpy()) # we append the embedding of the wanted class
-                    y.append(sec_ec_class)
-
-    # Convert the lists to numpy arrays
-    X = np.vstack(X)
-    # y = np.array(y)
-
-    # Now we create a dict numbering the ec classes since we use them as labels for our output layer in cnn
-    label_to_sec = {i: sec_ec_class for i, sec_ec_class in enumerate(set(y))}
-    sec_to_label = {sec_ec_class: i for i, sec_ec_class in enumerate(set(y))}
-
-    y_cnn_labels = [sec_to_label[sec_ec_class] for sec_ec_class in y]
-    y_cnn_labels = np.array(y_cnn_labels)
-
-    t1 = time.time()
-
-    total = (t1 - t0) / 60
-
-    print(f"\033[32mLOG:\033[0m\n Data loaded in: {round(total, 3)} min")
-    print(f"\033[32mLOG:\033[0m\n ESM2 of enzymes: {len(X)}")
-    print(f"\033[32mLOG:\033[0m\n Labels of enzymes: {len(y)}")
-
-    return X, y_cnn_labels, sec_to_label, label_to_sec
 
 
 def load_all_sub_classes(path_to_esm2: str, path_to_enzyme_csv: str, allowed_labels: dict):
@@ -351,17 +343,19 @@ def load_all_sub_classes(path_to_esm2: str, path_to_enzyme_csv: str, allowed_lab
     t0 = time.time()
 
     for batch in loader:
-        emb, header, ec_numbers = batch
-        if header not in to_remove:
+        embs, headers, ec_numbers = batch
+        for i in range(len(headers)):
+            if headers[i] not in to_remove:
 
-            # Making sure to get the fist and second ec class and then concatenate them back together to float
-            ec_classes = [ec_number.split(".")[0] + "." + ec_number.split(".")[1] for ec_number in ec_numbers]
+                # Making sure to get the fist and second ec class and then
+                # concatenate them back together to float
+                ec_classe = ec_numbers[i].split(".")[0] + "." + ec_numbers[i].split(".")[1]
 
-            # Converting classes to labels
-            ec_labels = [allowed_labels[ec_number] for ec_number in ec_classes]
+                # Converting classes to labels
+                ec_labels = allowed_labels[ec_classe]
 
-            X.extend(emb) # we append the embedding of the wanted class
-            y.extend(ec_labels)
+                X.append(embs[i])  # we append the embedding of the wanted class
+                y.append(ec_labels)
 
     # X = X.extend(X)
     # y = y.extend(y)
