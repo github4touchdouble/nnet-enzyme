@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix, matthews_corrcoef, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix, matthews_corrcoef, ConfusionMatrixDisplay, precision_score, recall_score
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import multilabel_confusion_matrix
@@ -92,6 +92,15 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, plot_t
     ax.set_ylabel("Mean Score", fontsize=16)
     ax.set_title(plot_title, fontsize=18)
 
+    # Plot the red line indicating the best performance
+    best_performance = score_df['Mean Score'].max()
+    plt.axhline(y=best_performance, color='red', linestyle='--')
+
+    # Add the label directly onto the plot
+    plt.text(0.5, best_performance, f'Best Score: {best_performance:.2f}', color='red', ha='center', va='bottom', fontsize=12)
+
+
+
     plt.legend(title="Model", loc="upper left", bbox_to_anchor=(1, 1), fontsize=15)
     print(score_df)
 
@@ -107,9 +116,9 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, plot_t
         plt.plot([x - 0.01, x + 0.01], [lower_bound, lower_bound], color="black")
         plt.plot([x - 0.01, x + 0.01], [upper_bound, upper_bound], color="black")
 
-    # Manually adjust tick label font sizes if needed
     ax.tick_params(axis='both', which='major', labelsize=15)
     plt.tight_layout()
+
 
     plt.show()
 
@@ -163,6 +172,18 @@ def calculate_weighted_f1(y_true, y_pred):
 
 def calculate_accuracy(y_true, y_pred):
     return accuracy_score(y_true, y_pred), "Accuracy"
+
+def calculate_macro_precision(y_true, y_pred):
+    return precision_score(y_true, y_pred, average='macro'), "Precision"
+
+def calculate_macro_recall(y_true, y_pred):
+    return recall_score(y_true, y_pred, average='macro'), "Recall"
+
+def calculate_micro_precision(y_true, y_pred):
+    return precision_score(y_true, y_pred, average='micro'), "Precision"
+
+def calculate_micro_recall(y_true, y_pred):
+    return recall_score(y_true, y_pred, average='micro'), "Recall"
 
 
 if __name__ == '__main__':
