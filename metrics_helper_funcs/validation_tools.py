@@ -160,14 +160,14 @@ def round_to_significance(x, significance):
 
 
 def calculate_micro_f1(y_true, y_pred):
-    return f1_score(y_true, y_pred, average='micro'), "Micro F1-Score"
+    return f1_score(y_true, y_pred, average='micro'), "Micro F1"
 
 
 def calculate_macro_f1(y_true, y_pred):
-    return f1_score(y_true, y_pred, average='macro'), "Macro F1-Score"
+    return f1_score(y_true, y_pred, average='macro'), "Macro F1"
 
 def calculate_weighted_f1(y_true, y_pred):
-    return f1_score(y_true, y_pred, average='weighted'), "Weighted F1-Score"
+    return f1_score(y_true, y_pred, average='weighted'), "Weighted F1"
 
 
 def calculate_accuracy(y_true, y_pred):
