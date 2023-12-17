@@ -97,7 +97,7 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, plot_t
     plt.axhline(y=best_performance, color='red', linestyle='--')
 
     # Add the label directly onto the plot
-    plt.text(0.5, best_performance, f'Best Score: {best_performance:.2f}', color='red', ha='center', va='bottom', fontsize=12)
+    plt.text(0.5, best_performance, f'{best_performance:.2f}', color='red', ha='center', va='bottom', fontsize=12)
 
 
 
@@ -184,6 +184,9 @@ def calculate_micro_precision(y_true, y_pred):
 
 def calculate_micro_recall(y_true, y_pred):
     return recall_score(y_true, y_pred, average='micro'), "Recall"
+
+def calculate_mcc_score(y_true, y_pred):
+    return matthews_corrcoef(y_true, y_pred), "MCC"
 
 
 if __name__ == '__main__':
