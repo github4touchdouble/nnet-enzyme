@@ -74,14 +74,8 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, plot_t
     # Set the style and context for the plot
     sns.set()
     sns.set_palette("colorblind")
-    if (len(scoring_funcs) <= 2 or len(model_names) <= 3):
-        sns.set("poster")
+    sns.set("poster")
     sns.set_style("whitegrid")
-    # color_palette = ["#2aa5a5", "#fc4b00", "#7647fa", "#ffe512", "#ed174f", "#008365", "#c2837a"]
-    # color_palette = ["#b2182b", "#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166a"]
-    # color_palette = [
-    #     "#d73027","#4575b4", "#fc8d59", "#91bfdb",  "#d8b365", "#5ab4ac", "#af8dc3"
-    # ]
 
     # Create the bar plot with custom error bars and hue="Model"
     plt.figure(figsize=(12, 6))
