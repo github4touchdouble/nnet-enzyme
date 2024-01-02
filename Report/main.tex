@@ -10,7 +10,7 @@
 
 \subtitle{Subject Section}
 
-\title[short Title]{This is a title}
+\title[References]{This is a title}
 \author[Sample \textit{et~al}.]{Corresponding Author\,$^{\text{\sfb 1,}*}$, Co-Author\,$^{\text{\sfb 2}}$ and Co-Author\,$^{\text{\sfb 2,}*}$}
 \address{$^{\text{\sf 1}}$Department, Institution, City, Post Code, Country and \\
 $^{\text{\sf 2}}$Department, Institution, City, Post Code,
@@ -86,40 +86,44 @@ Throughout the developing of our models, we used a variety of different input fe
 \lipsum[1]
 
 \subsection{K-nearest neighbors algorithm using ncd vectors}
-An less popular approach of transforming string like input features into numerical values is the normalized compression distance (ncd) algorithm. 
+A less popular approach of transforming string like input features into numerical values is the normalized compression distance (ncd) algorithm. 
 The ncd algorithm is based on the idea that the similarity of two strings can be measured by the amount of information needed to describe one string given the other string. The ncd of two strings $x$ and $y$ is defined as follows:
 \begin{equation}
 	\text{ncd}(x,y) = \frac{C(xy)-\min(C(x),C(y))}{\max(C(x),C(y))}
 \end{equation}
 where $C(x)$ is the length of the compressed string $x$  and $C(xy)$ is the length of the concatenated string $xy$. 
 
-We implemented this algorithm in python and used it to transform $n$ input sequences into $n$-dimensinal numerical vectors by 
-calculating the ncd of each sequence with every other sequence. These vectors were then used as input for the  k-nearest neighbors algorithm.
-The results of this approach are shown in figure \ref{fig:01}. 
-The model outperformed the baseline model on the validation set with a F1 score of $0.73$ TODO: Redo gzip knn and make a plot where we can see performance on validation set and test set
-the performance on the test dataset is significantly worse. This has two reasons. First, as TODO: find source on gzip algorithm
-shows, the ncd algorithm is not suited for biological sequences. Second, the test dataset is highly imbalanced, which makes it hard to beat the baseline model, 
-since the baseline model predicts the labels based on the lable distribution of the training dataset, which was also highly imbalanced.
-TODO: Yet it is interesting to see that the ncd algorithm is able to achieve a comparable performance on the validation dataset, which is balanced,
+We implemented this algorithm in python using \textit{gzip}, which is a loss less compression algorithm based on a combination of LZ77 and Huffman encoding. \cite{Rigler2007} 
+
+The ncd algorithm was used to transform the amino acid sequences into numerical vectors by comparing each sequence to all other sequences in the training dataset.
+This resulted in a $n$-dimensional numerical vector for each sequence, where $n$ is the amount of sequences in the training dataset where each
+position in the vector represents the ncd of the sequence to the corresponding sequence in the training dataset.
+These vectors were then used as input for the k-nearest neighbors algorithm.
+Due to the exponential computational complexity of the ncd algorithm, we had to under sample the non enzyme dataset to match the amount of samples in our enzyme dataset, meaning
+the positiv in the train dataset were balanced. 
+
+When inferring unseen data, the ncd input vector was calculated by comparing it to all sequences in the training data set, thus also resulting in a $n$-dimensional numerical vector.
+This means that the performance on new data is largely dependent on the training data set.
+
+The performance of the k-nearest neighbors algorithm using ncd vectors compared to a random baseline is shown in figure \ref{fig:01}.
+Although the mean F1 score of the k-nearest neighbors algorithm using ncd vectors lies at $0.728$, it did not perform better than the random baseline, which had a F1 score of $0.843$.
+This indicates that the ncd approach has a worse precision and recall than the random baseline.
+At the same time both classifiers have a low MCC 
+score of $0.2$ and $0.01$ respectively, which indicates that both classifiers are not better than random guessing.
 
 \begin{figure}[!thbp]
-\includegraphics[width=0.5\textwidth]{~/Desktop/Dataset/plots/gzip_res/test_perf.png}
-\caption{Performance on test dataset compared to baseline}\label{fig:01}
+\includegraphics[width=0.5\textwidth]{assets/gzip_new.png}
+\caption{Performance on test dataset compared to random baseline}\label{fig:01}
 \end{figure}
 
+The reason for the poor performance of the k-nearest neighbors algorithm using ncd vectors is
+most likely due to the ncd algorithm not being suited for protein sequences as shown in \cite{GzipProteinCompression} as well as
+the test dataset not being balanced, while the training dataset was.
 
 
 
 
-\lipsum[1]
-
-\section*{Funding}
-
-This work has been supported by the... Text Text  Text Text.
-
-k
-asldjalskjd
-asdjaskldjas
-daklsjdalksjd
+\bibliographystyle{natbib} 
+\bibliography{document}
 
 \end{document}
