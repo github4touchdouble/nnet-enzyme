@@ -72,28 +72,24 @@ This shift is driven by the exponential growth of available biological data, pro
 Computational methods, particularly machine learning and data-driven models, now stand at the forefront of enzyme classification endeavors,
 promising to enhance accuracy and efficiency in the annotation of enzymes within large-scale genomic datasets.
 
-\section{Approach}
-
 \begin{methods}
 \section{Methods}
-The protein data was taken from the UniProt database and used in the CLEAN publication on Enzyme function prediction[1]. %% FIX: Cite
-The mass table of common amino acids was taken from Bioinformatics Solutions Inc[2]. %% FIX: Cite
+The protein data was taken from the UniProt database and used in the CLEAN publication on Enzyme function prediction (see \cite{CleanArticle}). 
+The mass table of common amino acids was taken from \cite{BioinformaticsSolutionsInc}. 
 
 \subsection{Machine learning algorithms used per level}
 
 Our initial goal is to categorize proteins as either enzymes or non-enzymes (level 0). 
 To accomplish this, we've opted for the Random Forest, a straightforward yet powerful machine learning method.
 The choice of Random Forest is driven by its effectiveness in handling classification tasks, making it a well-suited option for our specific protein classification objective.
-We built a Random Forest Classifier using the scikit-learn library with specific parameters: The classifier consists of a total of 200 decision trees.
-Each tree has a maximum depth of 16, and a node is designated as a leaf only if it has a minimum of 8 samples.
-The random state parameter is set to 42, ensuring reproducibility in the model's construction.
-
+We built a Random Forest Classifier using the scikit-learn library with specific parameters, which will be explained in the training procedure. 
+%% Malte
 For ... 
 
 For ...
 
 \subsection{Data preprocessing in general}
- %% TODO:
+% TODO:malte
 Unwanted Sequences Removal
 We excluded sequences that contain the amino acids "O" and "U" from our dataset. 
 
@@ -101,23 +97,23 @@ We excluded sequences that contain the amino acids "O" and "U" from our dataset.
 
 \subsection{Data preprocessing for level 0}
 As a random forest model relies on multiple decision trees, and each decision tree requires various features,
-we opted to extract additional information from both the protein sequence and the protein embeddings.
+we opted to extract additional information from both the protein sequence and the esm2 embeddings. %%FIX: embeddings
 
 From the amino acid mass table we computed the mass of protein sequences by adding up the individual masses of their amino acid components.
-The protein embeddings, each represented by a $2560$-dimensional vector, underwent statistical analysis.
+The esm2 embeddings, each represented by a $2560$-dimensional vector, underwent statistical analysis.
 We computed the median, standard deviation, and vector magnitude by aggregating values across all $2560$ dimensions for each protein.
-To simplify the embeddings, we applied Principal Component Analysis (PCA)[3] %% FIX: Cite
+To simplify the embeddings, we applied Principal Component Analysis (\cite{scikit-learn})
 separately to enzyme and non-enzyme datasets,
 retaining $90\%$ of the variance. This process yielded reduced dimensions of $397$ for enzymes and $369$ for non-enzymes. 
 Therefore, we reduced the dimensions to $397$, providing a streamlined representation of the protein embeddings while retaining crucial information for both 
 enzyme (see figure \ref{fig:01}) and non-enzyme (see figure \ref{fig:02}) datasets.
 
-\begin{figure}[!thbp]
+\begin{figure}[!bp]
 \includegraphics[width=0.5\textwidth]{assets/Data_Truc_1.jpeg}
 \caption{The number of components needed to explain the variance in the enzyme dataset}\label{fig:01}
 \end{figure}
 
-\begin{figure}[!thbp]
+\begin{figure}[!tbp]
 \includegraphics[width=0.5\textwidth]{assets/Data_Truc_2.jpeg}
 \caption{The number of components needed to explain the variance in the non enzyme dataset}\label{fig:02}
 \end{figure}
@@ -127,13 +123,18 @@ By combining the information from the proteins’ sequences, masses, and embeddi
 including $401$ features: mass, embeddings median, embeddings standard deviation (std), embeddings magnitude, and dimension $1$ to $397$ of the reduced 
 embeddings. 
 
-We also used the method SelectFromModel[4] from the scikit-learn library %% FIX: Cite
-to select features based on importance weights. The refined set of input features contains 
-'Mass,' 'Emb median,' 'Emb std,' 'Emb magnitude,' and 'PCA 1' through 'PCA 47' excluding ‘PCA 29’, ‘PCA 31’, ‘PCA 35’, 
-‘PCA 36’, ‘PCA 39’ to ‘PCA 42’, ‘PCA 44’ and ‘PCA 46’ (where 'Emb' represents embeddings and 'PCA X' signifies the X-th dimension of the reduced embeddings).
 
 %% Fig 3
+\begin{figure}[!htbp]
+\includegraphics[width=0.5\textwidth]{assets/Data_Truc_3.jpeg}
+\caption{The number of components needed to explain the variance in the non enzyme dataset}\label{fig:03}
+\end{figure}
 
+We also used the method SelectFromModel from the scikit-learn library (see \cite{scikit-learn})
+to select features based on importance weights. 
+The refined set of input features contains 
+'Mass,' 'Emb median,' 'Emb std,' 'Emb magnitude,' and 'PCA 1' through 'PCA 47' (see figure \ref{fig:03}) excluding ‘PCA 29’, ‘PCA 31’, ‘PCA 35’, 
+‘PCA 36’, ‘PCA 39’ to ‘PCA 42’, ‘PCA 44’ and ‘PCA 46’ (where 'Emb' represents embeddings and 'PCA X' signifies the X-th dimension of the reduced embeddings).
 \subsection{Training procedure}
 For all our models we divided the data table into two parts: a training set and a validation set, using a random state of 42 for consistency. 
 The training set contains $70\%$ of the original data, while the validation set holds the remaining $30\%$. 
@@ -141,10 +142,14 @@ This separation allows us to train our models on a subset of the data and then a
 
 \subsubsection{Random Forest}
 %% TODO: Truc intro
-To address the imbalance between the number of non-enzymes and enzymes, where non-enzymes outnumber enzymes approximately fourfold,
-we duplicated the enzyme data in the training set four times.
+
+For the Random Forest classifier we addressed the imbalance between the number of non-enzymes and enzymes, where non-enzymes outnumber enzymes approximately fourfold,
+by duplicating the enzyme data in the training set four times.
 This duplication ensures a more balanced dataset, allowing the model to be trained on an equal representation of both classes.
 
+The classifier consists of a total of 200 decision trees.
+Each tree has a maximum depth of 16, and a node is designated as a leaf only if it has a minimum of 8 samples.
+The random state parameter is set to 42, ensuring reproducibility in the model's construction.
 \subsubsection{Level 1 FNN}
 \subsubsection{Level 2 FNN}
 
@@ -159,10 +164,12 @@ This duplication ensures a more balanced dataset, allowing the model to be train
 %% TODO: Where to put scoring metrics?
 
 \begin{align}
-	&\text{precision} = \frac{\text{TP}}{\text{TP} + \text{FP}} \\
-    &\text{recall} = \frac{\text{TP}}{\text{TP} + \text{FN}} \\
-    &\text{f1-score} = 2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}} \\
-    &\text{MCC score} = \frac{\text{TP} \cdot \text{TN} - \text{FP} \cdot \text{FN}}{\sqrt{(\text{TP} + \text{FP}) \cdot (\text{TP} + \text{FN}) \cdot (\text{TN} + \text{FP}) \cdot (\text{TN} + \text{FN})}}
+	&\textbf{precision} = \frac{\text{TP}}{\text{TP} + \text{FP}} \\
+    &\textbf{recall} = \frac{\text{TP}}{\text{TP} + \text{FN}} \\
+    &\textbf{f1-score} = 2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}} \\
+	& \textbf{weighted f1-score} = \operatornamewithlimits{\sum}^{N}_{i=i} \frac{\text{Number of samples in class }i}{\text{Total number of samples}}  \times \text{f1-score}_{i}\nonumber\\
+	&\quad \text{(where $N$ is the number of classes)} \\
+    &\textbf{MCC score} = \frac{\text{TP} \cdot \text{TN} - \text{FP} \cdot \text{FN}}{\sqrt{(\text{TP} + \text{FP}) \cdot (\text{TP} + \text{FN}) \cdot (\text{TN} + \text{FP}) \cdot (\text{TN} + \text{FN})}}
 \end{align}
 
 The \textit{MCC} score serves as an indicator for the accuracy of binary classifications, with values ranging from -1 to 1. A score of 1 signifies a flawless prediction, 
@@ -182,6 +189,29 @@ $90\%$ of positive cases (enzymes) and $98\%$ of negative cases (non-enzymes), e
 $392$ enzymes and 9876 non-enzymes.
 
 %% Figure 1 of truc result
+\begin{figure}[!htpb]
+\includegraphics[width=0.5\textwidth]{assets/Results_Truc_1.jpeg}
+\caption{Confusion Matrix of the Random Forest Model on the “new” dataset}\label{fig:04}
+\end{figure}
+
+Additionally, we attained an Accuracy of 97.6\%, a weighted f1-score of 97.8\%, and an MCC-score of 74.1\%. 
+Figure \ref{fig:05} illustrates that our Random Forest model significantly outperformed the random baseline.
+
+\begin{figure}[!htpb]
+\includegraphics[width=0.5\textwidth]{assets/Results_Truc_3.jpeg}
+\caption{Level 0 model comparison of Random Forest and baseline on “new” dataset}\label{fig:05}
+\end{figure}
+
+Furthermore, when we tested our model on a distinct test set, the "price" dataset,
+it demonstrated a strong performance: only one enzyme was misclassified  (see figure \ref{fig:06}).
+This reinforces the robustness and generalizability of our Random Forest model across diverse datasets.
+
+\begin{figure}[!htpb]
+\includegraphics[width=0.5\textwidth]{assets/Results_Truc_4.jpeg}
+\caption{Confusion Matrix of the Random Forest Model on the “price” dataset}\label{fig:06}
+\end{figure}
+
+
 \subsubsection{Support Vector Machine}
 
 
@@ -222,15 +252,15 @@ the positiv in the train dataset were balanced.
 When inferring unseen data, the ncd input vector was calculated by comparing it to all sequences in the training data set, thus also resulting in a $n$-dimensional numerical vector.
 This means that the performance on new data is largely dependent on the training data set.
 
-The performance of the k-nearest neighbors algorithm using ncd vectors compared to a random baseline is shown in figure \ref{fig:03}.
+The performance of the k-nearest neighbors algorithm using ncd vectors compared to a random baseline is shown in figure \ref{fig:07}.
 Although the mean F1 score of the k-nearest neighbors algorithm using ncd vectors lies at $0.728$, it did not perform better than the random baseline, which had a F1 score of $0.843$.
 This indicates that the ncd approach has a worse precision and recall than the random baseline.
 At the same time both classifiers have a low MCC 
 score of $0.2$ and $0.01$ respectively, which indicates that both classifiers are not better than random guessing.
 
-\begin{figure}[!thbp]
+\begin{figure}[!tbp]
 \includegraphics[width=0.5\textwidth]{assets/gzip_new.png}
-\caption{Performance on test dataset compared to random baseline}\label{fig:03}
+\caption{Performance on test dataset compared to random baseline}\label{fig:07}
 \end{figure}
 
 The reason for the poor performance of the k-nearest neighbors algorithm using ncd vectors is
