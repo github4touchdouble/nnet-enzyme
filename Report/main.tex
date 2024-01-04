@@ -54,23 +54,23 @@ Throughout the developing of our models, we used a variety of different input fe
 
 
 \section{Introduction}
-%% Truc
 
-Enzymes serve as crucial biological catalysts, playing an essential role in numerous biochemical reactions within organisms. Without enzyme catalysis, those reactions would occur too slow or they would even be impossible. Most enzymes are proteins, 
-and each enzyme is assigned a specific function. For example, Oxidoreductases catalyze redox reactions, 
-while Isomerases convert a molecule into its isomer. 
-Consequently, there is a fundamental need for a comprehensive understanding and precise classification of enzymes.
+Enzymes play a vital role as biological catalysts, facilitating essential biochemical reactions in organisms.
+Without enzyme catalysis, these reactions would either occur too slowly or be practically impossible.
+Predominantly proteins, enzymes are designated specific functions; for instance, Oxidoreductases drive redox reactions, and Isomerases convert molecules into their isomers.
+Therefore, a comprehensive understanding and a precise classification of enzymes are fundamental.
 
-In the past, scientists attempted to categorize enzymes into groups and develop a logical rule set for naming. 
-However, the efforts were hindered by ambiguity. A significant milestone occurred in 1956 with the establishment of an official international commission on enzyme classification (IUBMB).
+In the past, scientists attempted to categorize enzymes into groups and develop a logical rule set for naming.
+However, the efforts were hindered by ambiguity.
+A significant milestone occurred in 1956 with the establishment of an official international commission on enzyme classification (\cite{IUBMB}).
 This marked the initiation of the contemporary enzyme classification system that forms the basis for our understanding of enzymes today.
 
-In recent years, computational approaches have emerged as powerful tools for enzyme classification, 
-offering efficient means to navigate through the vast landscape of protein sequences and structures.
-Enzyme classification, traditionally a labor-intensive task, has witnessed a transformative shift with the advent of computational techniques.
-This shift is driven by the exponential growth of available biological data, propelled by advancements in high-throughput technologies.
-Computational methods, particularly machine learning and data-driven models, now stand at the forefront of enzyme classification endeavors,
-promising to enhance accuracy and efficiency in the annotation of enzymes within large-scale genomic datasets.
+In modern research, computational methods have become invaluable for enzyme classification; this shift has transformed the traditionally labor-intensive process.
+Machine learning and data-driven models, in particular, have assumed a leading role, holding the potential for enhanced accuracy and efficiency in annotating enzymes within vast genomic data.
+
+Several effective methods have been developed to address this challenge.
+One notable example is DeepEC (\cite{DeepEC}), a deep learning-based computational framework designed for the precise and high-throughput prediction of EC numbers for protein sequences.
+DeepEC employs three convolutional neural networks (CNNs) as a primary engine for EC number prediction and incorporates homology analysis for cases not classified by the CNNs.
 
 \begin{methods}
 \section{Methods}
