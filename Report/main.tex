@@ -265,26 +265,26 @@ This reinforces the robustness and generalizability of our Random Forest model a
 
 \subsection{Level 1 performance}
 
-\begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{assets/l1_scores.png}
-\caption{}\label{fig:FNN_scores_l1}
-\end{figure}
-
-\begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{assets/l1_conf_new.png}
-\caption{}\label{fig:FNN_conf_l1}
-\end{figure}
-\subsection{Level 2 performance}
-
-\begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{assets/l2_scores.png}
-\caption{}\label{fig:FNN_scores_l2}
-\end{figure}
-
-\begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{assets/l2_conf_test_new.png}
-\caption{}\label{fig:FNN_conf_l2}
-\end{figure}
+% \begin{figure}[!htpb]
+% \includegraphics[width=0.5\textwidth]{assets/l1_scores.png}
+% \caption{}\label{fig:FNN_scores_l1}
+% \end{figure}
+%
+% \begin{figure}[!htpb]
+% \includegraphics[width=0.5\textwidth]{assets/l1_conf_new.png}
+% \caption{}\label{fig:FNN_conf_l1}
+% \end{figure}
+% \subsection{Level 2 performance}
+%
+% \begin{figure}[!htpb]
+% \includegraphics[width=0.5\textwidth]{assets/l2_scores.png}
+% \caption{}\label{fig:FNN_scores_l2}
+% \end{figure}
+%
+% \begin{figure}[!htpb]
+% \includegraphics[width=0.5\textwidth]{assets/l2_conf_test_new.png}
+% \caption{}\label{fig:FNN_conf_l2}
+% \end{figure}
 
 \section{Discussion}
 
@@ -298,7 +298,7 @@ As we thoroughly reviewed the Random Forest model in section \ref{sec:RF_level0}
 
 \subsubsection{k-Nearest-Neighbors (kNN)}
 kNN is a non-parametric classification method,
-which assigns a new object to the most common class amongst the most similar k objects in the data set. [1]. We implemented three kNN models in Python using scikit-learns Nearest Neighbors library and 
+which assigns a new object to the most common class amongst the most similar k objects in the data set (\cite{knn_principles}). We implemented three kNN models in Python using scikit-learns Nearest Neighbors library and 
 these models using three distinct types of input features:
 \begin{enumerate}
 	\item[(1)] Protein embedding vectors encoded by ProtT5 (see \cite{ProtT5})
@@ -307,47 +307,85 @@ these models using three distinct types of input features:
 \end{enumerate}
 
 
+\paragraph{(1) kNN using ProtT5 encoded embedding vectors:}
 
+Each protein sequence, represented as a numerical vector of 1024 dimensions, is placed as a data 
+point within a 1024-dimensional space. The kNN classifier, using k=7,
+categorizes each data point to the class that is most common among its k nearest neighbors in the 1024-dimensional space.
+Figure 
+% TODO: insert Jans fig \ref{fig:03} 
+illustrates the performance comparison between the kNN algorithm using ProtT5 encoded embedding vectors versus a random baseline. 
+We observe that the mean F1 score for this model demonstrates a slight improvement over the random baseline,
+recording 0. 857 compared to 0.843. This implies that this approach showcases superior precision and recall in contrast to the random baseline.
+This models Mathews Correlation Coefficient of 0.728 indicates that this approach preforms significantly better than random guessing.
 
+%% Here is the figure
 
+\paragraph{(2) kNN using ESM2 encoded embedding vectors:}
+Each protein sequence, represented as a numerical vector of 2560 dimensions, is placed as a data point within a 2560-dimensional space.
+The kNN classifier, using k=7, categorizes each data point to the class that is most common among its k nearest neighbors in the 2560-dimensional space.
+Figure 
+% TODO: insert \ref{fig:03} 
+illustrates the performance comparison between the kNN algorithm using ESM2 encoded embedding vectors versus a random baseline.
+Unlike above, we observe that the mean F1 score for this model demonstrates a slight regression over the random baseline, recording 0.833
+compared to 0.843. This implies that this approach showcases inferior precision and recall in contrast to the random baseline.
+Despite being lower than the previous case, this models Mathews Correlation Coefficient of 0.689 still indicates that this approach preforms 
+better than random guessing.
 
+\paragraph{(3) kNN using normalized compression distance vectors:}
+% A less popular approach of transforming string like input features into numerical values is the normalized compression distance (ncd) algorithm. 
+% The ncd algorithm is based on the idea that the similarity of two strings can be measured by the amount of information needed to describe one string given the other string. The ncd of two strings $x$ and $y$ is defined as follows:
+The normalized compression distance ($ncd$) algorithm transforms string like input features into numerical values and is based on the concept of measuring 
+the similarity of two strings by the amount of information needed to describe the one string given the other string. 
+Given two strings $x$ and $y$, the $ncd$ is defined as follows:
 
-A less popular approach of transforming string like input features into numerical values is the normalized compression distance (ncd) algorithm. 
-The ncd algorithm is based on the idea that the similarity of two strings can be measured by the amount of information needed to describe one string given the other string. The ncd of two strings $x$ and $y$ is defined as follows:
 \begin{equation}
-	\text{ncd}(x,y) = \frac{C(xy)-\min(C(x),C(y))}{\max(C(x),C(y))}
+	ncd(x,y) = \frac{C(xy)-\min(C(x),C(y))}{\max(C(x),C(y))}
 \end{equation}
 where $C(x)$ is the length of the compressed string $x$  and $C(xy)$ is the length of the concatenated string $xy$. 
 
 We implemented this algorithm in python using \textit{gzip}, which is a loss less compression algorithm based on a combination of LZ77 and Huffman encoding. \cite{Rigler2007} 
-
-The ncd algorithm was used to transform the amino acid sequences into numerical vectors by comparing each sequence to all other sequences in the training dataset.
-This resulted in a $n$-dimensional numerical vector for each sequence, where $n$ is the amount of sequences in the training dataset where each
-position in the vector represents the ncd of the sequence to the corresponding sequence in the training dataset.
+The $ncd$ algorithm transformed amino acid sequences into numerical vectors by comparing each sequence with all others in the training dataset.
+This transformation yielded an $n$-dimensional numerical vector for each sequence, where $n$ represents the number of sequences in the training dataset.
+Each position in the input vector signifies the $ncd$ of the sequence concerning the corresponding sequence in the training dataset. 
 These vectors were then used as input for the k-nearest neighbors algorithm.
-Due to the exponential computational complexity of the ncd algorithm, we had to under sample the non enzyme dataset to match the amount of samples in our enzyme dataset, meaning
-the positiv in the train dataset were balanced. 
+Due to the exponential computational complexity of the $ncd$ algorithm, we used under sampling of the non-enzyme dataset to match the sample size of our enzyme dataset,
+ensuring balance in the positive instances within the training dataset. 
 
-When inferring unseen data, the ncd input vector was calculated by comparing it to all sequences in the training data set, thus also resulting in a $n$-dimensional numerical vector.
-This means that the performance on new data is largely dependent on the training data set.
+When inferring unseen data, the $ncd$ input vector was calculated by comparing it to all sequences in 
+the training data set, resulting in a $n$-dimensional numerical vector.
+Consequently, the performance on new data heavily relies on the characteristics of the training dataset.
 
-The performance of the k-nearest neighbors algorithm using ncd vectors compared to a random baseline is shown in figure \ref{fig:gzip_scores}.
-Although the mean F1 score of the k-nearest neighbors algorithm using ncd vectors lies at $0.728$, it did not perform better than the random baseline, which had a F1 score of $0.843$.
-This indicates that the ncd approach has a worse precision and recall than the random baseline.
-At the same time both classifiers have a low MCC 
-score of $0.2$ and $0.01$ respectively, which indicates that both classifiers are not better than random guessing.
-
-\begin{figure}[!htbp]
+\begin{figure}[!thbp]
 \includegraphics[width=0.5\textwidth]{assets/gzip_new.png}
 \caption{Performance on test dataset compared to random baseline}\label{fig:gzip_scores}
 \end{figure}
 
-The reason for the poor performance of the k-nearest neighbors algorithm using ncd vectors is
+Figure \ref{fig:gzip_scores} illustrates the performance comparison between the kNN algorithm using $ncd$ vectors versus a random baseline. 
+Despite the mean F1 score of the kNN lying at $0.728$, it did not perform better than the random baseline, which 
+achieved a F1 score of $0.843$.
+This observation suggests that the ncd approach exhibits inferior precision and recall compared to the random baseline. 
+Additionally, both classifiers exhibit a low MCC score of 0.2 and 0.01, respectively, indicating that neither classifier performs better than random guessing.
+
+The reason for the poor performance of the k-nearest neighbors algorithm using $ncd$ vectors is
 most likely due to the ncd algorithm not being suited for protein sequences as shown in \cite{GzipProteinCompression} as well as
 the test dataset not being balanced, while the training dataset was.
 
+\subsubsection{Support Vector Machine (SVM)}
+SVM is an algorithm that assigns labels to objects by learning from examples (\cite{svm}).
+We implemented three SVM models in Python using scikit-learns C-Support Vector classification library and these models using three distinct types of 
+input features: 
+\begin{enumerate}
+	\item[(1)] Protein embedding vectors encoded by ProtT5 (\cite{ProtT5})
+	\item[(2)] Protein embedding vectors encoded by ESM2 (\cite{ESM2})
+	\item[(3)] One hot encoded protein sequence vectors (\cite{oh_encoding})
+\end{enumerate}
 
+\paragraph{(1) SVM using ProtT5 encoded embedding vectors:}
 
+\paragraph{(2) SVM using ESM2 encoded embedding vectors:}
+
+\paragraph{(3) SVM using one hot encoded protein sequence vectors:}
 
 \bibliographystyle{natbib} 
 \bibliography{document}
