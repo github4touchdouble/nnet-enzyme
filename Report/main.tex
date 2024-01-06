@@ -98,7 +98,7 @@ we conducted training the following binary classification models and compared th
 	\item[(3)] Support Vector Machine
 \end{enumerate}
 
-The chosen methods will be detailed in the subsequent section, while Section 7.1 will outline the methods that were not selected.
+The chosen method for binary classification will be detailed in the subsequent section, while section \ref{sec:unused binarys} will outline the methods that were not selected.
 
 %  Truc
 % Our initial goal is to categorize proteins as either enzymes or non-enzymes (level 0). 
@@ -187,7 +187,6 @@ The training set contains $70\%$ of the original data, while the validation set 
 This separation allows us to train our models on a subset of the data and then assess its performance on a different subset to ensure its generalization to new, unseen data.
 
 \subsubsection{Random Forest}
-%  TODO: Truc intro
 
 A straightforward yet powerful machine learning method is the Random Forest algorithm.
 The choice of Random Forest is driven by its effectiveness in handling classification tasks, making it a well-suited option for our specific protein classification objective.
@@ -232,7 +231,7 @@ effectiveness.
 
 \section{Results}	
 
-\subsection{Random Forest Level 0}
+\subsection{Random Forest Level 0}\label{sec:RF_level0}
 Using the Random Forest model on the “new” test set, we achieved accurate predictions for about 
 $90\%$ of positive cases (enzymes) and $98\%$ of negative cases (non-enzymes), even with an imbalanced test set comprising 
 $392$ enzymes and 9876 non-enzymes. As a reference we provided the confusion matrix in figure \ref{fig:RF_conf_l0}.
@@ -293,7 +292,26 @@ This reinforces the robustness and generalizability of our Random Forest model a
 
 \section{Supplementary Information}
 
-\subsection{K-nearest neighbors algorithm using ncd vectors}
+% Jan
+\subsection{Additional binary classification models}\label{sec:unused binarys}
+As we thoroughly reviewed the Random Forest model in section \ref{sec:RF_level0}, we will now outline the other binary classification models we considered for this task.
+
+\subsubsection{k-Nearest-Neighbors (kNN)}
+kNN is a non-parametric classification method,
+which assigns a new object to the most common class amongst the most similar k objects in the data set. [1]. We implemented three kNN models in Python using scikit-learns Nearest Neighbors library and 
+these models using three distinct types of input features:
+\begin{enumerate}
+	\item[(1)] Protein embedding vectors encoded by ProtT5 (see \cite{ProtT5})
+    \item[(2)] Protein embedding vectors encoded by ESM2 (see \cite{ESM2})
+    \item[(3)] Normalized compression distance vectors (see \cite{GzipTextClassification})
+\end{enumerate}
+
+
+
+
+
+
+
 A less popular approach of transforming string like input features into numerical values is the normalized compression distance (ncd) algorithm. 
 The ncd algorithm is based on the idea that the similarity of two strings can be measured by the amount of information needed to describe one string given the other string. The ncd of two strings $x$ and $y$ is defined as follows:
 \begin{equation}
