@@ -101,19 +101,16 @@ we conducted training the following binary classification models and compared th
 The chosen methods will be detailed in the subsequent section, while Section 7.1 will outline the methods that were not selected.
 
 %  Truc
-Our initial goal is to categorize proteins as either enzymes or non-enzymes (level 0). 
-To accomplish this, we've opted for the Random Forest, a straightforward yet powerful machine learning method.
-The choice of Random Forest is driven by its effectiveness in handling classification tasks, making it a well-suited option for our specific protein classification objective.
-We built a Random Forest Classifier using the scikit-learn library with specific parameters, which will be explained in the training procedure. 
+% Our initial goal is to categorize proteins as either enzymes or non-enzymes (level 0). 
+% To accomplish this, we've opted for the Random Forest, a straightforward yet powerful machine learning method.
+% The choice of Random Forest is driven by its effectiveness in handling classification tasks, making it a well-suited option for our specific protein classification objective.
+% We built a Random Forest Classifier using the scikit-learn library with specific parameters, which will be explained in the training procedure. 
 
 %  Malte
 \subsection{Multi-classification of enzymes}
-For the second and third levels, we used a feedforward neural network (FNN) to classify the enzymes into their respective main classes and subclasses.
+For the second and third level, we used a feedforward neural network (FNN) to classify the enzymes into their respective main classes and subclasses.
 The FNN is a type of artificial neural network (ANN) that uses a series of layers to extract features from the input data and classify it into different categories,
 thus making it a suitable choice for our multi-classification task. The library used to build the FNN is Tensorflow, which is an open-source library for machine learning.
-
-Several other machine learning algorithms were tested, including a support vector machine and a k-nearest neighbors algorithm
-which can be found in the supplementary information. Both algorithms were implemented using the scikit-learn library.
 
 \subsection{Data preprocessing in general}
 
@@ -192,6 +189,9 @@ This separation allows us to train our models on a subset of the data and then a
 \subsubsection{Random Forest}
 %  TODO: Truc intro
 
+A straightforward yet powerful machine learning method is the Random Forest algorithm.
+The choice of Random Forest is driven by its effectiveness in handling classification tasks, making it a well-suited option for our specific protein classification objective.
+We built a Random Forest Classifier using the scikit-learn library with specific parameters, which will be explained in the training procedure. 
 For the Random Forest classifier we addressed the imbalance between the number of non-enzymes and enzymes, where non-enzymes outnumber enzymes approximately fourfold,
 by duplicating the enzyme data in the training set four times.
 This duplication ensures a more balanced dataset, allowing the model to be trained on an equal representation of both classes.
