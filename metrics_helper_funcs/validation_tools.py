@@ -50,7 +50,7 @@ def plot_confiusion_matrix(y_true, y_pred, plot_title, lable_to_class_dict=None,
     plt.show()
 
 
-def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, plot_title="Performance Metrics with Custom Error Bars by Model"):
+def plot_bootstrapped_score_old(y_trues, y_preds, scoring_funcs, model_names, plot_title="Performance Metrics with Custom Error Bars by Model"):
     score_df = pd.DataFrame(columns=["Model", "Metric", "Mean Score", "SE", "CI_0", "CI_1"])
 
     for i in range(len(y_trues)):
@@ -114,6 +114,74 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, plot_t
     plt.tight_layout()
 
 
+    plt.show()
+
+
+def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names,
+                                   plot_title="Performance Metrics with Custom Error Bars by Model"):
+    score_df = pd.DataFrame(columns=["Model", "Metric", "Mean Score", "SE", "CI_0", "CI_1"])
+
+    for i in range(len(y_trues)):
+
+        data_to_append = []
+
+        for func in scoring_funcs:
+            y_true = y_trues[i]
+            y_pred = y_preds[i]
+            initial_metric, metric_name = func(y_true, y_pred)
+            mean_metric, se_metric, ci_95 = bootstrap_statistic(y_true=y_true, y_pred=y_pred, statistic_func=func)
+            rounded_mean_metric, rounded_se_metric = round_to_significance(mean_metric, se_metric)
+            # Create a dictionary with the data
+            data_row = {"Model": model_names[i], "Metric": metric_name, "Mean Score": rounded_mean_metric,
+                        "SE": rounded_se_metric, "CI_0": ci_95[0],
+                        "CI_1": ci_95[1]}
+            data_to_append.append(data_row)
+
+        score_df = pd.concat([score_df, pd.DataFrame(data_to_append)])
+
+    # Set the style and context for the plot
+    sns.set()
+    sns.set_palette("colorblind")
+    sns.set("paper")
+    sns.set_style("ticks")
+
+    # Create the bar plot with custom error bars and hue="Model"
+    plt.figure(figsize=(12, 6))
+    ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, edgecolor='black', **{'width': 0.3})
+
+    # Customize the plot labels
+    ax.set_xlabel("Metric", fontsize=18)
+    ax.set_ylabel("Mean Score on Level 0", fontsize=18)
+    ax.set_title("")
+
+    # ax.grid(False)
+
+    # add line with best score
+    best_performance = score_df['Mean Score'].max()
+    plt.axhline(y=best_performance, color='red', linestyle='--', linewidth=2)
+    plt.text(0.5, best_performance, f'{best_performance:.2f}', color='black', ha='center', va='bottom', fontsize=15)
+
+    plt.legend(title="", loc="upper left", bbox_to_anchor=(1, 0.5), fontsize=16, frameon=False, handlelength=1)
+
+    # Manually add error bars using the calculated bounds
+    for i, bar in enumerate(ax.patches):
+        metric_data = score_df.iloc[i]
+        x = bar.get_x() + bar.get_width() / 2
+        y = bar.get_height()
+        lower_bound = metric_data["CI_0"]
+        upper_bound = metric_data["CI_1"]
+
+        plt.plot([x, x], [lower_bound, upper_bound], color="black")
+        plt.plot([x - 0.01, x + 0.01], [lower_bound, lower_bound], color="black")
+        plt.plot([x - 0.01, x + 0.01], [upper_bound, upper_bound], color="black")
+
+    sns.despine()
+
+    ax.tick_params(axis='both', which='major', labelsize=17)
+
+    plt.tight_layout()
+
+    print(score_df)
     plt.show()
 
 
