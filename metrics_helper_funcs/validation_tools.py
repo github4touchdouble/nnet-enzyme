@@ -118,7 +118,14 @@ def plot_bootstrapped_score_old(y_trues, y_preds, scoring_funcs, model_names, pl
 
 
 def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names,
-                                   plot_title="Performance Metrics with Custom Error Bars by Model"):
+                                   level):
+    """
+    y_trues: list of np.arrays (actual labels)
+    y_preds: list of np.arrays (predicted labels)
+    scoring_funcs: list of scoring metrics (need to be imported as well)
+    model_names: list of short names per model
+    level: int (either 0,1,2) -> Adds the corresponding number to the x-axis (which is the title)
+    """
     score_df = pd.DataFrame(columns=["Model", "Metric", "Mean Score", "SE", "CI_0", "CI_1"])
 
     for i in range(len(y_trues)):
@@ -151,7 +158,7 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names,
 
     # Customize the plot labels
     ax.set_xlabel("Metric", fontsize=18)
-    ax.set_ylabel("Mean Score on Level 0", fontsize=18)
+    ax.set_ylabel(f"Mean Score on Level {level}", fontsize=18)
     ax.set_title("")
 
     # ax.grid(False)
