@@ -161,13 +161,6 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names,
     ax.set_ylabel(f"Mean Score on Level {level}", fontsize=18)
     ax.set_title("")
 
-    # ax.grid(False)
-
-    # add line with best score
-    best_performance = score_df['Mean Score'].max()
-    plt.axhline(y=best_performance, color='red', linestyle='--', linewidth=2)
-    plt.text(0.5, best_performance, f'{best_performance:.2f}', color='black', ha='center', va='bottom', fontsize=15)
-
     plt.legend(title="", loc="upper left", bbox_to_anchor=(1, 0.5), fontsize=16, frameon=False, handlelength=1)
 
     # Manually add error bars using the calculated bounds
@@ -181,6 +174,14 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names,
         plt.plot([x, x], [lower_bound, upper_bound], color="black")
         plt.plot([x - 0.01, x + 0.01], [lower_bound, lower_bound], color="black")
         plt.plot([x - 0.01, x + 0.01], [upper_bound, upper_bound], color="black")
+
+    # Add text on top of bars
+    for i, bar in enumerate(ax.patches):
+        metric_data = score_df.iloc[i]
+        x = bar.get_x() + bar.get_width() / 2
+        y = bar.get_height()
+
+        plt.text(x, y + 0.05, f'{metric_data["Mean Score"]:.2f}', ha='center', va='bottom', rotation=90, fontsize=12)
 
     sns.despine()
 
