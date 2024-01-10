@@ -123,14 +123,17 @@ def plot_bootstrapped_score_old(y_trues, y_preds, scoring_funcs, model_names, pl
     plt.show()
 
 
-def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names,
-                                   level):
+def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, level, score_display_size=14, width=8, height=7):
     """
+
     y_trues: list of np.arrays (actual labels)
     y_preds: list of np.arrays (predicted labels)
     scoring_funcs: list of scoring metrics (need to be imported as well)
     model_names: list of short names per model
     level: int (either 0,1,2) -> Adds the corresponding number to the x-axis (which is the title)
+    score_display_size: If the small values above each bar are too big/small you can adjust them here
+    width: plot width
+    height: plot height
     """
     score_df = pd.DataFrame(columns=["Model", "Metric", "Mean Score", "SE", "CI_0", "CI_1"])
 
@@ -159,7 +162,7 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names,
     sns.set_style("ticks")
 
     # Create the bar plot with custom error bars and hue="Model"
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(width, height))
     ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, edgecolor='black', **{'width': 0.3})
 
     # Customize the plot labels
@@ -187,7 +190,7 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names,
         x = bar.get_x() + bar.get_width() / 2
         y = bar.get_height()
 
-        plt.text(x, y + 0.05, f'{metric_data["Mean Score"]:.2f}', ha='center', va='bottom', rotation=90, fontsize=12)
+        plt.text(x, y + 0.05, f'{metric_data["Mean Score"]:.2f}', ha='center', va='bottom', rotation=90, fontsize=score_display_size)
 
     sns.despine()
 
