@@ -1,0 +1,95 @@
+\begin{thebibliography}{}
+
+\bibitem[Bio(2021)Bio]{BioinformaticsSolutionsInc}
+ (2021).
+
+\bibitem[Boser {\em et~al.}(1992)Boser, Guyon, and Vapnik]{svm}
+Boser, B.~E., Guyon, I.~M., and Vapnik, V.~N. (1992).
+\newblock A training algorithm for optimal margin classifiers.
+\newblock In {\em Proceedings of the fifth annual workshop on Computational
+  learning theory\/}, pages 144--152.
+
+\bibitem[Elnaggar {\em et~al.}(2021)Elnaggar, Heinzinger, Dallago, Rehawi,
+  Wang, Jones, Gibbs, Feher, Angerer, Steinegger, {\em et~al.}]{ProtT5}
+Elnaggar, A., Heinzinger, M., Dallago, C., Rehawi, G., Wang, Y., Jones, L.,
+  Gibbs, T., Feher, T., Angerer, C., Steinegger, M., {\em et~al.} (2021).
+\newblock Prottrans: Toward understanding the language of life through
+  self-supervised learning.
+\newblock {\em IEEE transactions on pattern analysis and machine
+  intelligence\/}, {\bf 44}(10), 7112--7127.
+
+\bibitem[Hand(2007)Hand]{knn_principles}
+Hand, D.~J. (2007).
+\newblock Principles of data mining.
+\newblock {\em Drug safety\/}, {\bf 30}, 621--622.
+
+\bibitem[Jiang {\em et~al.}(2023)Jiang, Yang, Tsirlin, Tang, Dai, and
+  Lin]{GzipTextClassification}
+Jiang, Z., Yang, M., Tsirlin, M., Tang, R., Dai, Y., and Lin, J. (2023).
+\newblock {``}low-resource{''} text classification: A parameter-free
+  classification method with compressors.
+\newblock In A.~Rogers, J.~Boyd-Graber, and N.~Okazaki, editors, {\em Findings
+  of the Association for Computational Linguistics: ACL 2023\/}, pages
+  6810--6828, Toronto, Canada. Association for Computational Linguistics.
+
+\bibitem[Lin {\em et~al.}(2023)Lin, Akin, Rao, Hie, Zhu, Lu, Smetanin, Verkuil,
+  Kabeli, Shmueli, {\em et~al.}]{ESM2}
+Lin, Z., Akin, H., Rao, R., Hie, B., Zhu, Z., Lu, W., Smetanin, N., Verkuil,
+  R., Kabeli, O., Shmueli, Y., {\em et~al.} (2023).
+\newblock Evolutionary-scale prediction of atomic-level protein structure with
+  a language model.
+\newblock {\em Science\/}, {\bf 379}(6637), 1123--1130.
+
+\bibitem[Matsumoto {\em et~al.}(2000)Matsumoto, Sadakane, and
+  Imai]{GzipProteinCompression}
+Matsumoto, T., Sadakane, K., and Imai, H. (2000).
+\newblock Biological sequence compression algorithms.
+\newblock {\em Genome Informatics\/}, {\bf 11}, 50--51.
+
+\bibitem[Pedregosa {\em et~al.}(2011)Pedregosa, Varoquaux, Gramfort, Michel,
+  Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos,
+  Cournapeau, Brucher, Perrot, and Duchesnay]{scikit-learn}
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel,
+  O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J.,
+  Passos, A., Cournapeau, D., Brucher, M., Perrot, M., and Duchesnay, E.
+  (2011).
+\newblock Scikit-learn: Machine learning in {P}ython.
+\newblock {\em Journal of Machine Learning Research\/}, {\bf 12}, 2825--2830.
+
+\bibitem[Rigler {\em et~al.}(2007)Rigler, Bishop, and Kennings]{Rigler2007}
+Rigler, S., Bishop, W., and Kennings, A. (2007).
+\newblock Fpga-based lossless data compression using huffman and lz77
+  algorithms.
+\newblock In {\em 2007 Canadian Conference on Electrical and Computer
+  Engineering\/}, pages 1235--1238.
+
+\bibitem[Ryu {\em et~al.}(2019)Ryu, Kim, and Lee]{DeepEC}
+Ryu, J.~Y., Kim, H.~U., and Lee, S.~Y. (2019).
+\newblock Deep learning enables high-quality and high-throughput prediction of
+  enzyme commission numbers.
+\newblock {\em Proceedings of the National Academy of Sciences\/}, {\bf
+  116}(28), 13996--14001.
+
+\bibitem[Wang {\em et~al.}(2021)Wang, Li, Zhang, Ma, Huang, Chen, Dai, and
+  Zou]{oh_encoding}
+Wang, Y., Li, Z., Zhang, Y., Ma, Y., Huang, Q., Chen, X., Dai, Z., and Zou, X.
+  (2021).
+\newblock Performance improvement for a 2d convolutional neural network by
+  using ssc encoding on protein--protein interaction tasks.
+\newblock {\em BMC bioinformatics\/}, {\bf 22}(1), 1--16.
+
+\bibitem[{Wikipedia contributors}(2023){Wikipedia contributors}]{IUBMB}
+{Wikipedia contributors} (2023).
+\newblock Enzyme commission number --- {Wikipedia}{,} the free encyclopedia.
+
+\bibitem[Yu {\em et~al.}(2023a)Yu, Cui, Li, Luo, Jiang, and Zhao]{CleanArticle}
+Yu, T., Cui, H., Li, J.~C., Luo, Y., Jiang, G., and Zhao, H. (2023a).
+\newblock Enzyme function prediction using contrastive learning.
+\newblock {\em Science\/}, {\bf 379}(6639), 1358--1363.
+
+\bibitem[Yu {\em et~al.}(2023b)Yu, Cui, Li, Luo, Jiang, and Zhao]{CLEANgit}
+Yu, T., Cui, H., Li, J.~C., Luo, Y., Jiang, G., and Zhao, H. (2023b).
+\newblock Enzyme function prediction using contrastive learning.
+\newblock {\em Science\/}, {\bf 379}(6639), 1358--1363.
+
+\end{thebibliography}

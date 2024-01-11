@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: natbib.bst
+Database file #1: document.bib
+Warning--to sort, need author or key in BioinformaticsSolutionsInc
+You've used 14 entries,
+            2378 wiz_defined-function locations,
+            621 strings with 7109 characters,
+and the built_in function-call counts, 8326 in all, are:
+= -- 727
+> -- 599
+< -- 5
++ -- 186
+- -- 183
+* -- 834
+:= -- 1440
+add.period$ -- 67
+call.type$ -- 14
+change.case$ -- 82
+chr.to.int$ -- 13
+cite$ -- 17
+duplicate$ -- 310
+empty$ -- 496
+format.name$ -- 196
+if$ -- 1644
+int.to.chr$ -- 2
+int.to.str$ -- 0
+missing$ -- 12
+newline$ -- 70
+num.names$ -- 54
+pop$ -- 99
+preamble$ -- 1
+purify$ -- 83
+quote$ -- 0
+skip$ -- 199
+stack$ -- 0
+substring$ -- 543
+swap$ -- 81
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 126
+warning$ -- 1
+while$ -- 62
+width$ -- 0
+write$ -- 177
+(There was 1 warning)
