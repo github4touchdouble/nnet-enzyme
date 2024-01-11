@@ -498,9 +498,13 @@
 %        Vol. 00\ no. 00 \@pubyear\\
 %        \hfill Pages \thepagerange
 %  }
-  \hfill}
+	
+  \hfill
+  %\includegraphics{./assets/rost_icon_resized.png}
+  }%
   \vskip2pt
-  \rule{415pt}{2\p@}\par%
+  % \rule{415pt}{2\p@}\par%
+\rule{\textwidth}{1\p@}\par%
   \helvetica
   \hbox to \textwidth{%
   \parbox[t]{36.5pc}{%
@@ -534,7 +538,8 @@
     }%
   }
   \vspace{13.5\p@}%
-  \rule{415pt}{2\p@}%
+  % \rule{415pt}{2\p@}%
+\rule{\textwidth}{1\p@}%
   \vspace{12\p@ plus 6\p@ minus 6\p@}%
   \vspace{\extraspace}
   }
