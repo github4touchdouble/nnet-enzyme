@@ -500,7 +500,7 @@
 %  }
 	
   \hfill
-  %\includegraphics{./assets/rost_icon_resized.png}
+  % \includegraphics{./assets/rost_icon_resized.jpeg}
   }%
   \vskip2pt
   % \rule{415pt}{2\p@}\par%

@@ -127,11 +127,21 @@ The protein data sets were taken from the UniProt database and were also used in
 The complete data pool of enzymes (called Split100 in \cite{CLEANgit}) contains 224.693 sequences. 
 This pool was used to derive several smaller subsets (SplitX, $X \in \left\{10, 30, 50, 70\right\}$) where $X$ stands for the amount of similarity allowed between the sequences.
 For reference, Split30 only contains sequences that share at most 30\% similarity with each other.
-Since we want to avoid homology-based inference as much as possible while 
-maintaining a reasonable amount of data to train our models on, we opted to use the Split30 dataset for our research,
-containing 9.186 enzymes. This subset was combined with a non-enzyme dataset holding 37.347 sequences, resulting in 46.533 sequences (see figure \ref{fig:DataPoolDist}).
+Since we want to reduce family overrepresentation we opted to use the Split30 dataset for our research,
+containing 9.186 enzymes. That way we can ensure that the model is not biased towards a specific family of enzymes.
+This subset was combined with a non-enzyme dataset holding 37.347 sequences, resulting in 46.533 sequences (see figure \ref{fig:DataPoolDist}).
 
 %  TODO: introduce esm2 and ProtT5
+For each sequence we inferred the esm2b embeddings (see \cite{ESM2}) and ProtT5 embeddings (see \cite{ProtT5}) 
+using the esm-1b model (see 
+% TODO: \cite{ESM1b}
+) and the ProtT5 model (see \cite{ProtT5}) respectively.
+These are large language models capable of encoding protein sequences into numerical vectors
+by training on a large amount of protein sequences. 
+
+
+
+
 Note that we additionally removed all sequences containing an ambiguous amino acid, such as 'U' or 'O', from the dataset, as well as
 sequences with a length longer than 1022 amino acids. 
 This is due to the fact that the esm2b model used for the embeddings only accepts sequences 
