@@ -184,7 +184,7 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, level,
         x = bar.get_x() + bar.get_width() / 2
         y = bar.get_height()
 
-        plt.text(x, y + 0.05, f'{metric_data["Mean Score"]:.2f}', ha='center', va='bottom', rotation=90, fontsize=score_display_size)
+        plt.text(x, y + 0.1, f'{metric_data["Mean Score"]:.2f}', ha='center', va='bottom', rotation=90, fontsize=score_display_size)
 
     sns.despine()
 
