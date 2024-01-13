@@ -15,9 +15,12 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision import datasets, transforms
 import torch.optim as optim
 import keyboard
-from itertools import chain
 from bootstrapping import f1_score
-from bootstrapping import calculate_f1
+from bootstrapping import calculate_f1, round_to_significance
+from reading_util import filter_unwanted_esm2, H5Dataset
+import time
+import matplotlib.pyplot as plt
+from CNN_esm import bootstrap_statistic
 
 
 logger = SummaryWriter('runs/basic')
@@ -46,7 +49,7 @@ def loadData(embPath=r"T:/Projects/Prog/RNN/Dataset/split10_prott5.h5",
     enzymeSequences = []
     listOfHeaders = []
 
-    hdf_handle = h5py.File(r"T:/Projects/Prog/RNN/Dataset/split10_prott5.h5", "r")
+    hdf_handle = h5py.File(r"D:/Uni/PBL/RNN/Dataset/split30_prott5.h5", "r")
     for header, emb in hdf_handle.items():
         np.set_printoptions(threshold=sys.maxsize)
         listOfHeaders.append(header)
@@ -54,7 +57,7 @@ def loadData(embPath=r"T:/Projects/Prog/RNN/Dataset/split10_prott5.h5",
         enzymeSequences.append(emb[0])
 
     csv_data = {}
-    csvFile = open('T:/Projects/Prog/RNN/Dataset/split10.csv', 'r', newline='')
+    csvFile = open('D:/Uni/PBL/RNN/Dataset/split30.csv', 'r', newline='')
     csv_reader = csv.reader(csvFile)
     next(csv_reader, None)
     for row in csv_reader:
@@ -87,7 +90,7 @@ class FNN(nn.Module):
 
 # HYPERPARAMS
 folds = 6
-max_epoch = 5
+max_epoch = 100
 
 
 class ActivationHook:
@@ -200,11 +203,13 @@ if __name__ == '__main__':
                 break
         if keyboard.is_pressed('Esc'):
             break
-
     dataset = DataWrapper(torch.as_tensor(data=enzyme_sequences, dtype=torch.float32, device=device),
                           torch.as_tensor(data=enzyme_labels, dtype=torch.long, device=device))
     loader = DataLoader(dataset, batch_size=32, shuffle=False)
     scores = predict(model, loader)
+
+    # Save the model's state dictionary to a file
+    torch.save(model.state_dict(), 'D:/Uni/PBL/pbl_binary_classifier/KidaNN/FNN_prott.pth')
 
     predicted_classes = list(itertools.chain([torch.argmax(input=score, dim=0).cpu().tolist() for score in scores]))
 
@@ -214,5 +219,35 @@ if __name__ == '__main__':
 
     print(f"F1 Score: {f1:.4f}")
     print(f"Accuracy: {accuracy:.4f}")
+
+    mean_score, standard_error, bounds, bootstrap_scores = bootstrap_statistic(np.array(enzyme_labels),
+                                                                               np.array(predicted_classes),
+                                                                               calculate_f1)
+
+    # Set the range of values you want to plot (e.g., between 0.70 and 0.74)
+    min_value = 0.8
+    max_value = 0.99
+
+    # Filter data within the specified range
+    filtered_data = [x for x in bootstrap_scores if min_value <= x <= max_value]
+
+    # Create the histogram
+    plt.hist(filtered_data, bins=20, edgecolor='green')
+
+    # Set the title and labels
+    plt.title('Close-up Distribution Plot')
+    plt.xlabel('Values')
+    plt.ylabel('Frequency')
+
+    # Show the plot
+    plt.show()
+
+    initial_f1 = calculate_f1(enzyme_labels, predicted_classes)
+    rounded_mean_f1, rounded_se_f1 = round_to_significance(mean_score, standard_error)
+    print(f"  - Initial F1 Score: {initial_f1:.2f}")
+    print(f"  - Mean ± SE: {rounded_mean_f1} ± {rounded_se_f1}")
+    print(f"  - 95% CI: [{bounds[0]:.2f}, {bounds[1]:.2f}]")
+
+    print("Finished")
 
     print("Finished")

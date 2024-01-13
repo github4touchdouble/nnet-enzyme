@@ -254,8 +254,7 @@ if __name__ == '__main__':
                 model_checkpoint_filename = os.path.join(checkpoint_dir, unique_filename)
 
                 # Save the model checkpoint
-                torch.save(model.state_dict(), model_checkpoint_filename)
-                print(f"Saved model checkpoint: {model_checkpoint_filename}")
+                torch.save(model.state_dict(), 'D:/Uni/PBL/pbl_binary_classifier/KidaNN/FNN_esm.pth')
 
             if keyboard.is_pressed('Esc'):
                 break
