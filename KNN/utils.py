@@ -30,7 +30,7 @@ def enzyme_split30_preprocessing(args):
     return args
 
 
-def read_h5(path_to_h5):
+def read_h5(path_to_h5, prott5=True):
     """
     :param path_to_h5: FIle path as String
     :return: DataFrame {ID: <ID>. Embedding: [<emb>,<...>,...]}
@@ -40,7 +40,10 @@ def read_h5(path_to_h5):
     with h5py.File(path_to_h5, 'r') as h:
         for id, emb in h.items():
             bin["ID"].append(id)
-            bin["Embedding"].append(list(emb)[0])
+            if prott5:
+                bin["Embedding"].append(list(emb)[0])
+            else:
+                bin["Embedding"].append(list(emb))
 
     return pd.DataFrame(bin)
 
@@ -73,12 +76,12 @@ def read_fasta(path_to_fasta):
     return pd.DataFrame(bin)
 
 
-def apply_prott5(args_prott5, args_proteins):
+def apply_embedding(args_embedding, args_proteins):
     """
-    :param args_prott5: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...]}
+    :param args_embedding: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...]}
     :param args_proteins: DataFrame {ID: <ID>, ...}
     :return: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...], ...}
     """
 
-    bin = pd.merge(args_prott5, args_proteins, on="ID", how="inner")
+    bin = pd.merge(args_embedding, args_proteins, on="ID", how="inner")
     return bin

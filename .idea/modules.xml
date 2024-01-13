@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/pbl_binary_classifier.iml" filepath="$PROJECT_DIR$/.idea/pbl_binary_classifier.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/nnet-enzyme.iml" filepath="$PROJECT_DIR$/.idea/nnet-enzyme.iml" />
     </modules>
   </component>
 </project>
