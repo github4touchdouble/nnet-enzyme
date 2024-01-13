@@ -6,7 +6,7 @@ seaborn
 Bio
 python-dotenv
 h5py
-
+joblib
 tqdm
 argparse
 torch
