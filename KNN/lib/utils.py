@@ -83,6 +83,9 @@ def apply_embedding(args_embedding, args_proteins):
     :param args_proteins: DataFrame {ID: <ID>, ...}
     :return: DataFrame {ID: <ID>, Embedding: [<emb>,<...>,...], ...}
     """
+    print("apply embedding")
+    print(args_embedding.columns)
+    print(args_proteins.columns)
 
     bin = pd.merge(args_embedding, args_proteins, on="ID", how="inner")
     return bin
