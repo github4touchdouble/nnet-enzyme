@@ -3,6 +3,29 @@
 \bibitem[Bio(2021)Bio]{BioinformaticsSolutionsInc}
  (2021).
 
+\bibitem[Abadi {\em et~al.}(2015)Abadi, Agarwal, Barham, Brevdo, Chen, Citro,
+  Corrado, Davis, Dean, Devin, Ghemawat, Goodfellow, Harp, Irving, Isard, Jia,
+  Jozefowicz, Kaiser, Kudlur, Levenberg, Man\'{e}, Monga, Moore, Murray, Olah,
+  Schuster, Shlens, Steiner, Sutskever, Talwar, Tucker, Vanhoucke, Vasudevan,
+  Vi\'{e}gas, Vinyals, Warden, Wattenberg, Wicke, Yu, and
+  Zheng]{tensorflow2015-whitepaper}
+Abadi, M., Agarwal, A., Barham, P., Brevdo, E., Chen, Z., Citro, C., Corrado,
+  G.~S., Davis, A., Dean, J., Devin, M., Ghemawat, S., Goodfellow, I., Harp,
+  A., Irving, G., Isard, M., Jia, Y., Jozefowicz, R., Kaiser, L., Kudlur, M.,
+  Levenberg, J., Man\'{e}, D., Monga, R., Moore, S., Murray, D., Olah, C.,
+  Schuster, M., Shlens, J., Steiner, B., Sutskever, I., Talwar, K., Tucker, P.,
+  Vanhoucke, V., Vasudevan, V., Vi\'{e}gas, F., Vinyals, O., Warden, P.,
+  Wattenberg, M., Wicke, M., Yu, Y., and Zheng, X. (2015).
+\newblock {TensorFlow}: Large-scale machine learning on heterogeneous systems.
+\newblock Software available from tensorflow.org.
+
+\bibitem[Akiba {\em et~al.}(2019)Akiba, Sano, Yanase, Ohta, and
+  Koyama]{optuna_2019}
+Akiba, T., Sano, S., Yanase, T., Ohta, T., and Koyama, M. (2019).
+\newblock Optuna: A next-generation hyperparameter optimization framework.
+\newblock In {\em Proceedings of the 25th {ACM} {SIGKDD} International
+  Conference on Knowledge Discovery and Data Mining\/}.
+
 \bibitem[Boser {\em et~al.}(1992)Boser, Guyon, and Vapnik]{svm}
 Boser, B.~E., Guyon, I.~M., and Vapnik, V.~N. (1992).
 \newblock A training algorithm for optimal margin classifiers.
@@ -33,9 +56,11 @@ Jiang, Z., Yang, M., Tsirlin, M., Tang, R., Dai, Y., and Lin, J. (2023).
   6810--6828, Toronto, Canada. Association for Computational Linguistics.
 
 \bibitem[Lin {\em et~al.}(2023)Lin, Akin, Rao, Hie, Zhu, Lu, Smetanin, Verkuil,
-  Kabeli, Shmueli, {\em et~al.}]{ESM2}
+  Kabeli, Shmueli, dos Santos~Costa, Fazel-Zarandi, Sercu, Candido, and
+  Rives]{ESM2}
 Lin, Z., Akin, H., Rao, R., Hie, B., Zhu, Z., Lu, W., Smetanin, N., Verkuil,
-  R., Kabeli, O., Shmueli, Y., {\em et~al.} (2023).
+  R., Kabeli, O., Shmueli, Y., dos Santos~Costa, A., Fazel-Zarandi, M., Sercu,
+  T., Candido, S., and Rives, A. (2023).
 \newblock Evolutionary-scale prediction of atomic-level protein structure with
   a language model.
 \newblock {\em Science\/}, {\bf 379}(6637), 1123--1130.

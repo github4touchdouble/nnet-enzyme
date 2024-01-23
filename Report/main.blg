@@ -4,45 +4,45 @@ The top-level auxiliary file: main.aux
 The style file: natbib.bst
 Database file #1: document.bib
 Warning--to sort, need author or key in BioinformaticsSolutionsInc
-You've used 14 entries,
+You've used 16 entries,
             2378 wiz_defined-function locations,
-            621 strings with 7109 characters,
-and the built_in function-call counts, 8326 in all, are:
-= -- 727
-> -- 599
+            629 strings with 8275 characters,
+and the built_in function-call counts, 10253 in all, are:
+= -- 803
+> -- 913
 < -- 5
-+ -- 186
-- -- 183
-* -- 834
-:= -- 1440
-add.period$ -- 67
-call.type$ -- 14
-change.case$ -- 82
-chr.to.int$ -- 13
-cite$ -- 17
-duplicate$ -- 310
-empty$ -- 496
-format.name$ -- 196
-if$ -- 1644
++ -- 288
+- -- 285
+* -- 1071
+:= -- 1851
+add.period$ -- 74
+call.type$ -- 16
+change.case$ -- 94
+chr.to.int$ -- 15
+cite$ -- 19
+duplicate$ -- 343
+empty$ -- 544
+format.name$ -- 300
+if$ -- 1978
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 12
-newline$ -- 70
-num.names$ -- 54
-pop$ -- 99
+missing$ -- 13
+newline$ -- 80
+num.names$ -- 62
+pop$ -- 118
 preamble$ -- 1
-purify$ -- 83
+purify$ -- 95
 quote$ -- 0
-skip$ -- 199
+skip$ -- 219
 stack$ -- 0
-substring$ -- 543
-swap$ -- 81
+substring$ -- 564
+swap$ -- 84
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 126
+type$ -- 144
 warning$ -- 1
-while$ -- 62
+while$ -- 67
 width$ -- 0
-write$ -- 177
+write$ -- 201
 (There was 1 warning)
