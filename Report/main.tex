@@ -1,4 +1,6 @@
 \documentclass{bioinfo}
+\usepackage{lipsum}
+\usepackage{floatrow}
 % Do not touch this
 \copyrightyear{2015} \pubyear{2015}
 
@@ -147,7 +149,7 @@ with a maximum length of 1022 amino acids.
 
 % TODO: Maybe not include log scale
 \begin{figure}[!htbp]
-\includegraphics[width=0.5\textwidth]{./assets/l0_dist_all_train.png}
+\includegraphics[width=0.95\textwidth]{./assets/l0_dist_all_train.png}
 \caption{Barplot showing the amount of sequences per class in the complete data pool (logarithmic scale)}\label{fig:DataPoolDist}
 \end{figure}
 
@@ -169,12 +171,12 @@ enzyme (see figure \ref{fig:PCA_enzymes}) and non-enzyme (see figure \ref{fig:PC
 
 % TODO: Make the labels in the figures bigger
 \begin{figure}[!bp]
-\includegraphics[width=0.5\textwidth]{assets/Data_Truc_1.jpeg}
+\includegraphics[width=0.95\textwidth]{assets/Data_Truc_1.jpeg}
 \caption{The number of components needed to explain the variance in the enzyme dataset}\label{fig:PCA_enzymes}
 \end{figure}
 
 \begin{figure}[!tbp]
-\includegraphics[width=0.5\textwidth]{assets/Data_Truc_2.jpeg}
+\includegraphics[width=0.95\textwidth]{assets/Data_Truc_2.jpeg}
 \caption{The number of components needed to explain the variance in the non enzyme dataset}\label{fig:PCA_nonEnzymes}
 \end{figure}
 
@@ -216,7 +218,7 @@ the seventh main class is the least prevalent with only
 containing 190 representatives.
 
 \begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{./assets/l1_dist_enzymes.png}
+\includegraphics[width=0.95\textwidth]{./assets/l1_dist_enzymes.png}
 \caption{Main distribution in Split30 (logarithmic scale)}\label{fig:l1_dist_train}
 \end{figure}
 
@@ -226,7 +228,7 @@ containing 190 representatives.
 For the level 2 prediction we labeled each sequence with its respective subclass (see figure \ref{fig:l2_dist_train}).
 
 \begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{./assets/l2_dist_all_train_ver.png}
+\includegraphics[width=0.95\textwidth]{./assets/l2_dist_all_train_ver.png}
 \caption{Subclass distribution in Split30 (logarithmic scale)}\label{fig:l2_dist_train}
 \end{figure}
 
@@ -258,6 +260,20 @@ Each tree has a maximum depth of 16, and a node is designated as a leaf only if 
 The random state parameter is set to 42, ensuring reproducibility in the model's construction.
 \subsubsection{Level 1 - FNN}
 % Kida
+The multiclass FNN model, developed for both ESM2 and PROTT5 embeddings involves a sequential arrangement of linear layers with each accompanied by LeakyReLU activation functions.
+This choice of activation function, LeakyReLU is particularly remarkable for the capability it presents of dealing with “dying ReLU”% TODO: Quelle?
+problem by allowing a small gradient when the unit is not active. 
+For ESM2 embeddings, the architecture of the model consist of layers sized at 1024, 1024, 512, and finally 7 units, the later being correspondent 
+to the number of enzyme main classes. In contrast, the size of the layers in the PROTT5-based model architecture is 1024, 768, 256, and 7.
+It is worth pointing out that both architectures contain BatchNorm1d layers intended for normalizing the input layer through adjustment
+and scaling activations to thereby set 
+forth stabilization of both the training process and accelerate them as well.
+
+Model prefers Softmax function in the final layer for both ESM2 and PROTT5 embeddings, %  NOTE: Ich glaube das ist klar, dass wir bei Multiclass softmax benutzen 
+appropriate for multiclass classification as it squashes the output to a probability distribution over predicted output classes.
+Model Architecture Design encapsulates a well-thought-out approach keeping in view the intricate structure and dependencies that 
+are associated with enzyme classification tasks.
+
 \subsubsection{Level 2 - FNN}
 % Malte
 For the level 2 prediction we used a feedforward neural network (FNN) to classify the enzymes into their respective subclasses.
@@ -319,63 +335,60 @@ The performance plots show the mean score and the confidence intervals as error 
 
 \section{Results}	
 
-\subsection{Random Forest Level 0}\label{sec:RF_level0}
+\subsection{Binary classification}\label{sec:RF_level0}
 Using the Random Forest model on the “new” test set, we achieved accurate predictions for about 
 $90\%$ of positive cases (enzymes) and $98\%$ of negative cases (non-enzymes), even with an imbalanced test set comprising 
 $392$ enzymes and 9876 non-enzymes. As a reference we provided the confusion matrix in figure \ref{fig:RF_conf_l0}.
 
 %  Figure 1 of truc result
-\begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{assets/Results_Truc_1.jpeg}
+\begin{figure}[!hb]
+\includegraphics[width=0.95\textwidth]{assets/Results_Truc_1.jpeg}
 \caption{Confusion Matrix of the Random Forest Model on the “new” dataset}\label{fig:RF_conf_l0}
 \end{figure}
 
 Additionally, we attained an Accuracy of 97.6\%, a weighted f1-score of 97.8\%, and an MCC-score of 74.1\%. 
 Figure \ref{fig:RF_scores_l0} illustrates that our Random Forest model significantly outperformed the random baseline.
 
-\begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{assets/Results_Truc_3.jpeg}
+% TODO: commented out for now
+% Furthermore, when we tested our model on a distinct test set, the "price" dataset,
+% it demonstrated a strong performance: only one enzyme was misclassified  (see figure \ref{fig:RF_conf_l0_price}).
+% This reinforces the robustness and generalizability of our Random Forest model across diverse datasets.
+%
+\begin{figure}[!ht]
+\includegraphics[width=0.97\textwidth]{assets/Results_Truc_3.jpeg}
 \caption{Level 0 model comparison of Random Forest and baseline on “new” dataset}\label{fig:RF_scores_l0}
 \end{figure}
 
-Furthermore, when we tested our model on a distinct test set, the "price" dataset,
-it demonstrated a strong performance: only one enzyme was misclassified  (see figure \ref{fig:RF_conf_l0_price}).
-This reinforces the robustness and generalizability of our Random Forest model across diverse datasets.
 
-\begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{assets/Results_Truc_4.jpeg}
-\caption{Confusion Matrix of the Random Forest Model on the “price” dataset}\label{fig:RF_conf_l0_price}
+% \begin{figure}[!ht]
+% \includegraphics[width=\textwidth]{assets/Results_Truc_4.jpeg}
+% \caption{Confusion Matrix of the Random Forest Model on the “price” dataset}\label{fig:RF_conf_l0_price}
+% \end{figure}
+
+
+\subsection{Main class prediction}
+
+\lipsum[1]
+
+\subsection{Subclass prediction}
+\lipsum[1]
+
+\begin{figure}[!b]
+\includegraphics[width=0.95\textwidth]{assets/l2_scores.png}
+\caption{}\label{fig:FNN_scores_l2}
 \end{figure}
-
-
-\subsection{Level 1 performance}
-
-% \begin{figure}[!htpb]
-% \includegraphics[width=0.5\textwidth]{assets/l1_scores.png}
-% \caption{}\label{fig:FNN_scores_l1}
-% \end{figure}
-%
-% \begin{figure}[!htpb]
-% \includegraphics[width=0.5\textwidth]{assets/l1_conf_new.png}
-% \caption{}\label{fig:FNN_conf_l1}
-% \end{figure}
-% \subsection{Level 2 performance}
-%
-% \begin{figure}[!htpb]
-% \includegraphics[width=0.5\textwidth]{assets/l2_scores.png}
-% \caption{}\label{fig:FNN_scores_l2}
-% \end{figure}
-\begin{figure}[!htpb]
-\includegraphics[width=0.5\textwidth]{assets/l2_conf_test_new_all.png}
-\caption{Normalized confusion matrix of level 2 prediction. 
-The test dataset only had a subset (28 subclasses) of the subclasses present in the training dataset (51 subclasses), 
-which is indicated by the voids in the matrix. 
+\lipsum[1]
+\begin{figure}[!htb]
+\includegraphics[width=0.95\textwidth]{assets/l2_conf_test_new_all.png}
+\caption{Normalized confusion matrix of level 2 prediction.
+The test dataset only had a subset (28 subclasses) of the subclasses present in the training dataset (51 subclasses),
+which is indicated by the voids in the matrix.
 The reasonably low noise per row indicates that the model can distinguish between the present subclasses of the new dataset.}\label{fig:FNN_conf_l2}
 \end{figure}
+\lipsum[1]
 
 \section{Discussion}
-
-\section{Conclusion}
+\lipsum[1]
 
 \section{Supplementary Information}
 
@@ -431,6 +444,7 @@ Given two strings $x$ and $y$, the $ncd$ is defined as follows:
 \end{equation}
 where $C(x)$ is the length of the compressed string $x$, $C(xy)$ is the length of the concatenated string $xy$. 
 
+% TODO:anpassen, dass hier die random baseline 50:50 ist, da wir bei den train data undersampeled haben
 We implemented this algorithm in python using \textit{gzip}, which is a loss less compression algorithm based on a combination of LZ77 and Huffman encoding (\cite{Rigler2007}).
 The $ncd$ algorithm transformed amino acid sequences into numerical vectors by comparing each sequence with all others in the training dataset.
 This transformation yielded an $n$-dimensional numerical vector for each sequence, where $n$ represents the number of sequences in the training dataset.
@@ -449,6 +463,13 @@ Despite the mean F1 score of the kNN lying at $0.728$, it did not perform better
 achieved a F1 score of $0.843$.
 This observation suggests that the ncd approach exhibits inferior precision and recall compared to the random baseline. 
 Additionally, both classifiers exhibit a low MCC score of 0.2 and 0.01, respectively, indicating that neither classifier performs better than random guessing.
+
+\begin{figure}[!tb]
+	\includegraphics[width=0.9\textwidth]{./assets/gzip_new.png}
+	\caption{Performance of gzip kNN on the new dataset combined with the non-enzymes test dataset}
+	\label{fig:l0_gzip_score}
+\end{figure}
+
 
 The reason for the poor performance of the k-nearest neighbors algorithm using $ncd$ vectors is
 most likely due to the ncd algorithm not being suited for protein sequences as shown in \cite{GzipProteinCompression} as well as
@@ -469,18 +490,21 @@ input features:
 
 \paragraph{(1) SVM using ProtT5 encoded embedding vectors:}
 
+\lipsum[1]
 \paragraph{(2) SVM using ESM2 encoded embedding vectors:}
 
+\lipsum[1]
 \paragraph{(3) SVM using one hot encoded protein sequence vectors:}
+\lipsum[1]
 
 
-\begin{figure}[!htpb]
-	\centering
-	\includegraphics[width=0.5\textwidth]{./assets/l0_combined_scores.png}
+\begin{figure}[!tb]
+	\includegraphics[width=0.9\textwidth]{./assets/l0_combined_scores.png}
 	\caption{Comparison of all level 0 models}
 	\label{fig:l0_comp_all}
 \end{figure}
 
+\newpage
 
 \bibliographystyle{natbib} 
 \bibliography{document}
