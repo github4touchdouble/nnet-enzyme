@@ -43,7 +43,7 @@ Therefore, developing a reliable method for predicting EC numbers is very import
 However, due to insufficient data, enzyme function prediction using machine learning remains challenging.
 This paper proposes several methods for predicting enzymes in three different problem categories. Each category goes further into depth
 of the enzyme classification system, starting with a binary classification (level 0) of enzymes and non-enzymes, followed by a multi-class classification (level 1 \& 2) of enzymes into main classes (e.g., EC X.-.-.-) and subclasses (e.g., EC X.X.-.-).
-Throughout developing our models, we used various input features and machine learning algorithms, of which the best will be thoroughly reviewed in this paper (see table \ref{tab:bestScores}).
+Throughout developing our models, we used various input features and machine learning algorithms, of which the best will be thoroughly reviewed in this paper (see Table \ref{tab:bestScores}).
 
 %  Malte
 \begin{table}[!htbp]
@@ -172,7 +172,7 @@ To simplify the embeddings, we applied Principal Component Analysis (\cite{sciki
 separately to enzyme and non-enzyme datasets,
 retaining $90\%$ of the variance. This process yielded reduced dimensions of $397$ for enzymes and $369$ for non-enzymes. 
 Therefore, we reduced the dimensions to $397$, providing a streamlined representation of the protein embeddings while retaining crucial information for both 
-enzyme (see figure \ref{fig:PCA_enzymes}) and non-enzyme datasets.
+enzyme (see Figure \ref{fig:PCA_enzymes}) and non-enzyme datasets.
 
 \begin{figure}[!tbp]
 \includegraphics[width=0.95\textwidth]{assets/Data_Truc_2.jpeg}
@@ -216,21 +216,21 @@ The refined set of input features contains
 \subsubsection{Data Preprocessing for Level 1}
 % Malte →
 For the level 1 prediction we labeled each sequence with its respective main class,
-resulting in 7 classes (see figure \ref{fig:l1_dist_train}).
+resulting in 7 classes (see Figure \ref{fig:l1_dist_train}).
 While the second main class is the most prevalent, 
 the seventh main class is the least prevalent with only
 containing 190 representatives.
 
-\begin{figure}[ht]
+\begin{figure}[!tb]
 \centering
-\includegraphics[width=0.8\columnwidth]{./assets/l1_dist_enzymes.png}
-\caption{Main distribution in Split30 (logarithmic scale)}\label{fig:l1_dist_train}
+\includegraphics[width=0.7\textwidth]{assets/l1_dist_enzymes.png}
+\caption{Main class distribution of Split30}\label{fig:l1_dist_train}
 \end{figure}
 
 
 \subsubsection{Data Preprocessing for Level 2}
 % Malte
-For the level 2 prediction we labeled each sequence with its respective subclass (see section \ref{sec:supplementary figures} figure \ref{fig:l2_dist_train}).
+For the level 2 prediction we labeled each sequence with its respective subclass (see section \ref{sec:supplementary figures} Figure \ref{fig:l2_dist_train}).
 The problem of imbalanced data and underrepresentation of some labels is even more pronounced when labeling the sequences with their respective subclass.
 Some enzyme families had less than 10 representatives in the dataset, making it difficult for the model to learn the patterns of these families.
 To address issue, we combined underrepresented families of the same main class into a single class 
@@ -262,27 +262,20 @@ maximum depth of 16, and a node is designated as a leaf only if it has a
 minimum of 8 samples. The random state parameter is set to 42, ensuring
 reproducibility in the model’s construction.
 
-
 % Truc
 The classifier consists of a total of 200 decision trees.
 Each tree has a maximum depth of 16, and a node is designated as a leaf only if it has a minimum of 8 samples.
 The random state parameter is set to 42, ensuring reproducibility in the model's construction.
-\subsubsection{Level 1 - FNN}
-% TODO: Insert Kida Part <27.01.24, Malte Weyrich> %
-% Kida
-The multiclass FNN model, developed for both ESM2 and PROTT5 embeddings involves a sequential arrangement of linear layers with each accompanied by LeakyReLU activation functions.
-This choice of activation function, LeakyReLU is particularly remarkable for the capability it presents of dealing with “dying ReLU”% TODO: Quelle?
-problem by allowing a small gradient when the unit is not active. 
-For ESM2 embeddings, the architecture of the model consist of layers sized at 1024, 1024, 512, and finally 7 units, the later being correspondent 
-to the number of enzyme main classes. In contrast, the size of the layers in the PROTT5-based model architecture is 1024, 768, 256, and 7.
-It is worth pointing out that both architectures contain BatchNorm1d layers intended for normalizing the input layer through adjustment
-and scaling activations to thereby set 
-forth stabilization of both the training process and accelerate them as well.
 
-Model prefers Softmax function in the final layer for both ESM2 and PROTT5 embeddings, %  NOTE: Ich glaube das ist klar, dass wir bei Multiclass softmax benutzen 
-appropriate for multi-class classification as it squashes the output to a probability distribution over predicted output classes.
-Model Architecture Design encapsulates a well-thought-out approach keeping in view the intricate structure and dependencies that 
-are associated with enzyme classification tasks.
+\subsubsection{Level 1 - FNN}
+% Kida done
+The feedforward neural network for level 1, using ESM2 embeddings, involves a sequential arrangement of linear layers, each accompanied by LeakyReLU activation functions.
+This choice of activation function, LeakyReLU, is particularly remarkable for its capability of dealing with the ``dying ReLU'' problem by 
+allowing a small gradient when the unit is inactive. 
+The architecture of the model consists of layers sized at 2560, the input layer, hidden layers being 2048,
+768, 256, and finally, 7 units as an output layer.
+It is worth pointing out that the architecture contains batch normalization layers (BatchNorm1d) intended for 
+normalizing the input layer through adjustment and scaling activations to stabilize and accelerate the training process.
 
 \subsubsection{Level 2 - FNN}
 % Malte
@@ -295,16 +288,18 @@ The amount of perceptrons used per layer and the dropout rate were optimized usi
 This resulted in 262 perceptrons in the first hidden layer and 121 perceptrons in the second hidden layer.
 The dropout rate was set to 0.23.
 While the input layer had the same dimension as the esm2b embeddings (2560), the output layer had a dimension of 51,
-since there are 51 subclasses in the training dataset (see figure \ref{fig:l2_dist_train}).
+since there are 51 subclasses in the training dataset (see Figure \ref{fig:l2_dist_train}).
 To further address the imbalance in the dataset, we used class weights to penalize the model more for misclassifying the minority classes
 while being more lenient towards misclassifying the majority classes.
 During training we used early stopping with a patience of 15 epochs to prevent overfitting.
 
 
-\subsection{Validation on Test Dataset}
+\subsection{Evaluation on Test Dataset}
 %  TODO: Introduction of new.csv dataset + us combining it with the non-enzymes test dataset
 % - What is it -> data set from clean it came from ... redundancy reduction, ... data cutoff, d
-
+The dataset we used for evaluation is called ``New-392'' and was used as one of the  benchmark datasets in the CLEAN publication (see \cite{CleanArticle}).
+It contains 392 sequences, of which we also removed all sequences containing an ambiguous amino acid, such as 'U' or 'O', from the dataset.
+This resulted in a total 
 \subsubsection{Scoring Metrics}
 
 % Truc
@@ -330,9 +325,6 @@ It can also be applied to multiclassification models by calculating the MCC scor
     &\textbf{MCC score} = \frac{\text{TP} \cdot \text{TN} - \text{FP} \cdot \text{FN}}{\sqrt{(\text{TP} + \text{FP}) \cdot (\text{TP} + \text{FN}) \cdot (\text{TN} + \text{FP}) \cdot (\text{TN} + \text{FN})}}
 \end{align}
 
-
-
-
 \subsubsection{Bootstarpping Procedure}
 Bootstrapping describes randomly drawing $n$ samples with replacement from the same data pool $B$ times.
 We used this method to further evaluate our model scores, as it allows us to estimate the mean, standard error, and confidence interval of the scores.
@@ -354,9 +346,9 @@ Using the Random Forest model on the ``new'' dataset aggregated with the non-enz
 predictions for about 90\% of positive cases (enzymes) and 98\% of negative
 cases (non-enzymes), even with an imbalanced test set comprising 392
 enzymes and 9876 non-enzymes. As a reference, we provided the confusion
-matrix in figure \ref{fig:RF_conf_l0}.
+matrix in Figure \ref{fig:RF_conf_l0}.
 Additionally, we attained an Accuracy of 97.6\%, a weighted f1-score of
-97.8\%, and an MCC-score of 74.1\%. Figure \ref{fig:RF_scores_l0} visually demonstrates the significant outperformance of our Random Forest model compared to the random baseline, which predicted labels based on the training set's proportions.
+97.8\%, and an MCC-score of 74.1\%. Figure \ref{fig:l0_comp_all} visually demonstrates the significant outperformance of our Random Forest model compared to the random baseline, which predicted labels based on the training set's proportions.
 
 %  Figure 1 of truc result
 \begin{figure}[!tb]
@@ -364,27 +356,31 @@ Additionally, we attained an Accuracy of 97.6\%, a weighted f1-score of
 \caption{Confusion Matrix of the Random Forest Model on the “new” dataset}\label{fig:RF_conf_l0}
 \end{figure}
 
-\begin{figure}[!ht]
-\includegraphics[width=0.97\textwidth]{assets/Results_Truc_3.jpeg}
-\caption{Level 0 model comparison of Random Forest and baseline on “new” dataset}\label{fig:RF_scores_l0}
-\end{figure}
+% \begin{figure}[!ht]
+% \includegraphics[width=0.97\textwidth]{assets/Results_Truc_3.jpeg}
+% \caption{Level 0 model comparison of Random Forest and baseline on “new” dataset}\label{fig:RF_scores_l0}
+% \end{figure}
 
 \subsection{Main Class Prediction}
+% Kida
+After testing the FNN, we observed that the model achieved an F1 score of 0.95 and an MCC score of 0.94. 
+The confusion matrix presented in Figure \ref{fig:FNN_conf_l1} demonstrates the model's robust predictive capability across seven classes, 
+highlighting its high accuracy level. Most predictions align with the diagonal, and the percentages of accurate predictions stand out, 
+ranging remarkably from 92.73\% to 100\%.
 
-\lipsum[1]
+\begin{figure}[!t]
+\includegraphics[width=0.95\textwidth]{assets/l1_conf_new_kida.png}
+\caption{Normalized confusion matrix of level 1 prediction.}\label{fig:FNN_conf_l1}
+\end{figure}
 
 \subsection{Subclass Prediction}
-In order to validate our FNN model for the subclass prediction, we labeled the sequences of the new dataset with their respective subclasses.
+In order to test our FNN model for the subclass prediction, we labeled the sequences of the new dataset with their respective subclasses.
 This yielded subset of the labels present in the training dataset, containing 28 subclasses out of the 51 subclasses present in the training dataset.
 Our model achieved a weighted F1-score of 0.85 and a MCC score of 0.83 on the new dataset. 
-We also calculated the confusion matrix of the model on the new dataset (see figure \ref{fig:FNN_conf_l2}).
+We also calculated the confusion matrix of the model on the new dataset (see Figure \ref{fig:FNN_conf_l2}).
 The missing rows in the confusion matrix represent the 23 remaining subclasses that were not present in the new dataset.
 The reasonably low noise per row indicates that the model can distinguish between the present subclasses of the new dataset.
 
-% \begin{figure}[!t]
-% \includegraphics[width=0.95\textwidth]{assets/l2_scores.png}
-% \caption{Level 2 model comparison of FNN, CLEAN and the random baseline}\label{fig:FNN_scores_l2}
-% \end{figure}
 
 \begin{figure}[!t]
 \includegraphics[width=0.9\columnwidth]{assets/l2_conf_test_new_all.png}
@@ -478,7 +474,7 @@ When inferring unseen data, the $ncd$ input vector was calculated by comparing i
 the training data set, resulting in a $n$-dimensional numerical vector.
 Consequently, the performance on new data heavily relies on the characteristics of the training dataset.
 
-The performance comparison between the kNN algorithm using $ncd$ vectors versus a random baseline are illustrated in figure \ref{fig:l0_comp_all}
+The performance comparison between the kNN algorithm using $ncd$ vectors versus a random baseline are illustrated in Figure \ref{fig:l0_comp_all}
 which shows the performance of all level 0 models.
 Despite the mean F1 score of the kNN lying at $0.728$, it did not perform better than the random baseline, which 
 achieved a F1 score of $0.843$.
@@ -519,18 +515,20 @@ input features:
 \lipsum[1]
 
 
-\begin{figure}[!tb]
+
+
+\section{Supplementary Figures}\label{sec:supplementary figures}
+\begin{figure}[!ht]
 	\includegraphics[width=0.9\textwidth]{./assets/l0_combined_scores.png}
 	\caption{Comparison of all level 0 models}
 	\label{fig:l0_comp_all}
 \end{figure}
-
-
-\section{Supplementary Figures}\label{sec:supplementary figures}
-\begin{figure}[!th]
+\begin{figure}[!ht]
 \includegraphics[width=0.8\columnwidth]{./assets/l2_dist_all_train_ver.png}
 \caption{Subclass distribution in Split30 (logarithmic scale)}\label{fig:l2_dist_train}
 \end{figure}
+
+\newpage
 \newpage
 
 \bibliographystyle{natbib} 
