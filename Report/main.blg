@@ -3,46 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: natbib.bst
 Database file #1: document.bib
-Warning--to sort, need author or key in BioinformaticsSolutionsInc
-You've used 16 entries,
+You've used 14 entries,
             2378 wiz_defined-function locations,
-            629 strings with 8275 characters,
-and the built_in function-call counts, 10253 in all, are:
-= -- 803
-> -- 913
+            623 strings with 8175 characters,
+and the built_in function-call counts, 9434 in all, are:
+= -- 729
+> -- 867
 < -- 5
-+ -- 288
-- -- 285
-* -- 1071
-:= -- 1851
-add.period$ -- 74
-call.type$ -- 16
-change.case$ -- 94
-chr.to.int$ -- 15
-cite$ -- 19
-duplicate$ -- 343
-empty$ -- 544
-format.name$ -- 300
-if$ -- 1978
-int.to.chr$ -- 2
++ -- 273
+- -- 271
+* -- 988
+:= -- 1713
+add.period$ -- 68
+call.type$ -- 14
+change.case$ -- 84
+chr.to.int$ -- 14
+cite$ -- 14
+duplicate$ -- 311
+empty$ -- 487
+format.name$ -- 285
+if$ -- 1816
+int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 13
-newline$ -- 80
-num.names$ -- 62
-pop$ -- 118
+missing$ -- 12
+newline$ -- 72
+num.names$ -- 58
+pop$ -- 104
 preamble$ -- 1
-purify$ -- 95
+purify$ -- 84
 quote$ -- 0
-skip$ -- 219
+skip$ -- 202
 stack$ -- 0
-substring$ -- 564
-swap$ -- 84
+substring$ -- 509
+swap$ -- 79
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 144
-warning$ -- 1
-while$ -- 67
+type$ -- 126
+warning$ -- 0
+while$ -- 63
 width$ -- 0
-write$ -- 201
-(There was 1 warning)
+write$ -- 181

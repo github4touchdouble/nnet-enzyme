@@ -528,7 +528,7 @@
     \vspace{14\p@}
     {
   \let\section\absection  
-  {\helvetica\fontsize{10}{12}\bfseries\selectfont Abstract}\par}
+  {\helvetica\fontsize{10}{12}\bfseries\selectfont}\par}
   \vskip5pt
     \begingroup\begin{minipage}[t]{415pt}\parindent=0pt
     {\helvetica\fontsize{9}{12}\selectfont \@abstract\par}

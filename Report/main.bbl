@@ -1,8 +1,5 @@
 \begin{thebibliography}{}
 
-\bibitem[Bio(2021)Bio]{BioinformaticsSolutionsInc}
- (2021).
-
 \bibitem[Abadi {\em et~al.}(2015)Abadi, Agarwal, Barham, Brevdo, Chen, Citro,
   Corrado, Davis, Dean, Devin, Ghemawat, Goodfellow, Harp, Irving, Isard, Jia,
   Jozefowicz, Kaiser, Kudlur, Levenberg, Man\'{e}, Monga, Moore, Murray, Olah,
@@ -107,13 +104,8 @@ Wang, Y., Li, Z., Zhang, Y., Ma, Y., Huang, Q., Chen, X., Dai, Z., and Zou, X.
 {Wikipedia contributors} (2023).
 \newblock Enzyme commission number --- {Wikipedia}{,} the free encyclopedia.
 
-\bibitem[Yu {\em et~al.}(2023a)Yu, Cui, Li, Luo, Jiang, and Zhao]{CleanArticle}
-Yu, T., Cui, H., Li, J.~C., Luo, Y., Jiang, G., and Zhao, H. (2023a).
-\newblock Enzyme function prediction using contrastive learning.
-\newblock {\em Science\/}, {\bf 379}(6639), 1358--1363.
-
-\bibitem[Yu {\em et~al.}(2023b)Yu, Cui, Li, Luo, Jiang, and Zhao]{CLEANgit}
-Yu, T., Cui, H., Li, J.~C., Luo, Y., Jiang, G., and Zhao, H. (2023b).
+\bibitem[Yu {\em et~al.}(2023)Yu, Cui, Li, Luo, Jiang, and Zhao]{CleanArticle}
+Yu, T., Cui, H., Li, J.~C., Luo, Y., Jiang, G., and Zhao, H. (2023).
 \newblock Enzyme function prediction using contrastive learning.
 \newblock {\em Science\/}, {\bf 379}(6639), 1358--1363.
 
