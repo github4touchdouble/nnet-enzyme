@@ -43,14 +43,14 @@ Hand, D.~J. (2007).
 \newblock Principles of data mining.
 \newblock {\em Drug safety\/}, {\bf 30}, 621--622.
 
-\bibitem[Jiang {\em et~al.}(2023)Jiang, Yang, Tsirlin, Tang, Dai, and
-  Lin]{GzipTextClassification}
-Jiang, Z., Yang, M., Tsirlin, M., Tang, R., Dai, Y., and Lin, J. (2023).
-\newblock {``}low-resource{''} text classification: A parameter-free
-  classification method with compressors.
-\newblock In A.~Rogers, J.~Boyd-Graber, and N.~Okazaki, editors, {\em Findings
-  of the Association for Computational Linguistics: ACL 2023\/}, pages
-  6810--6828, Toronto, Canada. Association for Computational Linguistics.
+\bibitem[{International Union of Biochemistry and Molecular Biology.
+  Nomenclature Committee}(1993){International Union of Biochemistry and
+  Molecular Biology. Nomenclature
+  Committee}]{International_Union_of_Biochemistry_and_Molecular_Biology_Nomenclature_Committee1993-ey}
+{International Union of Biochemistry and Molecular Biology. Nomenclature
+  Committee} (1993).
+\newblock {\em Enzyme nomenclature 1992\/}.
+\newblock Academic Press, San Diego, CA.
 
 \bibitem[Lin {\em et~al.}(2023)Lin, Akin, Rao, Hie, Zhu, Lu, Smetanin, Verkuil,
   Kabeli, Shmueli, dos Santos~Costa, Fazel-Zarandi, Sercu, Candido, and
@@ -62,12 +62,6 @@ Lin, Z., Akin, H., Rao, R., Hie, B., Zhu, Z., Lu, W., Smetanin, N., Verkuil,
   a language model.
 \newblock {\em Science\/}, {\bf 379}(6637), 1123--1130.
 
-\bibitem[Matsumoto {\em et~al.}(2000)Matsumoto, Sadakane, and
-  Imai]{GzipProteinCompression}
-Matsumoto, T., Sadakane, K., and Imai, H. (2000).
-\newblock Biological sequence compression algorithms.
-\newblock {\em Genome Informatics\/}, {\bf 11}, 50--51.
-
 \bibitem[Pedregosa {\em et~al.}(2011)Pedregosa, Varoquaux, Gramfort, Michel,
   Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos,
   Cournapeau, Brucher, Perrot, and Duchesnay]{scikit-learn}
@@ -78,31 +72,12 @@ Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel,
 \newblock Scikit-learn: Machine learning in {P}ython.
 \newblock {\em Journal of Machine Learning Research\/}, {\bf 12}, 2825--2830.
 
-\bibitem[Rigler {\em et~al.}(2007)Rigler, Bishop, and Kennings]{Rigler2007}
-Rigler, S., Bishop, W., and Kennings, A. (2007).
-\newblock Fpga-based lossless data compression using huffman and lz77
-  algorithms.
-\newblock In {\em 2007 Canadian Conference on Electrical and Computer
-  Engineering\/}, pages 1235--1238.
-
 \bibitem[Ryu {\em et~al.}(2019)Ryu, Kim, and Lee]{DeepEC}
 Ryu, J.~Y., Kim, H.~U., and Lee, S.~Y. (2019).
 \newblock Deep learning enables high-quality and high-throughput prediction of
   enzyme commission numbers.
 \newblock {\em Proceedings of the National Academy of Sciences\/}, {\bf
   116}(28), 13996--14001.
-
-\bibitem[Wang {\em et~al.}(2021)Wang, Li, Zhang, Ma, Huang, Chen, Dai, and
-  Zou]{oh_encoding}
-Wang, Y., Li, Z., Zhang, Y., Ma, Y., Huang, Q., Chen, X., Dai, Z., and Zou, X.
-  (2021).
-\newblock Performance improvement for a 2d convolutional neural network by
-  using ssc encoding on protein--protein interaction tasks.
-\newblock {\em BMC bioinformatics\/}, {\bf 22}(1), 1--16.
-
-\bibitem[{Wikipedia contributors}(2023){Wikipedia contributors}]{IUBMB}
-{Wikipedia contributors} (2023).
-\newblock Enzyme commission number --- {Wikipedia}{,} the free encyclopedia.
 
 \bibitem[Yu {\em et~al.}(2023)Yu, Cui, Li, Luo, Jiang, and Zhao]{CleanArticle}
 Yu, T., Cui, H., Li, J.~C., Luo, Y., Jiang, G., and Zhao, H. (2023).

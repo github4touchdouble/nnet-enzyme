@@ -3,7 +3,7 @@
 \usepackage{floatrow}
 \usepackage{stfloats}
 % Do not touch this
-\copyrightyear{2015} \pubyear{2015}
+\copyrightyear{} \pubyear{}
 
 % Do not touch this
 \access{}
@@ -14,7 +14,7 @@
 
 \subtitle{Enzyme Prediction}
 
-\title[]{Enzyme Prediction Main Titel}
+\title[]{Machine Learning Models for Predictive Enzyme Classification}
 \author[]{Malte Alexander Weyrich, Thanh Truc Bui, Jan Philipp Hummel
 and  Sofiia Kozoriz}
 
@@ -32,14 +32,15 @@ and  Sofiia Kozoriz}
 % TODO: Plot Jans Results  <27.01.24, Malte Weyrich> %
 % TODO: Plot Kida Results <27.01.24, Malte Weyrich> %
 % TODO: Check references <27.01.24, Malte Weyrich> %
+% TODO: Make sure that 1.000 <27.01.24, Malte Weyrich> %
 
 \section{Abstract}
-%  Malte →
-The accurate prediction of enzyme commission numbers (EC numbers) is not only crucial for 
+%  Malte done
+The accurate prediction of enzyme commission (EC) numbers is not only crucial for 
 the classification and understanding of newly discovered enzymes but also for completing the annotation of already known enzymes.
 Therefore, developing a reliable method for predicting EC numbers is very important.
 
-%  Malte →
+%  Malte done
 However, due to insufficient data, enzyme function prediction using machine learning remains challenging.
 This paper proposes several methods for predicting enzymes in three different problem categories. Each category goes further into depth
 of the enzyme classification system, starting with a binary classification (level 0) of enzymes and non-enzymes, followed by a multi-class classification (level 1 \& 2) of enzymes into main classes (e.g., EC X.-.-.-) and subclasses (e.g., EC X.X.-.-).
@@ -57,35 +58,34 @@ Throughout developing our models, we used various input features and machine lea
 
 \section{Introduction}
 
-%  Truc
-Enzymes play a vital role as biological catalysts, facilitating essential biochemical reactions in organisms.
-Without enzyme catalysis, these reactions would either occur too slowly or be practically impossible.
-Predominantly proteins, enzymes are designated specific functions; for instance, Oxidoreductases drive redox reactions, and Isomerases convert molecules into their isomers.
+%  Truc done
+Enzymes are vital as biological catalysts, facilitating essential biochemical reactions in organisms.
+With enzyme catalysis, these reactions would occur slowly or practically impossible.
+Predominantly, proteins and enzymes are designated specific functions; for instance, oxidoreductases drive redox reactions, and isomerases convert molecules into their isomers.
 Therefore, a comprehensive understanding and a precise classification of enzymes are fundamental.
 
-%  Truc
+%  Truc done
 In the past, scientists attempted to categorize enzymes into groups and develop a logical rule set for naming.
-However, the efforts were hindered by ambiguity.
-A significant milestone occurred in 1956 with the establishment of an official international commission on enzyme classification (\cite{IUBMB}).
-This marked the initiation of the contemporary enzyme classification system that forms the basis for our understanding of enzymes today.
-
-%  Truc
+The efforts were not successful due to ambiguity.
+A significant milestone occurred in 1956 with the establishment of an official international commission on enzyme classification (\cite{International_Union_of_Biochemistry_and_Molecular_Biology_Nomenclature_Committee1993-ey}). 
+This marked the initiation of the contemporary enzyme classification system, forming the basis for our understanding of enzymes today.
+%  Truc done
 In modern research, computational methods have become invaluable for enzyme classification; this shift has transformed the traditionally labor-intensive process.
-Machine learning and data-driven models, in particular, have assumed a leading role, holding the potential for enhanced accuracy and efficiency in annotating enzymes within vast genomic data.
-
-%  Truc
-Several effective methods have been developed to address this challenge.
+Machine learning and data-driven models, in particular, have assumed a leading role, holding the potential for enhanced 
+accuracy and efficiency in annotating enzymes within vast genomic data.
+%  Truc done
+Several effective methods were developed to address this challenge.
 One notable example is DeepEC (\cite{DeepEC}), a deep learning-based computational framework designed for the precise and high-throughput prediction of EC numbers for protein sequences.
 DeepEC employs three convolutional neural networks (CNNs) as a primary engine for EC number prediction and incorporates homology analysis for cases not classified by the CNNs.
 
-%  Truc
-Another noteworthy method is CLEAN (\cite{CleanArticle}), which stands for "contrastive learning–enabled 
-enzyme annotation". CLEAN adopts a unique training objective, aiming to learn an embedding space for enzymes where the Euclidean distance 
+%  Truc done
+Another noteworthy method is CLEAN (\cite{CleanArticle}), which stands for ``contrastive learning–enabled 
+enzyme annotation''. CLEAN adopts a unique training objective to learn an embedding space for enzymes where the Euclidean distance 
 reflects functional similarities. In CLEAN's task, sequences sharing the same EC number exhibit a small Euclidean distance, while sequences 
-with different EC numbers have a larger distance. The model is trained using contrastive losses with supervision to achieve effective 
+with different EC numbers have a larger distance. The model was trained using contrastive losses with supervision for effective 
 enzyme function prediction.
 
-%  Truc & Malte 
+%  Truc & Malte done
 In our research, we developed several classification models for each level, using a variety of machine-learning algorithms and input features.
 The best-performing models per level will be thoroughly reviewed in this paper.
 The first is a binary classifier determining whether a given protein functions as an enzyme. 
@@ -96,56 +96,47 @@ Our primary objective is to outperform each category's random baseline classifie
 \begin{methods}
 \section{Methods}
 
-% TODO: All models need to be introduced here, even the ones we mention in sulpplementary information <27.01.24, Malte Weyrich> %
 \subsection{Binary Classification of Enzymes}
-% Jan
+% Jan done
 In the course of assigning EC numbers to protein sequences,
-our initial step is to determine whether a given protein sequence is enzymatic or a non-enzymatic (level 0).
+our initial step is to determine whether a given protein sequence is enzymatic or non-enzymatic (level 0).
 To identify the most effective approach for this task,
-we conducted training the following binary classification models and compared their performance to select the optimal one:
+we conducted training on the following binary classification models and compared their performance to select the optimal one:
 \begin{enumerate}
 	\item[(1)] k-Nearest-Neighbors
 	\item[(2)] Random Forest 
 	\item[(3)] Support Vector Machine
 \end{enumerate}
-
 The chosen method for binary classification will be detailed in the subsequent section, while section \ref{sec:unused binarys} will outline the methods that were not selected.
 
-%  Truc
-% Our initial goal is to categorize proteins as either enzymes or non-enzymes (level 0). 
-% To accomplish this, we've opted for the Random Forest, a straightforward yet powerful machine learning method.
-% The choice of Random Forest is driven by its effectiveness in handling classification tasks, making it a well-suited option for our specific protein classification objective.
-% We built a Random Forest Classifier using the scikit-learn library with specific parameters, which will be explained in the training procedure. 
-
 \subsection{Multi-class Classification of Enzymes}
-%  Malte →
+%  Malte done
 We used a feedforward neural network (FNN) for levels 1 and 2 to classify the enzymes into their main classes and subclasses.
 The FNN is an artificial neural network (ANN) that uses a series of layers to extract features from the input data and classify it into different categories,
 thus making it a suitable choice for our multi-class classification task. 
 
 \subsection{Training Data}
 
-%  Malte & Truc
-The protein data sets were taken from the UniProt database and were also used in the CLEAN publication on Enzyme function prediction (see \cite{CleanArticle}). 
+%  Malte & Truc done
+The protein data sets were taken from the UniProt database and used in the CLEAN publication on Enzyme function prediction (see \cite{CleanArticle}). 
 The complete data pool of enzymes (called Split100 in \cite{CleanArticle}) contains 224.693 sequences. 
-This pool was used to derive several smaller subsets (SplitX, $X \in \left\{10, 30, 50, 70\right\}$) where $X$ stands for the amount of similarity allowed between the sequences.
-For reference, Split30 only contains sequences that share at most 30\% similarity with each other.
-Since we want to reduce family overrepresentation we opted to use the Split30 dataset for our research,
-containing 9.186 enzymes.
-This redundancy reduction ensures that the model is not too biased towards a specific family of enzymes.
+These sequences are separated into several smaller subsets (SplitX, $X \in \left\{10, 30, 50, 70\right\}$), where $X$ represents the amount of similarity allowed between the sequences.
+For reference, Split30 only contains sequences that share at most 30\% similarity.
+Since we want to reduce family overrepresentation, we used the Split30 dataset for our research,
+which contains 9.186 enzymes.
+This redundancy reduction ensures that the model is not remarkably biased towards a specific family of enzymes.
 This subset was combined with a non-enzyme dataset holding 37.347 sequences, resulting in 46.533 sequences.
 
 \subsection{Data Preprocessing}
-
+% Malte & Kida
 We removed all sequences containing an ambiguous amino acid, such as 'U' or 'O', from the dataset, as well as
-sequences with a length longer than 1022 amino acids. 
-This has to do with the fact that our enzyme dataset only contains sequences with a maximum length of 1022 amino acids.
-The non-enzyme dataset, however, contained many sequences with a length up to 10.000 amino acids.
-By removing these sequences we ensured that the model is not biased towards the non-enzyme dataset.
-
+sequences with a length longer than 1.022 amino acids. 
+This has to do with the fact that our enzyme dataset only contains sequences with a maximum length of 1.022 amino acids.
+The non-enzyme dataset, however, contained many sequences with a length of up to 10.000 amino acids.
+By removing these sequences, we ensured that the model was not biased towards the non-enzyme dataset.
 
 Additionally we made use of the esm2 embeddings (see \cite{ESM2}) and ProtT5 embeddings (see \cite{ProtT5}).
-Large language models for protein sequences  have learned the patterns of amino acid sequences by being trained on many protein sequences.
+Large language models for protein sequences have learned the patterns of amino acid sequences by being trained on many protein sequences.
 This allows us to infer embeddings for our amino acid sequences, which are numerical vectors that represent the amino acid sequences.
 For each sequence we inferred the esm2 embeddings (see \cite{ESM2}) and ProtT5 embeddings (see \cite{ProtT5}) 
 using the esm2 model (see \cite{ESM2}) and the ProtT5 model (see \cite{ProtT5}) respectively.
@@ -156,23 +147,23 @@ using the esm2 model (see \cite{ESM2}) and the ProtT5 model (see \cite{ProtT5}) 
 % \end{figure}
 
 \subsubsection{Data Preprocessing for Level 0}
-
-As a random forest model relies on multiple decision trees, and each
+% Truc done
+As a random forest model relies on multiple decision trees and each
 decision tree requires various features, we opted to extract additional
-information from both the protein sequence and the esm2 embeddings \cite{ESM2}.
+information from the protein sequence and the esm2 embeddings \cite{ESM2}.
 
 From the protein sequences, we computed the mass by summing the individual masses of its amino acid components. 
-Meanwhile, the esm2 embeddings, each represented by a 2560-dimensional vector, underwent statistical analysis.
-We calculated the median, standard deviation, and vector magnitude by aggregating values across all 2560 dimensions for each protein.
-For clarity, the mass of protein sequences is presented in atomic mass unit (AMU) ,
-and the term 'vector magnitude' refers to the square root of the sum of the squares of all dimensions of the vector.
-We computed the median, standard deviation, and vector magnitude by aggregating values across all $2560$ dimensions for each protein.
+Meanwhile, the esm2 embeddings, each represented by a 2.560-dimensional vector, underwent statistical analysis.
+We calculated the median, standard deviation, and vector magnitude by aggregating values across all 2.560 dimensions for each protein.
+For clarity, the mass of protein sequences is presented in atomic mass unit (AMU),
+and the term 'vector magnitude' refers to the square root of the sum of the squares of all vector dimensions.
+We computed the median, standard deviation, and vector magnitude by aggregating values across all 2.560 dimensions for each protein.
 
 To simplify the embeddings, we applied Principal Component Analysis (\cite{scikit-learn})
 separately to enzyme and non-enzyme datasets,
-retaining $90\%$ of the variance. This process yielded reduced dimensions of $397$ for enzymes and $369$ for non-enzymes. 
-Therefore, we reduced the dimensions to $397$, providing a streamlined representation of the protein embeddings while retaining crucial information for both 
-enzyme (see Figure \ref{fig:PCA_enzymes}) and non-enzyme datasets.
+retaining $90\%$ of the variance. This process yielded reduced dimensions of $397$ (see Figure \ref{fig:PCA_enzymes}) for enzymes and $369$ for non-enzymes. 
+By standardizing both datasets to a dimensionality of 397, we achieved a streamlined representation of protein embeddings while preserving essential information.
+This constant dimensionality of 397 was also employed to reduce the protein embeddings of unseen datasets during evaluation.
 
 \begin{figure}[!tbp]
 \includegraphics[width=0.95\textwidth]{assets/Data_Truc_2.jpeg}
@@ -185,17 +176,17 @@ enzyme (see Figure \ref{fig:PCA_enzymes}) and non-enzyme datasets.
 % \end{figure}
 
 
-% Truc
-By combining the information from the proteins’ sequences, masses, and embeddings, we created a Pandas DataFrame that concatenates enzymes and non-enzymes,
+% Truc done
+By combining the information from the proteins’ sequences, masses, and embeddings, we created a data frame that concatenates enzymes and non-enzymes,
 including $401$ features: mass, embeddings median, embeddings standard deviation (std), embeddings magnitude, and dimension $1$ to $397$ of the reduced 
 embeddings. 
 
-% Truc
+% Truc done
 We also used the method SelectFromModel from the scikit-learn library (see \cite{scikit-learn})
 to select features based on importance weights. 
 The refined set of input features contains 
-'Mass,' 'Emb median,' 'Emb std,' 'Emb magnitude,' and 'PCA 1' through 'PCA 47' (see table \ref{tab:ReducedInputRF}) excluding ‘PCA 29’, ‘PCA 31’, ‘PCA 35’, 
-‘PCA 36’, ‘PCA 39’ to ‘PCA 42’, ‘PCA 44’ and ‘PCA 46’ (where 'Emb' represents embeddings and 'PCA X' signifies the X-th dimension of the reduced embeddings).
+‘Mass,’ ‘Emb median,’ ‘Emb std,’ ‘Emb magnitude’, and ‘PCA 1’ through ‘PCA 47’ (see table \ref{tab:ReducedInputRF}) excluding ‘PCA 29’, ‘PCA 31’, ‘PCA 35’,
+‘PCA 36’, ‘PCA 39’ to ‘PCA 42’, ‘PCA 44’ and ‘PCA 46’ (where ‘Emb’ represents embeddings and ‘PCA X’ signifies the X-th dimension of the reduced embeddings).
 
 % Malte
 \begin{table}[!htbp]
@@ -214,55 +205,56 @@ The refined set of input features contains
 \end{table}
 
 \subsubsection{Data Preprocessing for Level 1}
-% Malte →
-For the level 1 prediction we labeled each sequence with its respective main class,
+% Malte done
+For the level 1 prediction, we labeled each sequence with its respective main class,
 resulting in 7 classes (see Figure \ref{fig:l1_dist_train}).
 While the second main class is the most prevalent, 
-the seventh main class is the least prevalent with only
+the seventh main class is the least prevalent, with only
 containing 190 representatives.
 
-\begin{figure}[!tb]
-\centering
+\begin{figure}[!hb]
 \includegraphics[width=0.7\textwidth]{assets/l1_dist_enzymes.png}
 \caption{Main class distribution of Split30}\label{fig:l1_dist_train}
 \end{figure}
 
 
 \subsubsection{Data Preprocessing for Level 2}
-% Malte
-For the level 2 prediction we labeled each sequence with its respective subclass (see section \ref{sec:supplementary figures} Figure \ref{fig:l2_dist_train}).
+% Malte done
+For the level 2 prediction, we labeled each sequence with its respective subclass (see section \ref{sec:supplementary figures} Figure \ref{fig:l2_dist_train}).
 The problem of imbalanced data and underrepresentation of some labels is even more pronounced when labeling the sequences with their respective subclass.
-Some enzyme families had less than 10 representatives in the dataset, making it difficult for the model to learn the patterns of these families.
-To address issue, we combined underrepresented families of the same main class into a single class 
+Some enzyme families had less than ten representatives in the dataset, making it difficult for the model to learn the patterns of these families.
+To address this issue, we combined underrepresented families of the same main class into a single class 
 (e.g. \textbf{EC 2.2.-.-}, \textbf{EC 2.9.-.-} and \textbf{EC 2.19.-.-} were merged into the label \textbf{EC 2.2|9|19.-.-}).
-This way we guaranteed that each subclass had at least 10 representatives in the dataset.
-This procedure had to be applied to each main class separately, as the subclasses are only unique within their respective main class.
+This way, we guaranteed that each subclass had at least ten representatives in the dataset.
+This procedure had to be applied to each main class separately, as the subclasses are unique within their respective main class.
 
 \subsection{Training Procedure}
-% Truc
-For all our models we divided the data table into two parts: a training set and a validation set, using a random state of 42 for consistency. 
+% Truc done
+We divided the data table into two parts for all our models: a training set and a validation set, using a random state of 42 for consistency. 
 The training set contains $70\%$ of the original data, while the validation set holds the remaining $30\%$. 
-This separation allows us to train our models on a subset of the data and then assess its performance on a different subset to ensure its generalization to new, unseen data.
+This separation allows us to train our models on a subset of the data and assess its performance on a different subset to ensure its generalization to new, unseen data.
 
 \subsubsection{Level 0 - Random Forest}
-% Truc
+% Truc done
 A straightforward yet powerful machine learning method is the Random
 Forest algorithm. The choice of Random Forest is driven by its
 effectiveness in handling classification tasks, making it a well-suited
 option for our specific protein classification objective. 
 
-For the Random Forest classifier we addressed the imbalance between the number of non-enzymes and enzymes, where non-enzymes outnumber enzymes approximately
-fourfold, by duplicating the enzyme data in the training set four times.
+% Truc done
+For the Random Forest classifier, we addressed the imbalance between the number of non-enzymes and enzymes, where non-enzymes outnumber enzymes approximately
+fourfold by duplicating the enzyme data in the training set four times.
 This duplication ensures a more balanced dataset, allowing the model to
 be trained on an equal representation of both classes.
 
+% Truc done
 We built a Random Forest Classifier using the scikit-learn library (see \cite{scikit-learn}) with specific parameters: 
-The classifier consists of a total of 200 decision trees, each tree has a
-maximum depth of 16, and a node is designated as a leaf only if it has a
+The classifier consists of a total of 200 decision trees; each tree has a
+maximum depth of 16 and a node is designated as a leaf only if it has a
 minimum of 8 samples. The random state parameter is set to 42, ensuring
-reproducibility in the model’s construction.
+reproducibility in the model's construction.
 
-% Truc
+% Truc done
 The classifier consists of a total of 200 decision trees.
 Each tree has a maximum depth of 16, and a node is designated as a leaf only if it has a minimum of 8 samples.
 The random state parameter is set to 42, ensuring reproducibility in the model's construction.
@@ -272,38 +264,41 @@ The random state parameter is set to 42, ensuring reproducibility in the model's
 The feedforward neural network for level 1, using ESM2 embeddings, involves a sequential arrangement of linear layers, each accompanied by LeakyReLU activation functions.
 This choice of activation function, LeakyReLU, is particularly remarkable for its capability of dealing with the ``dying ReLU'' problem by 
 allowing a small gradient when the unit is inactive. 
-The architecture of the model consists of layers sized at 2560, the input layer, hidden layers being 2048,
+The architecture of the model consists of layers sized at 2.560, the input layer, hidden layers being 2.048,
 768, 256, and finally, 7 units as an output layer.
 It is worth pointing out that the architecture contains batch normalization layers (BatchNorm1d) intended for 
 normalizing the input layer through adjustment and scaling activations to stabilize and accelerate the training process.
 
 \subsubsection{Level 2 - FNN}
-% Malte
-For the level 2 prediction we used a feedforward neural network (FNN) to classify the enzymes into their respective subclasses.
-The network was implemented using Tensorflow, which is an open-source library for machine learning (see \cite{tensorflow2015-whitepaper}).
-The architecture consists of one input layer, two hidden layers and one output layer.
-In between the hidden layers we used dropout layers to prevent overfitting.
-The layers are fully connected and the activation function used is the rectified linear unit (ReLU).
-The amount of perceptrons used per layer and the dropout rate were optimized using the optuna library (see \cite{optuna_2019}).
-This resulted in 262 perceptrons in the first hidden layer and 121 perceptrons in the second hidden layer.
+% Malte done
+For the level 2 prediction, we used a feedforward neural network (FNN) to classify the enzymes into their respective subclasses.
+We implemented this architecture using TensorFlow, an open-source library for machine learning (see \cite{tensorflow2015-whitepaper}).
+The architecture comprises one input layer, two hidden layers, and one output layer.
+In between the hidden layers, we used dropout layers to prevent overfitting.
+The layers are fully connected, and the activation function used is the rectified linear unit (ReLU).
+The number of perceptrons used per layer and the dropout rate were optimized using the Optuna library (see \cite{optuna_2019}).
+This resulted in 262 perceptrons in the first hidden layer and 121 in the second.
 The dropout rate was set to 0.23.
-While the input layer had the same dimension as the esm2b embeddings (2560), the output layer had a dimension of 51,
+While the input layer had the same dimension as the esm2b embeddings (2.560), the output layer had a dimension of 51,
 since there are 51 subclasses in the training dataset (see Figure \ref{fig:l2_dist_train}).
 To further address the imbalance in the dataset, we used class weights to penalize the model more for misclassifying the minority classes
 while being more lenient towards misclassifying the majority classes.
-During training we used early stopping with a patience of 15 epochs to prevent overfitting.
+During training, we used early stopping with a patience of 15 epochs to prevent overfitting.
 
 
 \subsection{Evaluation on Test Dataset}
-%  TODO: Introduction of new.csv dataset + us combining it with the non-enzymes test dataset
-% - What is it -> data set from clean it came from ... redundancy reduction, ... data cutoff, d
-The dataset we used for evaluation is called ``New-392'' and was used as one of the  benchmark datasets in the CLEAN publication (see \cite{CleanArticle}).
-It contains 392 sequences, of which we also removed all sequences containing an ambiguous amino acid, such as 'U' or 'O', from the dataset.
-This resulted in a total 
+%Truc & Malte done 
+The enzymatic dataset we used for evaluation is called ``New-392'' and was used as one of the benchmark datasets 
+in the CLEAN publication (see \cite{CleanArticle}).
+For the level 0 prediction, we concatenated the ``New-392'' dataset with the non-enzymes test dataset.
+We also filtered for ambiguous amino acids and sequences longer than 1.022 amino acids.
+The refined non-enzyme dataset contains 9.336 non-enzymes, resulting in 9.728 sequences for the level 0 prediction.
+For the level 1 and level 2 predictions, we removed multifunctional enzymes that differ in their main class.
+
 \subsubsection{Scoring Metrics}
 
-% Truc
-To assess the performance of our models, we emphasize the F1 score and MCC score. 
+% Truc & Malte done
+To assess the performance of our models, we emphasize the F1 and MCC scores. 
 Given the imbalance in the test set, we also considered the weighted F1 score for the multiclassification models
 to ensure a more equitable evaluation of the model's effectiveness.
 
@@ -312,7 +307,7 @@ A score of 1 signifies a flawless prediction, while 0 indicates an utterly inacc
 
 The MCC score is a correlation coefficient that indicates the accuracy of binary classifications, with values ranging from -1 to 1. 
 A score of 1 signifies a flawless prediction, -1 indicates a completely inaccurate prediction, and 0 suggests predictions at random.
-This scoring metric takes into account the entirety of the confusion matrix (TP, TN, FP, FN) making it a valid
+This scoring metric takes into account the entirety of the confusion matrix ($TP$, $TN$, $FP$, $FN$), making it a valid
 metric for measuring the performance across all classes.
 It can also be applied to multiclassification models by calculating the MCC score for each class and then averaging the scores.
 
@@ -326,10 +321,11 @@ It can also be applied to multiclassification models by calculating the MCC scor
 \end{align}
 
 \subsubsection{Bootstarpping Procedure}
+% Malte done
 Bootstrapping describes randomly drawing $n$ samples with replacement from the same data pool $B$ times.
 We used this method to further evaluate our model scores, as it allows us to estimate the mean, standard error, and confidence interval of the scores.
-We chose $B$ to be 10.000 and $n$ to be the predicted samples.
-This means that we drew 10.000 pairs of actual labels and predicted labels out of the test set with replacement,
+We chose $B$ as 10.000 and $n$ as the predicted samples.
+This means that we drew 10.000 pairs of actual labels and predicted labels from the test set with replacement,
 allowing us to calculate the scores for each bootstrapped dataset and then estimate the performance's mean, 
 standard error, and confidence interval.
 Each score has been rounded to significant digits using the standard error.
@@ -345,13 +341,13 @@ The performance plots show the mean score and the confidence intervals as error 
 Using the Random Forest model on the ``new'' dataset aggregated with the non-enzymes test set, we achieved accurate
 predictions for about 90\% of positive cases (enzymes) and 98\% of negative
 cases (non-enzymes), even with an imbalanced test set comprising 392
-enzymes and 9876 non-enzymes. As a reference, we provided the confusion
+enzymes and 9.876 non-enzymes. As a reference, we provided the confusion
 matrix in Figure \ref{fig:RF_conf_l0}.
 Additionally, we attained an Accuracy of 97.6\%, a weighted f1-score of
 97.8\%, and an MCC-score of 74.1\%. Figure \ref{fig:l0_comp_all} visually demonstrates the significant outperformance of our Random Forest model compared to the random baseline, which predicted labels based on the training set's proportions.
 
 %  Figure 1 of truc result
-\begin{figure}[!tb]
+\begin{figure}[!hb]
 \includegraphics[width=0.8\textwidth]{assets/Results_Truc_1.jpeg}
 \caption{Confusion Matrix of the Random Forest Model on the “new” dataset}\label{fig:RF_conf_l0}
 \end{figure}
@@ -362,7 +358,7 @@ Additionally, we attained an Accuracy of 97.6\%, a weighted f1-score of
 % \end{figure}
 
 \subsection{Main Class Prediction}
-% Kida
+% Kida done
 After testing the FNN, we observed that the model achieved an F1 score of 0.95 and an MCC score of 0.94. 
 The confusion matrix presented in Figure \ref{fig:FNN_conf_l1} demonstrates the model's robust predictive capability across seven classes, 
 highlighting its high accuracy level. Most predictions align with the diagonal, and the percentages of accurate predictions stand out, 
@@ -374,112 +370,108 @@ ranging remarkably from 92.73\% to 100\%.
 \end{figure}
 
 \subsection{Subclass Prediction}
+% Malte done
 In order to test our FNN model for the subclass prediction, we labeled the sequences of the new dataset with their respective subclasses.
-This yielded subset of the labels present in the training dataset, containing 28 subclasses out of the 51 subclasses present in the training dataset.
-Our model achieved a weighted F1-score of 0.85 and a MCC score of 0.83 on the new dataset. 
+This yielded a subset of the labels in the training dataset, containing 28 subclasses out of the 51 in the training dataset.
+Our model achieved a weighted F1 score of 0.85 and an MCC score of 0.83 on the new dataset. 
 We also calculated the confusion matrix of the model on the new dataset (see Figure \ref{fig:FNN_conf_l2}).
 The missing rows in the confusion matrix represent the 23 remaining subclasses that were not present in the new dataset.
 The reasonably low noise per row indicates that the model can distinguish between the present subclasses of the new dataset.
 
 
-\begin{figure}[!t]
+\begin{figure}[!b]
 \includegraphics[width=0.9\columnwidth]{assets/l2_conf_test_new_all.png}
 \caption{Normalized confusion matrix of level 2 prediction.}\label{fig:FNN_conf_l2}
 \end{figure}
 
 \section{Discussion}
-% Truc
+% Truc done
 The two main approaches we employed for the problem, namely Random Forest and Feedforward Neural Network, delivered promising results, surpassing the random baseline models.
-However, due to the dataset's imbalance, there is room for improvement.
+However, there is room for improvement due to the dataset's imbalance.
 One avenue for enhancement involves exploring additional features, such as incorporating information from protein 3D structures and protein interactions.
-These aspects could potentially provide valuable insights and contribute to further refining the accuracy of our models.
+These aspects could provide valuable insights and contribute to further refining the accuracy of our models.
 
 An idea for further enhancement is to create a comprehensive pipeline by combining all three models to predict proteins from level 0 to level 2.
-In this hypothetical pipeline, the Random Forest model would be responsible for predicting level 0.
+In this hypothetical pipeline, the Random Forest model would predict level 0.
 If the protein is identified as an enzyme, the Feedforward Neural Network (FNN) at level 1 could predict the main class.
-Following this, the enzyme could potentially undergo prediction by the FNN at level 2.
-Since the FNN at level 2 implicitly predicts the main class as well, we could align the predictions of the two models.
+Following this, the enzyme could undergo prediction by the FNN at level 2.
+Since the FNN at level 2 implicitly predicts the main class, we could align the predictions of the two models.
 If the main class predicted by the FNN at level 2 matches the main class predicted by the FNN at level 1, 
 we would consider the entire result from the FNN at level 2.
 Otherwise, we would discard the prediction of the FNN at level 2.
 
-In conclusion, the three models represent promising tools for supporting researchers in the classification of proteins. 
-While each model demonstrates efficacy individually, the envisioned pipeline integrating all three could potentially enhance the overall accuracy and reliability of protein classification.
+In conclusion, the three models represent promising tools for supporting researchers in classifying proteins. 
+While each model demonstrates efficacy individually, the envisioned pipeline integrating all three could enhance protein classification's overall accuracy and reliability.
 Further exploration and implementation of these models may contribute valuable insights to the field of protein classification.
 
 \section{Supplementary Information}
 
 \subsection{Additional Binary Classification Models}\label{sec:unused binarys}
-% Jan
-As we thoroughly reviewed the Random Forest model in section \ref{sec:RF_level0}, we will now outline the other binary classification models we considered for this task.
+% Jan done
+As we thoroughly reviewed the Random Forest model in section \ref{sec:RF_level0}, we will outline the other binary classification models we considered for this task.
 
 \subsubsection{k-Nearest-Neighbors (kNN)}
-% Jan
-kNN is a non-parametric classification method,
-which assigns a new object to the most common class amongst the most similar k objects in the data set (\cite{knn_principles}). We implemented three kNN models in Python using scikit-learns Nearest Neighbors library and 
-these models using three distinct types of input features:
+% Jan done
+kNN is a non-parametric classification method
+that assigns a new object to the most common class amongst the most similar k objects in the data set (\cite{knn_principles}). We implemented three kNN models in Python using scikit-learns Nearest Neighbors library, and 
+these models used three distinct types of input features:
 \begin{enumerate}
 	\item[(1)] Protein embedding vectors encoded by ProtT5 (see \cite{ProtT5})
     \item[(2)] Protein embedding vectors encoded by ESM2 (see \cite{ESM2})
-    \item[(3)] Normalized compression distance vectors (see \cite{GzipTextClassification})
+    % \item[(3)] Normalized compression distance vectors (see \cite{GzipTextClassification})
 \end{enumerate}
 
 
 \paragraph{(1) kNN using ProtT5 encoded embedding vectors:}
-
-% Jan
-Each protein sequence, represented as a numerical vector of 1024 dimensions, is placed as a data 
-point within a 1024-dimensional space. The kNN classifier, using k=7,
-categorizes each data point to the class that is most common among its k nearest neighbors in the 1024-dimensional space.
-Figure 
-% TODO: insert Jans fig \ref{fig:03} 
-illustrates the performance comparison between the kNN algorithm using ProtT5 encoded embedding vectors versus a random baseline. 
+% Jan done
+Each protein sequence, represented as a numerical vector of 1.024 dimensions, is placed as a data 
+point within a 1.024-dimensional space. The kNN classifier, using k=7,
+categorizes each data point to the class that is most common among its k nearest neighbors in the 1.024-dimensional space.
+Figure \ref{fig:l0_comp_all} illustrates the performance comparison between the kNN algorithm using ProtT5 encoded embedding vectors versus a random baseline. 
 We observe that the mean F1 score for this model demonstrates a slight improvement over the random baseline,
-recording 0. 857 compared to 0.843. This implies that this approach showcases superior precision and recall in contrast to the random baseline.
-This models Mathews Correlation Coefficient of 0.728 indicates that this approach preforms significantly better than random guessing.
+recording 0. 857 compared to 0.843. This implies that this approach showcases superior precision and recall compared to the random baseline.
+This model's Mathews Correlation Coefficient of 0.728 indicates that this approach performs significantly better than random guessing.
 
 
 \paragraph{(2) kNN using ESM2 encoded embedding vectors:}
 % Jan
-Each protein sequence, represented as a numerical vector of 2560 dimensions, is placed as a data point within a 2560-dimensional space.
-The kNN classifier, using k=7, categorizes each data point to the class that is most common among its k nearest neighbors in the 2560-dimensional space.
-Figure 
-% TODO: insert \ref{fig:03} 
-illustrates the performance comparison between the kNN algorithm using ESM2 encoded embedding vectors versus a random baseline.
+Each protein sequence, represented as a numerical vector of 2.560 dimensions, is placed as a data point within a 2.560-dimensional space.
+The kNN classifier, using k=7, categorizes each data point to the class that is most common among its k nearest neighbors in the 2.560-dimensional space.
+Figure \ref{fig:l0_comp_all} illustrates the performance comparison between the kNN algorithm using ESM2 encoded embedding vectors versus a random baseline.
 Unlike above, we observe that the mean F1 score for this model demonstrates a slight regression over the random baseline, recording 0.833
 compared to 0.843. This implies that this approach showcases inferior precision and recall in contrast to the random baseline.
 Despite being lower than the previous case, this models Mathews Correlation Coefficient of 0.689 still indicates that this approach preforms 
 better than random guessing.
 
-\paragraph{(3) kNN using normalized compression distance vectors:}
-The normalized compression distance ($ncd$) algorithm transforms string like input features into numerical values and is based on the concept of measuring 
-the similarity of two strings by the amount of information needed to describe the one string given the other string. 
-Given two strings $x$ and $y$, the $ncd$ is defined as follows:
-
-\begin{equation}
-	ncd(x,y) = \frac{C(xy)-\min(C(x),C(y))}{\max(C(x),C(y))}
-\end{equation}
-where $C(x)$ is the length of the compressed string $x$, $C(xy)$ is the length of the concatenated string $xy$. 
-
-% TODO:anpassen, dass hier die random baseline 50:50 ist, da wir bei den train data undersampeled haben
-We implemented this algorithm in python using \textit{gzip}, which is a loss less compression algorithm based on a combination of LZ77 and Huffman encoding (\cite{Rigler2007}).
-The $ncd$ algorithm transformed amino acid sequences into numerical vectors by comparing each sequence with all others in the training dataset.
-This transformation yielded an $n$-dimensional numerical vector for each sequence, where $n$ represents the number of sequences in the training dataset.
-Each position in the input vector signifies the $ncd$ of the sequence concerning the corresponding sequence in the training dataset. 
-These vectors were then used as input for the k-nearest neighbors algorithm.
-Due to the exponential computational complexity of the $ncd$ algorithm, we used under sampling of the non-enzyme dataset to match the sample size of our enzyme dataset,
-ensuring balance in the positive instances within the training dataset. 
-
-When inferring unseen data, the $ncd$ input vector was calculated by comparing it to all sequences in 
-the training data set, resulting in a $n$-dimensional numerical vector.
-Consequently, the performance on new data heavily relies on the characteristics of the training dataset.
-
-The performance comparison between the kNN algorithm using $ncd$ vectors versus a random baseline are illustrated in Figure \ref{fig:l0_comp_all}
-which shows the performance of all level 0 models.
-Despite the mean F1 score of the kNN lying at $0.728$, it did not perform better than the random baseline, which 
-achieved a F1 score of $0.843$.
-This observation suggests that the ncd approach exhibits inferior precision and recall compared to the random baseline. 
-Additionally, both classifiers exhibit a low MCC score of 0.2 and 0.01, respectively, indicating that neither classifier performs better than random guessing.
+% \paragraph{(3) kNN using normalized compression distance vectors:}
+% The normalized compression distance ($ncd$) algorithm transforms string like input features into numerical values and is based on the concept of measuring 
+% the similarity of two strings by the amount of information needed to describe the one string given the other string. 
+% Given two strings $x$ and $y$, the $ncd$ is defined as follows:
+%
+% \begin{equation}
+% 	ncd(x,y) = \frac{C(xy)-\min(C(x),C(y))}{\max(C(x),C(y))}
+% \end{equation}
+% where $C(x)$ is the length of the compressed string $x$, $C(xy)$ is the length of the concatenated string $xy$. 
+%
+% % TODO:anpassen, dass hier die random baseline 50:50 ist, da wir bei den train data undersampeled haben
+% We implemented this algorithm in python using \textit{gzip}, which is a loss less compression algorithm based on a combination of LZ77 and Huffman encoding (\cite{Rigler2007}).
+% The $ncd$ algorithm transformed amino acid sequences into numerical vectors by comparing each sequence with all others in the training dataset.
+% This transformation yielded an $n$-dimensional numerical vector for each sequence, where $n$ represents the number of sequences in the training dataset.
+% Each position in the input vector signifies the $ncd$ of the sequence concerning the corresponding sequence in the training dataset. 
+% These vectors were then used as input for the k-nearest neighbors algorithm.
+% Due to the exponential computational complexity of the $ncd$ algorithm, we used under sampling of the non-enzyme dataset to match the sample size of our enzyme dataset,
+% ensuring balance in the positive instances within the training dataset. 
+%
+% When inferring unseen data, the $ncd$ input vector was calculated by comparing it to all sequences in 
+% the training data set, resulting in a $n$-dimensional numerical vector.
+% Consequently, the performance on new data heavily relies on the characteristics of the training dataset.
+%
+% The performance comparison between the kNN algorithm using $ncd$ vectors versus a random baseline are illustrated in Figure \ref{fig:l0_comp_all}
+% which shows the performance of all level 0 models.
+% Despite the mean F1 score of the kNN lying at $0.728$, it did not perform better than the random baseline, which 
+% achieved a F1 score of $0.843$.
+% This observation suggests that the ncd approach exhibits inferior precision and recall compared to the random baseline. 
+% Additionally, both classifiers exhibit a low MCC score of 0.2 and 0.01, respectively, indicating that neither classifier performs better than random guessing.
 
 % \begin{figure}[!tb]
 % 	\includegraphics[width=0.9\textwidth]{./assets/gzip_new.png}
@@ -488,9 +480,9 @@ Additionally, both classifiers exhibit a low MCC score of 0.2 and 0.01, respecti
 % \end{figure}
 
 
-The reason for the poor performance of the k-nearest neighbors algorithm using $ncd$ vectors is
-most likely due to the ncd algorithm not being suited for protein sequences as shown in \cite{GzipProteinCompression} as well as
-the test dataset not being balanced, while the training dataset was.
+% The reason for the poor performance of the k-nearest neighbors algorithm using $ncd$ vectors is
+% most likely due to the ncd algorithm not being suited for protein sequences as shown in \cite{GzipProteinCompression} as well as
+% the test dataset not being balanced, while the training dataset was.
 
 \subsubsection{Support Vector Machine (SVM)}
 % Jan
@@ -500,20 +492,16 @@ input features:
 \begin{enumerate}
 	\item[(1)] Protein embedding vectors encoded by ProtT5 (\cite{ProtT5})
 	\item[(2)] Protein embedding vectors encoded by ESM2 (\cite{ESM2})
-	\item[(3)] One hot encoded protein sequence vectors (\cite{oh_encoding})
+	% \item[(3)] One hot encoded protein sequence vectors (\cite{oh_encoding})
 \end{enumerate}
 
 %
 
 \paragraph{(1) SVM using ProtT5 encoded embedding vectors:}
 
-\lipsum[1]
 \paragraph{(2) SVM using ESM2 encoded embedding vectors:}
 
-\lipsum[1]
 \paragraph{(3) SVM using one hot encoded protein sequence vectors:}
-\lipsum[1]
-
 
 
 

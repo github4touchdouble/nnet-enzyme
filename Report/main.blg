@@ -3,44 +3,46 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: natbib.bst
 Database file #1: document.bib
-You've used 14 entries,
+Warning--can't use both author and editor fields in International_Union_of_Biochemistry_and_Molecular_Biology_Nomenclature_Committee1993-ey
+You've used 10 entries,
             2378 wiz_defined-function locations,
-            623 strings with 8175 characters,
-and the built_in function-call counts, 9434 in all, are:
-= -- 729
-> -- 867
-< -- 5
-+ -- 273
-- -- 271
-* -- 988
-:= -- 1713
-add.period$ -- 68
-call.type$ -- 14
-change.case$ -- 84
-chr.to.int$ -- 14
-cite$ -- 14
-duplicate$ -- 311
-empty$ -- 487
-format.name$ -- 285
-if$ -- 1816
+            597 strings with 7295 characters,
+and the built_in function-call counts, 6898 in all, are:
+= -- 491
+> -- 696
+< -- 3
++ -- 222
+- -- 220
+* -- 755
+:= -- 1289
+add.period$ -- 49
+call.type$ -- 10
+change.case$ -- 59
+chr.to.int$ -- 10
+cite$ -- 11
+duplicate$ -- 208
+empty$ -- 336
+format.name$ -- 230
+if$ -- 1292
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 12
-newline$ -- 72
-num.names$ -- 58
-pop$ -- 104
+missing$ -- 10
+newline$ -- 53
+num.names$ -- 40
+pop$ -- 72
 preamble$ -- 1
-purify$ -- 84
+purify$ -- 60
 quote$ -- 0
-skip$ -- 202
+skip$ -- 127
 stack$ -- 0
-substring$ -- 509
-swap$ -- 79
-text.length$ -- 3
+substring$ -- 347
+swap$ -- 45
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 126
-warning$ -- 0
-while$ -- 63
+type$ -- 87
+warning$ -- 1
+while$ -- 42
 width$ -- 0
-write$ -- 181
+write$ -- 130
+(There was 1 warning)
