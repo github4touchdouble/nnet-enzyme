@@ -339,14 +339,14 @@ The performance plots show the mean score and the confidence intervals as error 
 \section{Results}	
 
 \subsection{Binary Classification}\label{sec:RF_level0}
-% Truc done
+% Truc done - scores done
 Using the Random Forest model on the ``new'' dataset aggregated with the non-enzymes test set, we achieved accurate
 predictions for about 90\% of positive cases (enzymes) and 98\% of negative
 cases (non-enzymes), even with an imbalanced test set comprising 392
 enzymes and 9 876 non-enzymes. As a reference, we provided the confusion
 matrix in Figure \ref{fig:RF_conf_l0}.
-Additionally, we attained an Accuracy of 97.6\%, a weighted f1-score of
-97.8\%, and an MCC-score of 74.1\%. Figure \ref{fig:l0_comp_all} visually demonstrates the significant outperformance of our Random Forest model 
+Additionally, we attained an Accuracy of 0.97, a F1 score of
+0.97, and an MCC-score of 0.74. Figure \ref{fig:l0_comp_all} visually demonstrates the significant outperformance of our Random Forest model 
 compared to the Random Baseline, which predicted labels based on the training set's proportions.
 
 %  Figure 1 of truc result
@@ -361,7 +361,7 @@ compared to the Random Baseline, which predicted labels based on the training se
 % \end{figure}
 
 \subsection{Main Class Prediction}
-% Kida done
+% Kida done - scores done
 After testing the FNN, we observed that the model achieved an F1 score of 0.95 and an MCC score of 0.94. 
 The confusion matrix presented in Figure \ref{fig:FNN_conf_l1} demonstrates the model's robust predictive capability across seven classes, 
 highlighting its high accuracy level. Most predictions align with the diagonal, and the percentages of accurate predictions stand out, 
@@ -376,7 +376,7 @@ ranging remarkably from 92.73\% to 100\% (see Figure \ref{fig:FNN_conf_l1}).
 % Malte done
 In order to test our FNN model for the subclass prediction, we labeled the sequences of the new dataset with their respective subclasses.
 This yielded a subset of the labels in the training dataset, containing 28 subclasses out of the 51 in the training dataset.
-Our model achieved a weighted F1 score of 0.85 and an MCC score of 0.83 on the new dataset. 
+Our model achieved a weighted F1 score of 0.85 and an MCC score of 0.83 on the new dataset (see Figure \ref{fig:FNN_scores_l2}).
 We also calculated the confusion matrix of the model on the new dataset (see Figure \ref{fig:FNN_conf_l2}).
 The missing rows in the confusion matrix represent the 23 remaining subclasses that were not present in the new dataset.
 The reasonably low noise per row indicates that the model can distinguish between the present subclasses of the new dataset.
@@ -572,14 +572,18 @@ While the models are promising, future directions include architecture optimizat
 	\caption{Comparison of all Level 1 models}
 	\label{fig:l1_comp_all}
 \end{figure}
+
+\begin{figure}[!ht]
+	\includegraphics[width=0.9\textwidth]{./assets/l2_scores.png}
+	\caption{Comparison between Level 2 FNN and CLEAN}
+	\label{fig:FNN_scores_l2}
+\end{figure}
 \begin{figure}[!ht]
 \includegraphics[width=0.8\columnwidth]{./assets/l2_dist_all_train_ver.png}
 \caption{Subclass distribution in Split30 (logarithmic scale)}\label{fig:l2_dist_train}
 \end{figure}
 
-\newpage
-\newpage
-
+\cleardoublepage
 \bibliographystyle{natbib} 
 \bibliography{document}
 
