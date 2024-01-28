@@ -373,13 +373,13 @@ ranging remarkably from 92.73\% to 100\% (see Figure \ref{fig:FNN_conf_l1}).
 \end{figure}
 
 \subsection{Subclass Prediction}
-% Malte done
-In order to test our FNN model for the subclass prediction, we labeled the sequences of the new dataset with their respective subclasses.
+% Malte done - scores done
+In order to test our FNN model for the subclass prediction, we labeled the sequences of the New-392 dataset with their respective subclasses.
 This yielded a subset of the labels in the training dataset, containing 28 subclasses out of the 51 in the training dataset.
-Our model achieved a weighted F1 score of 0.85 and an MCC score of 0.83 on the new dataset (see Figure \ref{fig:FNN_scores_l2}).
-We also calculated the confusion matrix of the model on the new dataset (see Figure \ref{fig:FNN_conf_l2}).
-The missing rows in the confusion matrix represent the 23 remaining subclasses that were not present in the new dataset.
-The reasonably low noise per row indicates that the model can distinguish between the present subclasses of the new dataset.
+Our model achieved a weighted F1 score of 0.85 and an MCC score of 0.83 on the New-392 dataset (see Figure \ref{fig:FNN_scores_l2}).
+We also calculated the confusion matrix of the model on the New-392 dataset (see Figure \ref{fig:FNN_conf_l2}).
+The missing rows in the confusion matrix represent the 23 remaining subclasses that were not present in the New-392 dataset.
+The reasonably low noise per row indicates that the model can distinguish between the present subclasses of the New-392 dataset.
 
 
 \begin{figure}[!b]
@@ -584,6 +584,7 @@ While the models are promising, future directions include architecture optimizat
 \end{figure}
 
 \cleardoublepage
+
 \bibliographystyle{natbib} 
 \bibliography{document}
 
