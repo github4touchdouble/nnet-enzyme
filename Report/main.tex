@@ -269,6 +269,8 @@ The architecture of the model consists of layers sized at 2 560, the input layer
 768, 256, and finally, 7 units as an output layer.
 It is worth pointing out that the architecture contains batch normalization layers (BatchNorm1d) intended for 
 normalizing the input layer through adjustment and scaling activations to stabilize and accelerate the training process.
+To address the imbalance in the dataset, we used class weights to penalize the model more for misclassifying the minority classes
+while being more lenient towards misclassifying the majority classes.
 
 \subsubsection{Level 2 - FNN}\label{sec:level2_methods}
 % Malte done
@@ -282,9 +284,8 @@ This resulted in 262 perceptrons in the first hidden layer and 121 in the second
 The dropout rate was set to 0.23.
 While the input layer had the same dimension as the esm2b embeddings (2 560), the output layer had a dimension of 51,
 since there are 51 subclasses in the training dataset (see Figure \ref{fig:l2_dist_train}).
-To further address the imbalance in the dataset, we used class weights to penalize the model more for misclassifying the minority classes
-while being more lenient towards misclassifying the majority classes.
 During training, we used early stopping with a patience of 15 epochs to prevent overfitting.
+We also used class weights corresponding to the class frequencies in the training dataset.
 
 
 \subsection{Evaluation on Test Dataset}
@@ -507,7 +508,16 @@ respectively, underline that both models perform better than random guessing.
 % Kida done
 The following sections detail the architecture and results of further neural network models we created for Level 1 predictions.
 
-\subsubsection{One versus All Binary FNN Model}
+\subsubsection{FNN Model using ProtT5 Embedding}
+% Kida done
+This FNN model was built similarly to our level 1 multi-class FNN \ref{sec:level1_methods}. 
+However, it uses ProtT5 embedding instead of ESM-2. 
+Therefore, the layer sizes were adjusted. The model's architecture consists of an input layer of 1 024 
+and three hidden layers of 1024, 512, and 7 units. The model also uses BatchNorm1d between the layers, 
+activation function LeakyReLU, class weights, and Adam as an optimizer. This model, however, performs worse than 
+FNN using ESM-2 embedding.
+
+\subsubsection{One versus All Binary FNN Models}
 % Kida done
 This model introduces an architecture of 7 binary FNNs, with each four densely connected layers for a binary classification problem of enzyme classes. It predicts each main class in an ``one versus all'' scenario.
 The first layer takes ESM-2 embeddings of size 2 560 as the input and transforms them to 1 760 units, then 1 000, 500, and finally, 1 unit. For ProtT5 with a tensor having 1 024 inputs, the layers after the input layer were set to 512, 256, and 1.
@@ -518,11 +528,10 @@ In terms of performance, the model exhibits varied performances between embeddin
 On the validation dataset, ESM-2 binary FNN had an F1 score of 0.70, and the ProtT5 model achieved 0.77. We did not test this model due to initial architectural mistakes, low performance, and the availability of better models.
 Moreover, regularization techniques like dropout can mitigate the overfitting problem experienced in networks of this nature. To increase the performance, batch normalization and optimizer Adam would be the possible future steps. Due to a lack of time and the complexity of testing it on unseen data, we did not see the potential of this model and moved on to the following architectures.
 
-\subsubsection{Convolutional Neural Network (CNN) Model}
-
-Before taking ESM-2 embeddings, we need to make them suitable for particular sequential data processing.
+\subsubsection{Convolutional Neural Network (CNN) Models}
+Before taking ESM-2 embeddings, we must make them suitable for particular sequential data processing.
 The CNN model starts with a 1D convolutional layer (\textit{conv0}) that takes a single-channel input and applies 4
-filters with a kernel size of 61, moving with a stride of 1 and no padding.
+filters with a kernel size 61, moving with a stride of 1 and no padding.
 The output is then reshaped to a 4-channel 2D image of  $50\times50$. Following this, a 2D convolutional layer (\textit{conv1}) with 4 input 
 channels and 16 output channels uses a $3\times3$ kernel and a stride of 1 without padding, reducing the image size to $48\times48$. 
 Max pooling (\textit{mp}) with a $2\times2$ window and stride of 2 is applied, halving the dimensions to $24\times24$. 
@@ -530,16 +539,25 @@ Another convolutional layer (\textit{conv2}) with 16 input and 32 output channel
 stride of 1, and padding of 1, but the subsequent pooling reduces it to $12\times12$. 
 The process repeats with \textit{conv3}, increasing the channels to 64 while keeping the size constant, 
 followed by pooling that reduces it to $6\times6$. The output is then flattened and passed through a fully connected 
-layer (\textit{fc}) mapping to 7 classes, with the softmax (\textit{sm}) function applied to the final layer's output to obtain class probabilities. 
+layer (\textit{fc}) mapping to 7 classes, with the Softmax (\textit{sm}) function applied to the final layer's output to obtain class probabilities. 
 We used ReLU activations after each convolutional layer for both CNN models.
 
-\subsubsection{}
-This FNN model was built similarly to our level 1 multi-class FNN \ref{sec:level1_methods}. 
-However, it uses ProtT5 embedding instead of ESM-2. 
-Therefore, the layer sizes were adjusted. The model's architecture consists of an input layer of 1 024 
-and three hidden layers of 1024, 512, and 7 units. The model also uses BatchNorm1d between the layers, 
-activation function LeakyReLU, class weights, and Adam as an optimizer. This model, however, performs worse than 
-FNN using ESM-2 embedding.
+In the CNN model that uses ProtT5 embeddings, the first layer is a 2D convolutional (\textit{conv0}) with 1 input channel and 
+4 output channels, using a $3\times3$ kernel, stride of 1, and padding of 1, ensuring the output size remains the same as the input 
+size. The next layer (\textit{conv1}) increases the channels to 16, followed by max pooling (\textit{mp}) with a $2\times2$ window and stride of 2,
+reducing spatial dimensions by half. This pattern continues with \textit{conv2} increasing channels to 32 and another pooling step,
+and then \textit{conv3} further increasing channels to 64 with a final pooling step. After the last pooling, 
+the feature maps are flattened and passed through a fully connected layer (\textit{fc}) with 1024 inputs 
+(from the $6\times6\times64$ feature maps) to 7 outputs, with Softmax (\textit{sm}) applied to the final output for class 
+probabilities.
+
+The ESM-2 CNN model performs better than the ProtT5 CNN model regarding both F1 and MCC scores. 
+However, they are worse than the best FNN performance (see Figure \ref{fig:l1_comp_all}).
+
+In summary, each model reflects a different approach to the complex task of enzyme classification.
+While the models are promising, future directions include architecture optimization for different embeddings.
+
+
 
 
 \section{Supplementary Figures}\label{sec:supplementary figures}
