@@ -4,45 +4,45 @@ The top-level auxiliary file: main.aux
 The style file: natbib.bst
 Database file #1: document.bib
 Warning--can't use both author and editor fields in International_Union_of_Biochemistry_and_Molecular_Biology_Nomenclature_Committee1993-ey
-You've used 10 entries,
+You've used 9 entries,
             2378 wiz_defined-function locations,
-            597 strings with 7295 characters,
-and the built_in function-call counts, 6898 in all, are:
-= -- 491
-> -- 696
+            592 strings with 6431 characters,
+and the built_in function-call counts, 5546 in all, are:
+= -- 452
+> -- 446
 < -- 3
-+ -- 222
-- -- 220
-* -- 755
-:= -- 1289
-add.period$ -- 49
-call.type$ -- 10
-change.case$ -- 59
-chr.to.int$ -- 10
-cite$ -- 11
-duplicate$ -- 208
-empty$ -- 336
-format.name$ -- 230
-if$ -- 1292
++ -- 140
+- -- 138
+* -- 573
+:= -- 992
+add.period$ -- 45
+call.type$ -- 9
+change.case$ -- 53
+chr.to.int$ -- 9
+cite$ -- 10
+duplicate$ -- 194
+empty$ -- 318
+format.name$ -- 147
+if$ -- 1070
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 10
-newline$ -- 53
-num.names$ -- 40
-pop$ -- 72
+newline$ -- 48
+num.names$ -- 36
+pop$ -- 66
 preamble$ -- 1
-purify$ -- 60
+purify$ -- 54
 quote$ -- 0
-skip$ -- 127
+skip$ -- 117
 stack$ -- 0
-substring$ -- 347
-swap$ -- 45
+substring$ -- 334
+swap$ -- 43
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 87
+type$ -- 78
 warning$ -- 1
-while$ -- 42
+while$ -- 39
 width$ -- 0
-write$ -- 130
+write$ -- 118
 (There was 1 warning)
