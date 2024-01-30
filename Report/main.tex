@@ -43,16 +43,16 @@ Therefore, developing a reliable method for predicting EC numbers is very import
 %  Malte done
 However, due to insufficient data, enzyme function prediction using machine learning remains challenging.
 This paper proposes several methods for predicting enzymes in three different problem categories. Each category goes further into depth
-of the enzyme classification system, starting with a binary classification (Level 0) of enzymes and non-enzymes, followed by a multi-class classification (Level 1 \& 2) of enzymes into main classes (e.g., EC X.-.-.-) and subclasses (e.g., EC X.X.-.-).
+of the enzyme classification system, starting with a binary classification (Level $0$) of enzymes and non-enzymes, followed by a multi-class classification (Level $1$ \& $2$) of enzymes into main classes (e.g., EC X.-.-.-) and subclasses (e.g., EC X.X.-.-).
 Throughout developing our models, we used various input features and machine learning algorithms, of which the best will be thoroughly reviewed in this paper (see Table \ref{tab:bestScores}).
 
 %  Malte
 \begin{table}[!htbp]
 \processtable{A table showing the best-performing models per Level \label{tab:bestScores}} {\begin{tabular}{@{}ccccc@{}}\toprule 
 		Level & Description & Model & F1 & MCC \\\midrule
-		0 & Binary classification & Random Forest & 0.98 & 0.75 \\
-		1 & Main class prediction &  Feedforward Neuronal Network & 0.95 & 0.94 \\
-		2 & Subclass prediction&  Feedforward Neuronal Network & 0.85 & 0.83 \\\botrule
+		$0$ & Binary classification & Random Forest & $0.98$ & $0.75$ \\
+		$1$ & Main class prediction &  Feedforward Neuronal Network & $0.95$ & $0.94$ \\
+		$2$ & Subclass prediction&  Feedforward Neuronal Network & $0.85$ & $0.83$ \\\botrule
 \end{tabular}}{}
 \end{table}
 
@@ -67,7 +67,7 @@ Therefore, a comprehensive understanding and a precise classification of enzymes
 %  Truc done
 In the past, scientists attempted to categorize enzymes into groups and develop a logical rule set for naming.
 The efforts were not successful due to ambiguity.
-A significant milestone occurred in 1956 with the establishment of an official international commission on enzyme classification (\cite{International_Union_of_Biochemistry_and_Molecular_Biology_Nomenclature_Committee1993-ey}). 
+A significant milestone occurred in $1956$ with the establishment of an official international commission on enzyme classification (\cite{International_Union_of_Biochemistry_and_Molecular_Biology_Nomenclature_Committee1993-ey}). 
 This marked the initiation of the contemporary enzyme classification system, forming the basis for our understanding of enzymes today.
 %  Truc done
 In modern research, computational methods became invaluable for enzyme classification transforming the traditionally labor-intensive process.
@@ -100,7 +100,7 @@ based on their specific functionalities.
 \subsection{Binary Classification of Enzymes}
 % Jan done
 In the course of assigning EC numbers to protein sequences,
-our initial step is to determine whether a given protein sequence is enzymatic or non-enzymatic (Level 0).
+our initial step is to determine whether a given protein sequence is enzymatic or non-enzymatic (Level $0$).
 To identify the most effective approach for this task,
 we conducted the training of the following binary classification models and compared their performance to select the optimal one:
 \begin{enumerate}
@@ -112,7 +112,7 @@ The chosen method for binary classification is detailed in the subsequent sectio
 
 \subsection{Multi-class Classification of Enzymes}
 %  Malte done
-We used a Feedforward Neural Network (FNN) for levels 1 and 2 to classify the enzymes into their main classes and subclasses.
+We used a Feedforward Neural Network (FNN) for levels $1$ and $2$ to classify the enzymes into their main classes and subclasses.
 The FNN is an artificial neural network that uses a series of fully connected layers to extract features from the input data and classify it into different categories,
 thus making it a suitable choice for our multi-class classification task. 
 
@@ -120,20 +120,20 @@ thus making it a suitable choice for our multi-class classification task.
 
 %  Malte & Truc done
 The protein data sets were taken from the UniProt database and used in the CLEAN publication on Enzyme function prediction (see \cite{CleanArticle}). 
-The complete data pool of enzymes (called Split100 in \cite{CleanArticle}) contains 224 693 sequences. 
+The complete data pool of enzymes (called Split100 in \cite{CleanArticle}) contains $224693$ sequences. 
 These sequences are separated into several smaller subsets (SplitX, $X \in \left\{10, 30, 50, 70\right\}$), where $X$ represents the amount of similarity allowed between the sequences.
-For reference, Split30 only contains sequences that share at most 30\% similarity.
+For reference, Split30 only contains sequences that share at most $30\%$ similarity.
 Since we want to reduce family overrepresentation, we used the Split30 dataset for our research,
-which contains 9 186 enzymes.
+which contains $9186$ enzymes.
 With this redundancy reduction, we want to prevent bias towards a specific family of enzymes.
-This subset was combined with a non-enzyme dataset holding 37 347 sequences, resulting in 46 533 sequences.
+This subset was combined with a non-enzyme dataset holding $37347$ sequences, resulting in $46533$ sequences.
 
 \subsection{Data Preprocessing}
 % Malte & Kida
 We removed all sequences containing an ambiguous amino acid, such as 'U' or 'O', from the dataset, as well as
-sequences with a length longer than 1 022 amino acids. 
-This is due to the enzyme dataset only containing sequences with a maximum length of 1 022 amino acids.
-The non-enzyme dataset, however, contains many sequences with a length of up to 18 000 amino acids.
+sequences with a length longer than $1022$ amino acids. 
+This is due to the enzyme dataset only containing sequences with a maximum length of $1022$ amino acids.
+The non-enzyme dataset, however, contains many sequences with a length of up to $18000$ amino acids.
 By removing these sequences we reduce the imbalance between the enzyme and non-enzyme dataset while also
 preventing the model from learning patterns that are specific to the non-enzyme dataset.
 
@@ -155,8 +155,8 @@ decision tree requires various features, we opted to extract additional
 information from the protein sequence and the ESM-2 embeddings \cite{ESM2}.
 
 From the protein sequences, we computed the mass by summing the individual masses of its amino acid components. 
-Meanwhile, the ESM-2 embeddings underwent statistical analysis, where a 2 560-dimensional vector represents each protein.
-We calculated the median, standard deviation, and vector magnitude for each sample in the dataset.
+Meanwhile, the ESM-2 embeddings underwent statistical analysis, where a $2560$-dimensional vector represents each protein.
+We calculated the median (Emb. med.), standard deviation (Emb. std.), and vector magnitude (Emb. mag.) for each sample in the dataset.
 For clarity, the mass of protein sequences is presented in atomic mass unit (AMU),
 and the term 'vector magnitude' refers to the square root of the sum of the squares of all vector dimensions.
 
@@ -169,26 +169,26 @@ aiming to retain $90\%$ of the variance. Applying a $90\%$ cut-off threshold res
 \caption{The number of components needed to explain the variance in the enzyme dataset}\label{fig:PCA_enzymes}
 \end{figure}
 
-By standardizing both datasets to a dimensionality of 397, the higher dimensionality, we ensured that they remain at least $90\%$ of the variance.
-This constant dimensionality of 397 was also employed to reduce the protein embeddings of unseen datasets during evaluation.
+By standardizing both datasets to a dimensionality of $397$, the higher dimensionality, we ensured that they remain at least $90\%$ of the variance.
+This constant dimensionality of $397$ was also employed to reduce the protein embeddings of unseen datasets during evaluation.
 
 % Truc done
 We also used the method SelectFromModel from the scikit-learn library (see \cite{scikit-learn})
 to select features based on importance weights. 
 The refined set of input features contains 
-‘Mass,’ ‘Emb median,’ ‘Emb std,’ ‘Emb magnitude’, and ‘PCA 1’ through ‘PCA 47’ (see table \ref{tab:ReducedInputRF}) excluding ‘PCA 29’, ‘PCA 31’, ‘PCA 35’,
-‘PCA 36’, ‘PCA 39’ to ‘PCA 42’, ‘PCA 44’ and ‘PCA 46’ (where ‘Emb’ represents embeddings and ‘PCA X’ signifies the X-th dimension of the reduced embeddings).
+‘Mass’, ‘Emb. med.’, ‘Emb. std.’, ‘Emb. mag.’, and ‘PCA $1$’ through ‘PCA $47$’ (see table \ref{tab:ReducedInputRF}) excluding ‘PCA $29$’, ‘PCA $31$’, ‘PCA $35$’,
+‘PCA $36$’, ‘PCA $39$’ to ‘PCA $42$’, ‘PCA $44$’ and ‘PCA $46$’ (where ‘Emb.’ represents embeddings and ‘PCA X’ signifies the X-th dimension of the reduced embeddings).
 
 % Malte
 \begin{table}[!htbp]
 \setlength{\tabcolsep}{2pt}
-\processtable{Input features for the Random Forest model \label{tab:ReducedInputRF}} {
+\processtable{Input features for the Random Forest model. \label{tab:ReducedInputRF}} {
 	\begin{tabular}{@{}ccccccc@{}}
 		\toprule 
-		Mass & Emb median & Emb std. & Emb magnitude & PCA 1 & \dots & PCA 47\\
+		Mass & Emb. med. & Emb. std. & Emb. mag. & PCA $1$ & \dots & PCA $47$\\
 		\midrule
-		60153.71 & -0.00218 & 0.22733 & 11.50251 & 0.45033 & \dots & -0.05049\\
-		81547.54 & -0.00262 & 0.24014 & 12.15046 & -0.08780 & \dots & 0.22034 \\
+		$60153.71$ & $-0.00218$ & $0.22733$ & $11.50251$ & $0.45033$ & \dots & $-0.05049$\\
+		$81547.54$ & $-0.00262$ & $0.24014$ & $12.15046$ & $-0.08780$ & \dots & $0.22034$ \\
 		\dots & \dots & \dots & \dots & \dots & \dots & \dots \\
 		\botrule
     \end{tabular}
@@ -197,17 +197,15 @@ The refined set of input features contains
 
 \subsubsection{Data Preprocessing for Level 1}
 % Malte done
-For the Level 1 prediction, we labeled each sequence with its respective main class,
-resulting in 7 classes (see Figure \ref{fig:l1_dist_train}).
+For the Level $1$ prediction, we labeled each sequence with its respective main class,
+resulting in $7$ classes (see Figure \ref{fig:l1_dist_train}).
 While the second main class is the most prevalent, 
 the seventh main class is the least represented, with only
-containing 190 samples. 
-
-
+containing $190$ samples. 
 
 \subsubsection{Data Preprocessing for Level 2}
 % Malte done
-For the Level 2 prediction, we labeled each sequence with its respective subclass (see section \ref{sec:supplementary figures} Figure \ref{fig:l2_dist_train}).
+For the Level $2$ prediction, we labeled each sequence with its respective subclass (see section \ref{sec:supplementary figures} Figure \ref{fig:l2_dist_train}).
 The problem of imbalanced data and underrepresentation of some labels is even more pronounced when labeling the sequences with their respective subclass.
 Some enzyme families comprised less than ten representatives in the dataset, making it difficult for the model to learn the patterns of these families.
 To address this issue, we combined underrepresented families of the same main class into a single class 
@@ -217,21 +215,21 @@ This procedure had to be applied to each main class separately, as the subclasse
 
 \subsubsection{Training Procedure}
 % Truc done
-We divided the data table into two parts for all our models: a training set and a validation set, using a random state of 42 for consistency. 
+We divided the data table into two parts for all our models: a training set and a validation set, using a random state of $42$ for consistency. 
 The training set contains $70\%$ of the original data, while the validation set holds the remaining $30\%$. 
 This separation allows us to train our models on a subset of the data and assess its performance on 
 the validation dataset to ensure that the model does not overfit the training data.
 
 \subsubsection{Evaluation Procedure}
 % Truc & Malte done 
-The enzymatic dataset we used for evaluation is called ``New-392'' and was used as one of the benchmark datasets 
+The enzymatic dataset we used for evaluation is called ``New-$392$'' and was used as one of the benchmark datasets 
 in the CLEAN publication (see \cite{CleanArticle}).
-For the Level 0 prediction, we concatenated the ``New-392'' dataset with the non-enzymes test dataset.
-We also filtered for ambiguous amino acids and sequences longer than 1 022 amino acids.
-The refined non-enzyme dataset contains 9 336 non-enzymes, resulting in 9 728 sequences for the Level 0 prediction.
-For the Level 1 and Level 2 predictions, we removed multifunctional enzymes that differ in their main class.
-This left us with 388 sequences for the Level 1 and Level 2 prediction.
-Non-enzymes were not included in the evaluation of the Level 1 and Level 2 predictions.
+For the Level $0$ prediction, we concatenated the ``New-$392$'' dataset with the non-enzymes test dataset.
+We also filtered for ambiguous amino acids and sequences longer than $1022$ amino acids.
+The refined non-enzyme dataset contains $9336$ non-enzymes, resulting in $9728$ sequences for the Level $0$ prediction.
+For the Level $1$ and Level $2$ predictions, we removed multifunctional enzymes that differ in their main class.
+This left us with $388$ sequences for the Level $1$ and Level $2$ prediction.
+Non-enzymes were not included in the evaluation of the Level $1$ and Level $2$ predictions.
 
 \subsection{Model Architectures}
 \subsubsection{Level 0 - Random Forest}
@@ -250,20 +248,20 @@ be trained on an equal representation of both classes.
 
 % Truc done
 We built a Random Forest Classifier using the scikit-learn library (see \cite{scikit-learn}) with specific parameters: 
-The classifier consists of a total of 200 decision trees. Each tree has a
-maximum depth of 16 and a node is a leaf only if it has a
-minimum of 8 samples. The random state parameter is set to 42, ensuring
+The classifier consists of a total of $200$ decision trees. Each tree has a
+maximum depth of $16$ and a node is a leaf only if it has a
+minimum of $8$ samples. The random state parameter is set to $42$, ensuring
 reproducibility in the model's construction.
 
 \subsubsection{Level 1 - FNN}\label{sec:level1_methods}
 % Kida done
 % TODO: Look at comments, not finished <29.01.24, Malte Weyrich> %
-The FNN for Level 1, using ESM-2 embeddings, involves a sequential arrangement of linear layers, each accompanied by LeakyReLU activation functions.
+The FNN for Level $1$, using ESM-2 embeddings, involves a sequential arrangement of linear layers, each accompanied by LeakyReLU activation functions.
 This choice of activation function, LeakyReLU, is particularly remarkable for its capability of dealing with the ``dying ReLU'' problem by 
 allowing a small gradient when the unit is inactive. 
-The architecture is as follows: The input dimension is 2 560.
-The hidden layer node counts are 2 048,
-768 and 256. The output consists of 7 units.
+The architecture is as follows: The input dimension is $2560$.
+The hidden layer node counts are $2048$,
+$768$ and $256$. The output consists of $7$ units.
 It is worth pointing out that the architecture contains batch normalization layers (BatchNorm1d) intended for 
 normalizing the input layer through adjustment and scaling activations to stabilize and accelerate the training process.
 To address the imbalance in the dataset, we used class weights to penalize the model more for misclassifying the minority classes
@@ -271,17 +269,17 @@ while being more lenient towards misclassifying the majority classes.
 
 \subsubsection{Level 2 - FNN}\label{sec:level2_methods}
 % Malte done
-For the Level 2 prediction, we used a FNN to classify the enzymes into their respective subclasses.
+For the Level $2$ prediction, we used a FNN to classify the enzymes into their respective subclasses.
 % We implemented this architecture using TensorFlow, an open-source library for machine learning (see \cite{tensorflow2015-whitepaper}). % TODO: Maybe introduce these details earlier?
-The architecture comprises one 2 560 dimensional input layer , two hidden layers, and one 51 dimensional output layer,
-where 51 represents the number of subclasses in the training dataset (see Figure \ref{fig:l2_dist_train}).
+The architecture comprises one $2560$ dimensional input layer , two hidden layers, and one $51$ dimensional output layer,
+where $51$ represents the number of subclasses in the training dataset (see Figure \ref{fig:l2_dist_train}).
 The layers are fully connected, and the activation function used is ReLU.
 In between the hidden layers, we used dropout layers to prevent overfitting.
 The number of perceptrons used per hidden layer and the dropout rate were optimized using the Optuna library (see \cite{optuna_2019}).
-This resulted in 262 perceptrons in the first and 121 in the second hidden layer.
-The dropout rate was set to 0.23.
-During training, we used early stopping with a patience of 15 epochs to prevent overfitting.
-We also used class weights corresponding to the class frequencies in the Level 2 training dataset.
+This resulted in $262$ perceptrons in the first and $121$ in the second hidden layer.
+The dropout rate was set to $0.23$.
+During training, we used early stopping with a patience of $15$ epochs to prevent overfitting.
+We also used class weights corresponding to the class frequencies in the Level $2$ training dataset.
 
 
 
@@ -300,10 +298,10 @@ We also used class weights corresponding to the class frequencies in the Level 2
 To assess the performance of our models, we emphasize the F1 and MCC scores. 
 Given the imbalance in the test set, we also considered the weighted F1 score for the multiclassification models
 to ensure a more equitable evaluation of the model's effectiveness.
-The F1 score is the harmonic mean of precision and recall, with values ranging from 0 to 1.
-A score of 1 signifies a flawless prediction, while 0 indicates an inaccurate prediction.
-The MCC score is a correlation coefficient that indicates the accuracy of binary classifications, with values ranging from -1 to 1. 
-A score of 1 signifies a flawless prediction, -1 indicates a completely inaccurate prediction, and 0 suggests predictions at random.
+The F1 score is the harmonic mean of precision and recall, with values ranging from $0$ to $1$.
+A score of $1$ signifies a flawless prediction, while $0$ indicates an inaccurate prediction.
+The MCC score is a correlation coefficient that indicates the accuracy of binary classifications, with values ranging from $-1$ to $1$. 
+A score of $1$ signifies a flawless prediction, $-1$ indicates a completely inaccurate prediction, and $0$ suggests predictions at random.
 This scoring metric takes into account the entirety of the confusion matrix ($TP$, $TN$, $FP$, $FN$), making it a valid
 metric for measuring the performance across all classes.
 It can also be applied to multiclassification models by calculating the MCC score for each class and then averaging the scores.
@@ -312,12 +310,12 @@ It can also be applied to multiclassification models by calculating the MCC scor
 % Malte done
 Bootstrapping describes randomly drawing $n$ samples with replacement from the same data pool $B$ times.
 We used this method to further evaluate our model scores, as it allows us to estimate the mean, standard error, and confidence interval of the scores.
-We chose $B$ as 10 000, and $n$ as the number of samples in the corresponding test set.
-This means that we created 10 000 bootstrapped datasets, each of size $n$, containing the pairs of actual and predicted labels from the test set with replacement.
+We chose $B$ as $10000$, and $n$ as the number of samples in the corresponding test set.
+This means that we created $10000$ bootstrapped datasets, each of size $n$, containing the pairs of actual and predicted labels from the test set with replacement.
 This allowed us to calculate the scores for each bootstrapped dataset and then estimate the performance's mean, 
 standard error, and confidence interval for each scoring metric.
 The scores were rounded to significant digits using the standard error.
-We calculated the error bars using an $\alpha$ of 0.05 and the standard error of the scores.
+We calculated the error bars using an $\alpha$ of $0.05$ and the standard error of the scores.
 The performance plots show the mean score and the confidence intervals as error bars (see Figure \ref{fig:l0_comp_all}, \ref{fig:l1_comp_all} and \ref{fig:FNN_scores_l2}).
 
 \end{methods}
@@ -326,19 +324,19 @@ The performance plots show the mean score and the confidence intervals as error 
 
 \subsection{Binary Classification}\label{sec:RF_level0}
 % Truc done - scores done
-Using the Random Forest model on the Level 0 test set, we achieved accurate
-predictions for about 90\% of positive cases (enzymes) and 98\% of negative
-cases (non-enzymes), even with an imbalanced test set comprising 392
-enzymes and 9 728 non-enzymes. As a reference, we provided the confusion
+Using the Random Forest model on the Level $0$ test set, we achieved accurate
+predictions for about $90\%$ of positive cases (enzymes) and $98\%$ of negative
+cases (non-enzymes), even with an imbalanced test set comprising $392$
+enzymes and $9728$ non-enzymes. As a reference, we provided the confusion
 matrix in Figure \ref{fig:RF_conf_l0}.
-Additionally, we attained an Accuracy of 0.97, a F1 score of
-0.97, and an MCC-score of 0.74. Figure \ref{fig:l0_comp_all} visually demonstrates the considerable outperformance of our Random Forest model 
+Additionally, we attained an Accuracy of $0.97$, a F1 score of
+$0.97$, and an MCC-score of $0.74$. Figure \ref{fig:l0_comp_all} visually demonstrates the considerable outperformance of our Random Forest model 
 compared to the Random Baseline, which predicted labels based on the training set's proportions.
 
 %  Figure 1 of truc result
 \begin{figure}[!hb]
 \includegraphics[width=0.8\textwidth]{assets/Results_Truc_1.jpeg}
-\caption{Confusion Matrix of the Random Forest Model on the “new” dataset}\label{fig:RF_conf_l0}
+\caption{Confusion Matrix of the Random Forest Model on the “new” dataset.}\label{fig:RF_conf_l0}
 \end{figure}
 
 % \begin{figure}[!ht]
@@ -348,12 +346,12 @@ compared to the Random Baseline, which predicted labels based on the training se
 
 \subsection{Main Class Prediction}
 % Kida done - scores done
-After testing the FNN, we observed that the model achieved an F1 score of 0.95 and an MCC score of 0.94. 
+After testing the FNN, we observed that the model achieved an F1 score of $0.95$ and an MCC score of $0.94$. 
 The confusion matrix presented in Figure \ref{fig:FNN_conf_l1} demonstrates the model's robust predictive capability across seven classes, 
 highlighting its high accuracy level. Most predictions align with the diagonal, and the percentages of accurate predictions stand out, 
-ranging from 92.73\% to 100\% (see Figure \ref{fig:FNN_conf_l1}).
+ranging from $92.73\%$ to $100\%$ (see Figure \ref{fig:FNN_conf_l1}).
 When comparing the FNN's performance to the Random Baseline, we observe that the FNN outperforms the Random Baseline in all metrics (see Figure \ref{fig:l1_comp_all}).
-The FNN also managed to achieve slightly higher MCC score than CLEAN (0.92 versus 0.94) but overall performed similarly to CLEAN (see Figure \ref{fig:l1_comp_all}).
+The FNN also managed to achieve slightly higher MCC score than CLEAN ($0.92$ versus $0.94$) but overall performed similarly to CLEAN (see Figure \ref{fig:l1_comp_all}).
 
 \begin{figure}[!ht]
 \includegraphics[width=0.9\textwidth]{assets/l1_conf_new_kida.png}
@@ -363,15 +361,15 @@ The FNN also managed to achieve slightly higher MCC score than CLEAN (0.92 versu
 \subsection{Subclass Prediction}
 % Malte done - scores done
 % In order to test our FNN model for the subclass prediction, we labeled the sequences of the New-392 dataset with their respective subclasses.
-The New-392 test dataset contains 28 out of the 51 in the training dataset.
-Our model achieved a weighted F1 score of 0.85 and an MCC score of 0.83 on the New-392 dataset (see Figure \ref{fig:FNN_scores_l2}).
-We also calculated the confusion matrix of the model on the New-392 dataset (see Figure \ref{fig:FNN_conf_l2}).
-The missing rows in the confusion matrix represent the 23 remaining subclasses that were not present in the New-392 dataset.
-The reasonably low noise per row indicates that the model can distinguish between the present subclasses of the New-392 dataset.
-Note that in Figure \ref{fig:FNN_conf_l2} the label 13 (corresponding to \textbf{EC 1.16.-.-}) seems to be wholly misclassified.
-This is because label 13 was the only representative of its class in the New-392 dataset and
-the FNN misclassified it as label 17 (corresponding to \textbf{EC 1.10|20|23|97.-.-}), making it seem like the model completely misclassified label 13.
-The Random Baseline for Level 2 achieved a weighted F1 score of 0.01 and an MCC score of 0.00 (see Figure \ref{fig:FNN_scores_l2}).
+The New-$392$ test dataset contains $28$ out of the $51$ in the training dataset.
+Our model achieved a weighted F1 score of $0.85$ and an MCC score of $0.83$ on the New-$392$ dataset (see Figure \ref{fig:FNN_scores_l2}).
+We also calculated the confusion matrix of the model on the New-$392$ dataset (see Figure \ref{fig:FNN_conf_l2}).
+The missing rows in the confusion matrix represent the $23$ remaining subclasses that were not present in the New-$392$ dataset.
+The reasonably low noise per row indicates that the model can distinguish between the present subclasses of the New-$392$ dataset.
+Note that in Figure \ref{fig:FNN_conf_l2} the label $13$ (corresponding to \textbf{EC 1.16.-.-}) seems to be wholly misclassified.
+This is because label $13$ was the only representative of its class in the New-$392$ dataset and
+the FNN misclassified it as label $17$ (corresponding to \textbf{EC 1.10|20|23|97.-.-}), making it seem like the model completely misclassified label $13$.
+The Random Baseline for Level $2$ achieved a weighted F1 score of $0.01$ and an MCC score of $0.00$ (see Figure \ref{fig:FNN_scores_l2}).
 % Due to the increased complexity of the Level 2 prediction, the Random Baseline is less effective than the Level 0 and Level 1 predictions.
 
 
@@ -381,7 +379,7 @@ The Random Baseline for Level 2 achieved a weighted F1 score of 0.01 and an MCC 
 \caption{Normalized confusion matrix of Level 2 prediction.}\label{fig:FNN_conf_l2}
 \end{figure}
 
-The level 2 FNN did not outperform CLEAN, which achieved a weighted F1 score of 0.90 and an MCC score of 0.88 (see Figure \ref{fig:FNN_scores_l2}).
+The level $2$ FNN did not outperform CLEAN, which achieved a weighted F1 score of $0.90$ and an MCC score of $0.88$ (see Figure \ref{fig:FNN_scores_l2}).
 \section{Discussion}
 % Truc done
 The two main approaches we employed for the problem, namely Random Forest and Feedforward Neural Network, delivered promising results, surpassing the Random Baseline models.
@@ -389,8 +387,8 @@ However, there is room for improvement due to the dataset's imbalance.
 One potential enhancement involves exploring additional features, such as incorporating information from protein 3D structures and protein interactions.
 These aspects could provide valuable insights and contribute to further refining the accuracy of our models.
 % Truc improvements done
-For the Random Forest model, where we applied a 90\% cut-off for PCA, experimenting with a higher percentage, 
-like 95\%, could potentially enhance performance.
+For the Random Forest model, where we applied a $90\%$ cut-off for PCA, experimenting with a higher percentage, 
+like $95\%$, could potentially enhance performance.
 % Malte Level 1 & 2 FNN improvements done
 We used class weights for both of our FNNs to address the imbalance in the datasets.
 However, this approach could be better, as it does not address the inability of the models to learn the patterns of the underrepresented classes.
@@ -400,14 +398,14 @@ providing the model with more instances to learn from.
 This approach can potentially enhance the model's ability to discern and generalize patterns related to the underrepresented 
 classes, thereby improving its overall performance.
 
-An idea for further development is to create a comprehensive pipeline by combining all three models to predict proteins from Level 0 to Level 2.
-In this hypothetical pipeline, the Random Forest model would predict Level 0.
-If the protein is identified as an enzyme, the Feedforward Neural Network (FNN) at Level 1 will predict the main class,
-while the other FNN at Level 2 will predict the subclass.
-Since the FNN at Level 2 implicitly predicts the main class, we could align the predictions of the two models.
-If the main class predicted by the FNN at Level 2 matches the main class predicted by the FNN at Level 1, 
-we would consider the entire result from the FNN at Level 2 as our final prediction.
-Otherwise, we would discard the prediction of the FNN at Level 2.\\
+An idea for further development is to create a comprehensive pipeline by combining all three models to predict proteins from Level $0$ to Level $2$.
+In this hypothetical pipeline, the Random Forest model would predict Level $0$.
+If the protein is identified as an enzyme, the Feedforward Neural Network (FNN) at Level $1$ will predict the main class,
+while the other FNN at Level $2$ will predict the subclass.
+Since the FNN at Level $2$ implicitly predicts the main class, we could align the predictions of the two models.
+If the main class predicted by the FNN at Level $2$ matches the main class predicted by the FNN at Level $1$, 
+we would consider the entire result from the FNN at Level $2$ as our final prediction.
+Otherwise, we would discard the prediction of the FNN at Level $2$.\\
 
 In conclusion, the three models represent promising tools for supporting researchers in classifying proteins. 
 While each model demonstrates efficacy individually, the envisioned pipeline integrating all three could enhance protein classification's overall accuracy and reliability.
@@ -432,10 +430,10 @@ these models used two distinct types of input features:
 \end{enumerate}
 % Jan done
 Figure \ref{fig:l0_comp_all} illustrates the performance comparison of the kNN algorithm using ProtT5 and ESM-2 encoded
-embedding vectors separately, as well as the Random Baseline for Level 0.
+embedding vectors separately, as well as the Random Baseline for Level $0$.
 While both kNNs outperformed the Random Baseline, we observe that when using ProtT5 embeddings as input features, 
-the mean F1 score slightly improved over the ESM-2 approach, recording 0.86 compared to 0.84.
-The same trend can be seen in the MCC score: 0.32, opposing 0.28. 
+the mean F1 score slightly improved over the ESM-2 approach, recording $0.86$ compared to $0.84$.
+The same trend can be seen in the MCC score: $0.32$, opposing $0.28$. 
 This implies that using ProtT5 as input vectors for the kNN approach showcases superior performance across both scores, 
 especially the MCC score, the more robust measurement for imbalanced datasets. 
 
@@ -493,58 +491,58 @@ input features:
 \end{enumerate}
 
 % Jan done
-Figure \ref{fig:l0_comp_all} illustrates the performance comparison of the SVM algorithm using ProtT5 ($n=1024$) 
-encoded embedding vectors with ESM-2 ($n=2560$) encoded embedding vectors versus a Random Baseline. 
-We observe that the mean F1 score for the ProtT5-based model is 0.93, and the mean F1 score for the ESM-2-based model is 0.93 compared to 0.84 for the Random Baseline. This implies that both SVM models perform 
-with superior precision and recall compared to the Random Baseline. The MCC of 0.47 (ProtT5) and 0.49 (ESM2),
+Figure \ref{fig:l0_comp_all} illustrates the performance comparison of the two SVM models using ProtT5 embedding vectors and ESM-2 embedding vectors separately versus a Random Baseline. 
+We observe that the mean F1 score for the ProtT5-based model is $0.93$, and the mean F1 score for the ESM-2-based model is $0.93$ compared to $0.84$ for the Random Baseline. This implies that both SVM models perform 
+with superior precision and recall compared to the Random Baseline. The MCC of $0.47$ (ProtT5) and $0.49$ (ESM-2),
 respectively, underline that both models perform better than random guessing.
 
 
 \subsection{Additional Multi-class Classification Models for Level 1}
 % Kida done
-The following sections detail the architecture and results of further neural network models we created for Level 1 predictions.
+The following sections detail the architecture and results of further neural network models we created for Level $1$ predictions.
 
 \subsubsection{FNN Model using ProtT5 Embedding}
 % Kida done
-This FNN model was built similarly to our level 1 multi-class FNN \ref{sec:level1_methods}. 
+This FNN model was built similarly to our level $1$ multi-class FNN \ref{sec:level1_methods}. 
 However, it uses ProtT5 embedding instead of ESM-2. 
-Therefore, the layer sizes were adjusted. The model's architecture consists of an input layer of 1 024 
-and three hidden layers of 1024, 512, and 7 units. The model also uses BatchNorm1d between the layers, 
-activation function LeakyReLU, class weights, and Adam as an optimizer. This model, however, performs worse than 
-FNN using ESM-2 embedding.
+Therefore, the layer sizes were adjusted. The model's architecture consists of an input layer of $1024$ 
+and three hidden layers of $1024$, $512$, and $7$ units. The model also uses batch normalization between the layers, 
+activation function LeakyReLU, class weights, and Adam as an optimizer. This model, however, performs worse than the 
+FNN using ESM-2 embeddings.
 
 \subsubsection{One versus All Binary FNN Models}
 % Kida done
-This model introduces an architecture of 7 binary FNNs, with each four densely connected layers for a binary classification problem of enzyme classes. It predicts each main class in an ``one versus all'' scenario.
-The first layer takes ESM-2 embeddings of size 2 560 as the input and transforms them to 1 760 units, then 1 000, 500, and finally, 1 unit. For ProtT5 with a tensor having 1 024 inputs, the layers after the input layer were set to 512, 256, and 1.
+This model introduces an architecture of $7$ binary FNNs, with each four densely connected layers for a binary classification problem of enzyme classes. It predicts each main class in an ``one versus all'' scenario.
+The first layer takes ESM-2 embeddings of size $2560$ as the input and transforms them to $1760$ units, then $1000$, $500$, and finally, $1$ unit. For ProtT5 with a tensor having $1024$ inputs, the layers after the input layer were set to $512$, $256$, and $1$.
 Each layer uses the ReLU activation function, commonly known for its ability to perform non-linear transformations and solutions to the vanishing gradient.
-The final output is passed through a Sigmoid activation function, which fits nicely into binary classification because it squashes any real-valued number into the value between 0 and 1. 
+The final output is passed through a Sigmoid activation function, which fits nicely into binary classification because it squashes any real-valued number into the value between $0$ and $1$. 
 
 In terms of performance, the model exhibits varied performances between embeddings, a strong indicator that although the architecture is static across different embeddings, it reacts differently to the distinct features of each embedding.
-On the validation dataset, ESM-2 binary FNN had an F1 score of 0.70, and the ProtT5 model achieved 0.77. We did not test this model due to initial architectural mistakes, low performance, and the availability of better models.
+On the validation dataset, ESM-2 binary FNN had an F1 score of $0.70$, and the ProtT5 model achieved $0.77$. We did not test this model due to initial architectural mistakes, low performance, and the availability of better models.
+
 Moreover, regularization techniques like dropout can mitigate the overfitting problem experienced in networks of this nature. To increase the performance, batch normalization and optimizer Adam would be the possible future steps. Due to a lack of time and the complexity of testing it on unseen data, we did not see the potential of this model and moved on to the following architectures.
 
 \subsubsection{Convolutional Neural Network (CNN) Models}
 Before taking ESM-2 embeddings, we must make them suitable for particular sequential data processing.
-The CNN model starts with a 1D convolutional layer (\textit{conv0}) that takes a single-channel input and applies 4
-filters with a kernel size 61, moving with a stride of 1 and no padding.
-The output is then reshaped to a 4-channel 2D image of  $50\times50$. Following this, a 2D convolutional layer (\textit{conv1}) with 4 input 
-channels and 16 output channels uses a $3\times3$ kernel and a stride of 1 without padding, reducing the image size to $48\times48$. 
-Max pooling (\textit{mp}) with a $2\times2$ window and stride of 2 is applied, halving the dimensions to $24\times24$. 
-Another convolutional layer (\textit{conv2}) with 16 input and 32 output channels maintains the size using a $3\times3$ kernel, 
-stride of 1, and padding of 1, but the subsequent pooling reduces it to $12\times12$. 
-The process repeats with \textit{conv3}, increasing the channels to 64 while keeping the size constant, 
+The CNN model starts with a 1D convolutional layer (\textit{conv0}) that takes a single-channel input and applies $4$
+filters with a kernel size $61$, moving with a stride of $1$ and no padding.
+The output is then reshaped to a $4$-channel 2D image of  $50\times50$. Following this, a 2D convolutional layer (\textit{conv1}) with $4$ input 
+channels and $16$ output channels uses a $3\times3$ kernel and a stride of $1$ without padding, reducing the image size to $48\times48$. 
+Max pooling (\textit{mp}) with a $2\times2$ window and stride of $2$ is applied, halving the dimensions to $24\times24$. 
+Another convolutional layer (\textit{conv2}) with $16$ input and $32$ output channels maintains the size using a $3\times3$ kernel, 
+stride of $1$, and padding of $1$, but the subsequent pooling reduces it to $12\times12$. 
+The process repeats with \textit{conv3}, increasing the channels to $64$ while keeping the size constant, 
 followed by pooling that reduces it to $6\times6$. The output is then flattened and passed through a fully connected 
-layer (\textit{fc}) mapping to 7 classes, with the Softmax (\textit{sm}) function applied to the final layer's output to obtain class probabilities. 
+layer (\textit{fc}) mapping to $7$ classes, with the Softmax (\textit{sm}) function applied to the final layer's output to obtain class probabilities. 
 We used ReLU activations after each convolutional layer for both CNN models.
 
-In the CNN model that uses ProtT5 embeddings, the first layer is a 2D convolutional (\textit{conv0}) with 1 input channel and 
-4 output channels, using a $3\times3$ kernel, stride of 1, and padding of 1, ensuring the output size remains the same as the input 
-size. The next layer (\textit{conv1}) increases the channels to 16, followed by max pooling (\textit{mp}) with a $2\times2$ window and stride of 2,
-reducing spatial dimensions by half. This pattern continues with \textit{conv2} increasing channels to 32 and another pooling step,
-and then \textit{conv3} further increasing channels to 64 with a final pooling step. After the last pooling, 
-the feature maps are flattened and passed through a fully connected layer (\textit{fc}) with 1024 inputs 
-(from the $6\times6\times64$ feature maps) to 7 outputs, with Softmax (\textit{sm}) applied to the final output for class 
+In the CNN model that uses ProtT5 embeddings, the first layer is a 2D convolutional (\textit{conv0}) with $1$ input channel and 
+$4$ output channels, using a $3\times3$ kernel, stride of $1$, and padding of $1$, ensuring the output size remains the same as the input 
+size. The next layer (\textit{conv1}) increases the channels to $16$, followed by max pooling (\textit{mp}) with a $2\times2$ window and stride of $2$,
+reducing spatial dimensions by half. This pattern continues with \textit{conv2} increasing channels to $32$ and another pooling step,
+and then \textit{conv3} further increasing channels to $64$ with a final pooling step. After the last pooling, 
+the feature maps are flattened and passed through a fully connected layer (\textit{fc}) with $1024$ inputs 
+(from the $6\times6\times64$ feature maps) to $7$ outputs, with Softmax (\textit{sm}) applied to the final output for class 
 probabilities.
 The ESM-2 CNN model performs better than the ProtT5 CNN model regarding both F1 and MCC scores. 
 However, they are worse than the best FNN performance (see Figure \ref{fig:l1_comp_all}). \\
@@ -555,29 +553,29 @@ While the models are promising, future directions include architecture optimizat
 \section{Supplementary Figures}\label{sec:supplementary figures}
 \begin{figure}[!ht]
 	\includegraphics[width=0.9\textwidth]{./assets/l0_scores_all.png}
-	\caption{Comparison of all Level 0 models}
+	\caption{Comparison of all Level 0 models.}
 	\label{fig:l0_comp_all}
 \end{figure}
 \begin{figure}[!ht]
 	\includegraphics[width=0.9\textwidth]{./assets/l1_scores_all.png}
-	\caption{Comparison of all Level 1 models}
+	\caption{Comparison of all Level 1 models.}
 	\label{fig:l1_comp_all}
 \end{figure}
 
 \begin{figure}[!ht]
 	\includegraphics[width=0.9\textwidth]{./assets/l2_scores.png}
-	\caption{Comparison between Level 2 FNN and CLEAN}
+	\caption{Comparison between Level 2 FNN and CLEAN.}
 	\label{fig:FNN_scores_l2}
 \end{figure}
 
 \begin{figure}[!hb]
 \includegraphics[width=0.9\textwidth]{assets/l1_dist_enzymes.png}
-\caption{Main class distribution of Split30}\label{fig:l1_dist_train}
+\caption{Main class distribution of Split30 (logarithmic scale).}\label{fig:l1_dist_train}
 \end{figure}
 
 \begin{figure}[!ht]
 \includegraphics[width=0.9\columnwidth]{./assets/l2_dist_all_train_ver.png}
-\caption{Subclass distribution in Split30 (logarithmic scale)}\label{fig:l2_dist_train}
+\caption{Subclass distribution in Split30 (logarithmic scale).}\label{fig:l2_dist_train}
 \end{figure}
 
 \clearpage
