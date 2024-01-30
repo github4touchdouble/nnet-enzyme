@@ -157,7 +157,7 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, level,
 
     # Create the bar plot with custom error bars and hue="Model"
     plt.figure(figsize=(width, height))
-    ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, edgecolor='black', **{'width': 0.3})
+    ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, edgecolor='black', **{'width': 0.2})
 
     # Customize the plot labels
     ax.set_xlabel("Metric", fontsize=18)
@@ -178,13 +178,11 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, level,
         plt.plot([x - 0.01, x + 0.01], [lower_bound, lower_bound], color="black")
         plt.plot([x - 0.01, x + 0.01], [upper_bound, upper_bound], color="black")
 
-    # Add text on top of bars
-    for i, bar in enumerate(ax.patches):
         metric_data = score_df.iloc[i]
         x = bar.get_x() + bar.get_width() / 2
         y = bar.get_height()
 
-        plt.text(x, y + 0.05, f'{metric_data["Mean Score"]:.2f}', ha='center', va='bottom', rotation=90, fontsize=score_display_size)
+        plt.text(x, upper_bound + 0.05, f'{metric_data["Mean Score"]:.2f}', ha='center', va='bottom', rotation=90, fontsize=score_display_size)
 
     sns.despine()
 
