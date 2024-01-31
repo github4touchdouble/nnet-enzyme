@@ -43,7 +43,7 @@ Throughout developing our models, we used various input features and machine lea
 
 %  Malte
 \begin{table}[!htbp]
-\processtable{A table showing the best-performing models per Level \label{tab:bestScores}} {\begin{tabular}{@{}ccccc@{}}\toprule 
+\processtable{A table showing the best-performing models per Level.\label{tab:bestScores}} {\begin{tabular}{@{}ccccc@{}}\toprule 
 		Level & Description & Model & F1 & MCC \\\midrule
 		$0$ & Binary classification & Random Forest & $0.98$ & $0.75$ \\
 		$1$ & Main class prediction &  Feedforward Neuronal Network & $0.95$ & $0.94$ \\
@@ -55,7 +55,7 @@ Throughout developing our models, we used various input features and machine lea
 
 %  Truc done
 Enzymes are vital as biological catalysts, facilitating essential biochemical reactions in organisms.
-Without enzyme catalysis, these reactions would occur slowly or practically impossible.
+Without enzyme catalysis, these reactions would occur slowly or be practically impossible.
 Predominantly, proteins and enzymes are designated specific functions; for instance, oxidoreductases drive Redox reactions, and isomerases convert molecules into their isomers.
 Therefore, a comprehensive understanding and a precise classification of enzymes are fundamental.
 
@@ -84,7 +84,7 @@ enzyme function prediction.
 In our research, we developed several classification models for each Level, using a variety of machine-learning approaches.
 The best-performing models per Level will be thoroughly reviewed in this paper.
 The first is a binary classifier determining whether a given protein functions as an enzyme. 
-The second and third models are multi-classifiers, categorizing enzymes into classes and subclasses 
+The second and third models are multiclass-classifiers, categorizing enzymes into classes and subclasses 
 based on their specific functionalities. 
 % Our primary objective is to outperform each category's Random Baseline classifiers.
 
@@ -128,9 +128,9 @@ This subset was combined with a non-enzyme dataset holding $37347$ sequences, re
 We removed all sequences containing an ambiguous amino acid, such as 'U' or 'O', from the dataset, as well as
 sequences with a length longer than $1022$ amino acids. 
 This is due to the enzyme dataset only containing sequences with a maximum length of $1022$ amino acids.
-The non-enzyme dataset, however, contains many sequences with a length of up to $18000$ amino acids.
+The non-enzyme dataset, however, contains sevral sequences with a length ranging from $4000$ to $18000$ amino acids.
 By removing these sequences we reduce the imbalance between the enzyme and non-enzyme dataset while also
-preventing the model from learning patterns that are specific to the non-enzyme dataset.
+preventing the model from learning patterns that are specific to the non-enzyme dataset (e.g. sequence mass).
 
 Additionally, we made use of protein embeddings.
 Large language models for protein sequences have learned the patterns of amino acid sequences by being trained on many protein sequences.
@@ -161,7 +161,7 @@ aiming to retain $90\%$ of the variance. Applying a $90\%$ cut-off threshold res
 
 \begin{figure}[!tbp]
 \includegraphics[width=0.8\textwidth]{assets/Data_Truc_2.jpeg}
-\caption{The number of components needed to explain the variance in the enzyme dataset}\label{fig:PCA_enzymes}
+\caption{The number of components needed to explain the variance in the enzyme dataset.}\label{fig:PCA_enzymes}
 \end{figure}
 
 By standardizing both datasets to a dimensionality of $397$, the higher dimensionality, we ensured that they remain at least $90\%$ of the variance.
@@ -172,7 +172,7 @@ We also used the method SelectFromModel from the scikit-learn library (see \cite
 to select features based on importance weights. 
 The refined set of input features contains 
 ‘Mass’, ‘Emb. med.’, ‘Emb. std.’, ‘Emb. mag.’, and ‘PCA $1$’ through ‘PCA $47$’ (see table \ref{tab:ReducedInputRF}) excluding ‘PCA $29$’, ‘PCA $31$’, ‘PCA $35$’,
-‘PCA $36$’, ‘PCA $39$’ to ‘PCA $42$’, ‘PCA $44$’ and ‘PCA $46$’ (where ‘Emb.’ represents embeddings and ‘PCA X’ signifies the X-th dimension of the reduced embeddings).
+‘PCA $36$’, ‘PCA $39$’ to ‘PCA $42$’, ‘PCA $44$’ and ‘PCA $46$’ (where ‘Emb.’ represents embedding and ‘PCA X’ signifies the X-th dimension of the reduced embedding).
 
 % Malte
 \begin{table}[!htbp]
@@ -194,8 +194,8 @@ The refined set of input features contains
 % Malte done
 For the Level $1$ prediction, we labeled each sequence with its respective main class,
 resulting in $7$ classes (see Figure \ref{fig:l1_dist_train}).
-While the second main class is the most prevalent, 
-the seventh main class is the least represented, with only
+While the second and third main classes are the most prevalent, 
+the seventh main class is the least represented, only
 containing $190$ samples. 
 
 \subsubsection{Data Preprocessing for Level 2}
@@ -204,13 +204,13 @@ For the Level $2$ prediction, we labeled each sequence with its respective subcl
 The problem of imbalanced data and underrepresentation of some labels is even more pronounced when labeling the sequences with their respective subclass.
 Some enzyme families comprised less than ten representatives in the dataset, making it difficult for the model to learn the patterns of these families.
 To address this issue, we combined underrepresented families of the same main class into a single class 
-(e.g. \textbf{EC 2.2.-.-}, \textbf{EC 2.9.-.-} and \textbf{EC 2.19.-.-} were merged into the label \textbf{EC 2.2|9|19.-.-}).
+(e.g. \textbf{EC 2.2.-.-}, \textbf{EC 2.9.-.-} and \textbf{EC 2.19.-.-} were accumulated into the label \textbf{EC 2.2|9|19.-.-}).
 This guaranties that each subclass has at least ten representatives in the dataset.
-This procedure had to be applied to each main class separately, as the subclasses are unique within their respective main class.
+This procedure had to be applied to each main class separately, as the subclasses are only unique within their respective main class.
 
 \subsubsection{Training Procedure}
 % Truc done
-We divided the data table into two parts for all our models: a training set and a validation set, using a random state of $42$ for consistency. 
+We divided the data pool into two parts for all our models: a training set and a validation set, using a random state of $42$ for consistency. 
 The training set contains $70\%$ of the original data, while the validation set holds the remaining $30\%$. 
 This separation allows us to train our models on a subset of the data and assess its performance on 
 the validation dataset to ensure that the model does not overfit the training data.
@@ -278,17 +278,18 @@ We also used class weights corresponding to the class frequencies in the Level $
 \subsubsection{Scoring Metrics}
 
 \begin{align*}
-	&\textbf{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}} \\
-    &\textbf{Recall} = \frac{\text{TP}}{\text{TP} + \text{FN}} \\
-    &\textbf{F1-score} = 2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}} \\
+	&\textbf{Precision} = \frac{TP}{TP + FP} \\
+    &\textbf{Recall} = \frac{TP}{TP + FN} \\
+    &\textbf{F1-score} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}} \\
 	% & \textbf{weighted f1-score} = \operatornamewithlimits{\sum}^{N}_{i=i} \frac{\text{Number of samples in class }i}{\text{Total number of samples}}  \times \text{f1-score}_{i}\nonumber\\
 	% &\quad \text{(where $N$ is the number of classes)} \\
-    &\textbf{MCC score} = \frac{\text{TP} \cdot \text{TN} - \text{FP} \cdot \text{FN}}{\sqrt{(\text{TP} + \text{FP}) \cdot (\text{TP} + \text{FN}) \cdot (\text{TN} + \text{FP}) \cdot (\text{TN} + \text{FN})}}
+	&\textbf{MCC score} =\\ 
+	&\frac{TP \cdot TN - FP \cdot FN}{\sqrt{(TP + FP) \cdot (TP + FN) \cdot (TN + FP) \cdot (TN + FN)}}
 \end{align*}
 
 % Truc & Malte done
 To assess the performance of our models, we emphasize the F1 and MCC scores. 
-Given the imbalance in the test set, we also considered the weighted F1 score for the multiclassification models
+Given the imbalance in the test set, we also considered the weighted F1 score for the multiclass-classifiers,
 to ensure a more equitable evaluation of the model's effectiveness.
 The F1 score is the harmonic mean of precision and recall, with values ranging from $0$ to $1$.
 A score of $1$ signifies a flawless prediction, while $0$ indicates an inaccurate prediction.
@@ -296,7 +297,7 @@ The MCC score is a correlation coefficient that indicates the accuracy of binary
 A score of $1$ signifies a flawless prediction, $-1$ indicates a completely inaccurate prediction, and $0$ suggests predictions at random.
 This scoring metric takes into account the entirety of the confusion matrix ($TP$, $TN$, $FP$, $FN$), making it a valid
 metric for measuring the performance across all classes.
-It can also be applied to multiclassification models by calculating the MCC score for each class and then averaging the scores.
+It can also be applied to multiclass-classification models by calculating the MCC score for each class and then averaging the scores.
 
 \subsubsection{Bootstrapping Procedure}
 % Malte done
@@ -312,6 +313,7 @@ The performance plots show the mean score and the confidence intervals as error 
 
 \end{methods}
 
+\clearpage
 \section{Results}	
 
 \subsection{Binary Classification}\label{sec:RF_level0}
@@ -556,29 +558,29 @@ While the models are promising, future directions include architecture optimizat
 
 \section{Supplementary Figures}\label{sec:supplementary figures}
 \begin{figure}[!ht]
-	\includegraphics[width=0.9\textwidth]{./assets/l0_scores_all.png}
+	\includegraphics[width=0.95\textwidth]{./assets/l0_scores_all.png}
 	\caption{Comparison of all Level 0 models.}
 	\label{fig:l0_comp_all}
 \end{figure}
-\begin{figure}[!ht]
-	\includegraphics[width=0.9\textwidth]{./assets/l1_scores_all.png}
+\begin{figure}[!bt]
+	\includegraphics[width=0.95\textwidth]{./assets/l1_scores_all.png}
 	\caption{Comparison of all Level 1 models.}
 	\label{fig:l1_comp_all}
 \end{figure}
 
-\begin{figure}[!ht]
-	\includegraphics[width=0.9\textwidth]{./assets/l2_scores.png}
+\begin{figure}[!bt]
+	\includegraphics[width=0.95\textwidth]{./assets/l2_scores.png}
 	\caption{Comparison between Level 2 FNN and CLEAN.}
 	\label{fig:FNN_scores_l2}
 \end{figure}
 
 \begin{figure}[!hb]
-\includegraphics[width=0.9\textwidth]{assets/l1_dist_enzymes.png}
+\includegraphics[width=0.95\textwidth]{assets/l1_dist_enzymes.png}
 \caption{Main class distribution of Split30 (logarithmic scale).}\label{fig:l1_dist_train}
 \end{figure}
 
 \begin{figure}[!ht]
-\includegraphics[width=0.9\columnwidth]{./assets/l2_dist_all_train_ver.png}
+\includegraphics[width=0.95\columnwidth]{./assets/l2_dist_all_train_ver.png}
 \caption{Subclass distribution in Split30 (logarithmic scale).}\label{fig:l2_dist_train}
 \end{figure}
 
