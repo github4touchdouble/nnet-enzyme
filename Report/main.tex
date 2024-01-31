@@ -259,10 +259,9 @@ normalizing the input to a layer through adjustment and scaling to stabilize and
 To address the imbalance in the dataset, we used class weights to penalize the model more for misclassifying the minority classes 
 while being more lenient towards misclassifying the majority classes.
 
-\subsubsection{Level 2 - FNN}\label{sec:level2_methods}
+\subsubsection{Level 2 - FNN}
 % Malte done
 For the Level $2$ prediction, we used a FNN to classify the enzymes into their respective subclasses.
-% We implemented this architecture using TensorFlow, an open-source library for machine learning (see \cite{tensorflow2015-whitepaper}). % TODO: Maybe introduce these details earlier?
 The architecture comprises one $2560$ dimensional input layer , two hidden layers, and one $51$ dimensional output layer,
 where $51$ represents the number of subclasses in the training dataset (see Figure \ref{fig:l2_dist_train}).
 The layers are fully connected, and the activation function used is ReLU.
@@ -354,7 +353,6 @@ The FNN also managed to achieve slightly higher MCC score than CLEAN ($0.92$ ver
 
 \subsection{Subclass Prediction}
 % Malte done - scores done
-% In order to test our FNN model for the subclass prediction, we labeled the sequences of the New-392 dataset with their respective subclasses.
 The New-$392$ test dataset contains $28$ out of the $51$ in the training dataset.
 Our model achieved a F1 score of $0.85$ and an MCC score of $0.83$ on the New-$392$ dataset (see Figure \ref{fig:FNN_scores_l2}).
 We also calculated the confusion matrix of the model on the New-$392$ dataset (see Figure \ref{fig:FNN_conf_l2}).
@@ -366,15 +364,13 @@ the FNN misclassified it as label $17$ (corresponding to \textbf{EC 1.10|20|23|9
 The Random Baseline for Level $2$ achieved a F1 score of $0.01$ and an MCC score of $0.00$ (see Figure \ref{fig:FNN_scores_l2}).
 % Due to the increased complexity of the Level 2 prediction, the Random Baseline is less effective than the Level 0 and Level 1 predictions.
 
-
-
 \begin{figure}[!htb]
 \includegraphics[width=0.9\columnwidth]{assets/l2_conf_test_new_all.png}
 \caption{Normalized confusion matrix of Level 2 prediction.}\label{fig:FNN_conf_l2}
 \end{figure}
 
 The level $2$ FNN did not outperform CLEAN, which achieved a F1 score of $0.90$ and an MCC score of $0.88$ (see Figure \ref{fig:FNN_scores_l2}).
-\section{Discussion}
+\section{Conclusion}
 % Truc done
 The two main approaches we employed for the problem, namely Random Forest and Feedforward Neural Network, delivered promising results, surpassing the Random Baseline models.
 However, there is room for improvement due to the dataset's imbalance.
@@ -497,14 +493,6 @@ The following sections detail the architecture and results of further neural net
 
 \subsubsection{FNN Model using ProtT5 Embedding}
 % Kida done
-% FIX:
-This FNN model was built similarly to our level $1$ multi-class FNN \ref{sec:level1_methods}. 
-However, it uses ProtT5 embedding instead of ESM-2. 
-Therefore, the layer sizes were adjusted. 
-The model's architecture consists of an input layer of $1024$ and three hidden layers of $1024$, $512$, and $7$ units. 
-The model also uses batch normalization between the layers, activation function LeakyReLU, class weights, and Adam as an optimizer.
-This model, however, performs worse than the FNN using ESM-2 embeddings.
-
 This FNN model was built similarly to our Level $1$ multi-class FNN in section \ref{sec:level1_methods}. 
 However, it uses ProtT5 embedding instead of ESM-2. 
 Therefore, the layer sizes were adjusted. 
