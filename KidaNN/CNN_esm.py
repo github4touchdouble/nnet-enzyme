@@ -233,6 +233,9 @@ if __name__ == '__main__':
     loader = DataLoader(dataset, batch_size=32, shuffle=False)
     scores = predict(model, loader)
 
+    # Save the model's state dictionary to a file
+    torch.save(model.state_dict(), 'D:/Uni/PBL/pbl_binary_classifier/KidaNN/CNN_esm.pth')
+
     predicted_classes = list(itertools.chain([torch.argmax(input=score, dim=0).cpu().tolist() for score in scores]))
 
     # Metrics: F1 Score and Accuracy
