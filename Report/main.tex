@@ -356,14 +356,14 @@ The FNN also managed to achieve slightly higher MCC score than CLEAN ($0.92$ ver
 % Malte done - scores done
 % In order to test our FNN model for the subclass prediction, we labeled the sequences of the New-392 dataset with their respective subclasses.
 The New-$392$ test dataset contains $28$ out of the $51$ in the training dataset.
-Our model achieved a weighted F1 score of $0.85$ and an MCC score of $0.83$ on the New-$392$ dataset (see Figure \ref{fig:FNN_scores_l2}).
+Our model achieved a F1 score of $0.85$ and an MCC score of $0.83$ on the New-$392$ dataset (see Figure \ref{fig:FNN_scores_l2}).
 We also calculated the confusion matrix of the model on the New-$392$ dataset (see Figure \ref{fig:FNN_conf_l2}).
 The missing rows in the confusion matrix represent the $23$ remaining subclasses that were not present in the New-$392$ dataset.
 The reasonably low noise per row indicates that the model can distinguish between the present subclasses of the New-$392$ dataset.
 Note that in Figure \ref{fig:FNN_conf_l2} the label $13$ (corresponding to \textbf{EC 1.16.-.-}) seems to be wholly misclassified.
 This is because label $13$ was the only representative of its class in the New-$392$ dataset and
 the FNN misclassified it as label $17$ (corresponding to \textbf{EC 1.10|20|23|97.-.-}), making it seem like the model completely misclassified label $13$.
-The Random Baseline for Level $2$ achieved a weighted F1 score of $0.01$ and an MCC score of $0.00$ (see Figure \ref{fig:FNN_scores_l2}).
+The Random Baseline for Level $2$ achieved a F1 score of $0.01$ and an MCC score of $0.00$ (see Figure \ref{fig:FNN_scores_l2}).
 % Due to the increased complexity of the Level 2 prediction, the Random Baseline is less effective than the Level 0 and Level 1 predictions.
 
 
@@ -373,7 +373,7 @@ The Random Baseline for Level $2$ achieved a weighted F1 score of $0.01$ and an 
 \caption{Normalized confusion matrix of Level 2 prediction.}\label{fig:FNN_conf_l2}
 \end{figure}
 
-The level $2$ FNN did not outperform CLEAN, which achieved a weighted F1 score of $0.90$ and an MCC score of $0.88$ (see Figure \ref{fig:FNN_scores_l2}).
+The level $2$ FNN did not outperform CLEAN, which achieved a F1 score of $0.90$ and an MCC score of $0.88$ (see Figure \ref{fig:FNN_scores_l2}).
 \section{Discussion}
 % Truc done
 The two main approaches we employed for the problem, namely Random Forest and Feedforward Neural Network, delivered promising results, surpassing the Random Baseline models.
