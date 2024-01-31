@@ -160,8 +160,8 @@ def plot_bootstrapped_score(y_trues, y_preds, scoring_funcs, model_names, level,
     ax = sns.barplot(x="Metric", y="Mean Score", hue="Model", data=score_df, edgecolor='black', **{'width': 0.2})
 
     # Customize the plot labels
-    ax.set_xlabel("Metric", fontsize=18)
-    ax.set_ylabel(f"Mean Score on Level {level}", fontsize=18)
+    ax.set_xlabel("Metric", fontsize=20)
+    ax.set_ylabel(f"Mean Score on Level {level}", fontsize=20)
     ax.set_title("")
 
     plt.legend(title="", loc="upper left", bbox_to_anchor=(1, 0.5), fontsize=16, frameon=False, handlelength=1)
@@ -238,7 +238,7 @@ def calculate_macro_f1(y_true, y_pred):
     return f1_score(y_true, y_pred, average='macro'), "Macro F1"
 
 def calculate_weighted_f1(y_true, y_pred):
-    return f1_score(y_true, y_pred, average='weighted'), "Weighted F1"
+    return f1_score(y_true, y_pred, average='weighted'), "F1"
 
 
 def calculate_accuracy(y_true, y_pred):
