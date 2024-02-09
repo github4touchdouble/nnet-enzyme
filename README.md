@@ -1,4 +1,5 @@
-# pbl_binary_classifier
+# nnet-enzyme
+The corresponting paper to nnet-enzyme can be found [here](https://github.com/github4touchdouble/nnet-enzyme/blob/malte/Report/main.pdf)
 
 ## IMPORTANT: Setting up the environment
 
