@@ -3,7 +3,9 @@
 
 > **Note:** For further insights into the *nnet-enzyme* framework, refer to the corresponding paper accessible [here](https://github.com/github4touchdouble/nnet-enzyme/blob/malte/Report/main.pdf).
 
-Follow the steps outlined below to seamlessly set up and configure the environment for your specific needs:
+
+
+Follow these steps to seamlessly set up and configure the environment for your specific needs:
 
 1. **Environment Setup:**
    - Begin by installing the necessary dependencies and libraries required for the framework. Ensure compatibility with your system specifications. `pip install -r './requirements.txt'`
