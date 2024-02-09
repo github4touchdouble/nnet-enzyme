@@ -1,7 +1,19 @@
 # nnet-enzyme
-nnet-enzyme is a framework of machine learning models designed for the classification of enzymatic protein sequences.
+*nnet-enzyme*  is a framework designed for the classification of enzymatic protein sequences through machine learning models.
 
-> **Note:** The corresponding paper to nnet-enzyme can be found [here](https://github.com/github4touchdouble/nnet-enzyme/blob/malte/Report/main.pdf).
+> **Note:** For further insights into the *nnet-enzyme* framework, refer to the corresponding paper accessible [here](https://github.com/github4touchdouble/nnet-enzyme/blob/malte/Report/main.pdf).
+
+Follow the steps outlined below to seamlessly set up and configure the environment for your specific needs:
+
+1. **Environment Setup:**
+   - Begin by installing the necessary dependencies and libraries required for the framework. Ensure compatibility with your system specifications. `pip install -r './requirements.txt'`
+   - Follow the steps described below under "IMPORTANT: Setting up the environment"
+
+2. **Classification Pipelines:**
+   - Execute the provided Jupyter notebooks to follow the classification pipeline as detailed in the accompanying paper.
+   - Should you require the integration of *nnet-enzyme* into a custom pipeline, adapt the provided code to align with the requirements of your framework. Merge relevant components seamlessly to ensure smooth functionality within your project.
+
+
 
 ## IMPORTANT: Setting up the environment
 
@@ -55,7 +67,7 @@ In `.gitignore` add the following line:
 .env
 ```
 
-# Reading embeddings with script of Tobias
+# Reading embeddings
 
 First import the H5Dataset class Tobias provided:
 
