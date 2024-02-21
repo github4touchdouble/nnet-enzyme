@@ -1,17 +1,56 @@
-# nnet-enzyme
-*nnet-enzyme*  is a framework designed for the classification of enzymatic protein sequences through machine learning models.
-
+# *nnet-enzyme*: A Framework designed for the Classification of Enzymatic Protein Sequences
 > **Note:** For further insights into the *nnet-enzyme* framework, refer to the corresponding paper accessible [here](https://github.com/github4touchdouble/nnet-enzyme/blob/malte/Report/main.pdf).
+> 
+Malte A. Weyrich, Than Truc Bui, Jan P. Hummel, Sofiia Kozoriz 
 
+Technical University of Munich | Technische Universität München
 
+Contact via: [jan.hummel@tum.de](mailto:jan.hummel@tum.de)
 
-Follow these steps to seamlessly set up and configure the environment for your specific needs:
+## Getting started
+
+Follow these steps to set up and configure the environment for your specific needs:
 
 1. **Environment Setup:**
-   - Begin by installing the necessary dependencies and libraries required for the framework. Ensure compatibility with your system specifications. `pip install -r './requirements.txt'`
-   - Follow the steps described below under "IMPORTANT: Setting up the environment"
+   - Clone this repository `git clone https://github.com/github4touchdouble/nnet-enzyme.git`
+   - Install the necessary dependencies and libraries. Ensure compatibility with your system specifications `pip install -r './requirements.txt'`
+   - Create an .env file in the root of the project  `nano .env` and add the following lines and adjust for your individual needs:
+     
+      ```python
+      # --------------------------------
+      #    Non-enzymatic protein data 
+      # --------------------------------
 
-2. **Classification Pipelines:**
+      # <WIP>
+      FASTA_NON_ENZYMES='PATH/TO/NON_ENZYME/FASTA'
+      FASTA_ENZYMES='PATH/TO/ENZYME/FASTA'
+      PROTT5_NON_ENZYMES='PATH/TO/NON_ENZYME/PROTT5' -- optional: absed on your needs
+      ESM2_NON_ENZYMES='PATH/TO/NON_ENZYME/ESM2' # -- optional: absed on your needs
+      OHE_NON_ENZYMES='PATH/TO/NON_ENZYME/OHE' # >> i.e. provide one-hot-encoded protein sequences
+
+      # ----------------------------
+      #    Enzymatic protein data 
+      # ----------------------------
+
+      # Enzyme, enzyme commission number and amino acid sequence
+      # CSV file: <Identifier>,<EC>,<Sequence> ~> C7C422,3.5.2.6,MEL...KLR
+      # I.a. if you intend to train models using datasets with varying levels of redundancy reduction, replace "X" with the required percentage of similarity for two sequences to be deemed duplicates
+      # Customize this as needed for your specific requirements. Refer to the "Run configuration" section for ESSENTIAL considerations before intiating a project
+      CSVX_ENZYMES='PATH/TO/ENZYME/SPLITX'
+
+      # Enzyme, protein embedding vector
+      # H5 file: <Identifier>,<Embedding> ~> A0A024RBG1,[-0.015143169, 0.035552002, -0.02231326, ...]
+      # I.a. if you intend to train models using datasets with varying levels of redundancy reduction, replace "X" with the required percentage of similarity for two sequences to be deemed duplicates
+      # I.a. we offer support for ESM2, PROTT5, and One-hot encoded vectors
+      # Customize this as needed for your specific requirements. Refer to the "Run configuration" section for ESSENTIAL considerations before intiating a project
+      ESM2_ENZYMES_SPLIT_X='PATH/TO/ENZYME/ESM2/SPLIT_X' # i.a.
+      PROTT5_ENZYMES_SPLIT_X='PATH/TO/ENZYME/PROTT5/SPLIT_X' # i.a.     
+      OHE_ENZYMES_SPLIT_X='PATH/TO/ENZYME/OHE' # i.a.
+      ```
+
+2. **Run configuration:**
+   - <WIP>
+4. **Classification Pipelines:**
    - Execute the provided Jupyter notebooks to follow the classification pipeline as detailed in the accompanying paper.
    - Should you require the integration of *nnet-enzyme* into a custom pipeline, adapt the provided code to align with the requirements of your framework. Merge relevant components seamlessly to ensure smooth functionality within your project.
 
