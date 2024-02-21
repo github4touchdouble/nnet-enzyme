@@ -32,7 +32,7 @@ Follow these steps to set up and configure the environment for your specific nee
       #    Enzymatic protein data 
       # ----------------------------
 
-      # Enzyme, enzyme commission number and amino acid sequence
+      # Enzyme, enzyme commission number, amino acid sequence
       # CSV file: <Identifier>,<EC>,<Sequence> ~> C7C422,3.5.2.6,MEL...KLR
       # I.a. if you intend to train models using datasets with varying levels of redundancy reduction, replace "X" with the required percentage of similarity for two sequences to be deemed duplicates
       # Customize this as needed for your specific requirements. Refer to the "Run configuration" section for ESSENTIAL considerations before intiating a project
