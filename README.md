@@ -41,7 +41,7 @@ Follow these steps to set up and configure the environment for your specific nee
       # Enzyme, protein embedding vector
       # H5 file: <Identifier>,<Embedding> ~> A0A024RBG1,[-0.015143169, 0.035552002, -0.02231326, ...]
       # I.a. if you intend to train models using datasets with varying levels of redundancy reduction, replace "X" with the required percentage of similarity for two sequences to be deemed duplicates
-      # I.a. we offer support for ESM2, PROTT5, and One-hot encoded vectors
+      # I.a. nnet-enzyme offers support for ESM2, PROTT5, and One-hot encoded vectors
       # Customize this as needed for your specific requirements. Refer to the "Run configuration" section for ESSENTIAL considerations before intiating a project
       ESM2_ENZYMES_SPLIT_X='PATH/TO/ENZYME/ESM2/SPLIT_X' # i.a.
       PROTT5_ENZYMES_SPLIT_X='PATH/TO/ENZYME/PROTT5/SPLIT_X' # i.a.     
