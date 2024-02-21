@@ -1,7 +1,7 @@
 # *nnet-enzyme*: A Framework designed for the Classification of Enzymatic Protein Sequences
 > **Note:** For further insights into the *nnet-enzyme* framework, refer to the corresponding paper accessible [here](https://github.com/github4touchdouble/nnet-enzyme/blob/malte/Report/main.pdf).
 > 
-Malte A. Weyrich, Than Truc Bui, Jan P. Hummel, Sofiia Kozoriz 
+Malte A. Weyrich, T. Truc Bui, Jan P. Hummel, Sofiia Kozoriz 
 
 Technical University of Munich | Technische Universität München
 
