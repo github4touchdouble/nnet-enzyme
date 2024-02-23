@@ -50,11 +50,11 @@ Follow these steps to set up and configure the environment for your specific nee
       ```
 
 2. **Run configuration:**   
-   > [!IMPORTANT]
-   > Without verifying tge aspects below, you won't be able to run the *nnet-enzyme* properly.
+> [!IMPORTANT]
+> Without verifying tge aspects below, you won't be able to run the *nnet-enzyme* properly.
 
    > **WIP**
-4. **Classification Pipelines:**
+3. **Classification Pipelines:**
    - Execute the provided Jupyter notebooks to follow the classification pipeline as detailed in the accompanying paper.
    - Should you require the integration of *nnet-enzyme* into a custom pipeline, adapt the provided code to align with the requirements of your framework. Merge relevant components seamlessly to ensure smooth functionality within your project.
 
