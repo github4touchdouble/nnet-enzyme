@@ -56,6 +56,9 @@ Follow these steps to set up and configure the environment for your specific nee
    - Should you require the integration of *nnet-enzyme* into a custom pipeline, adapt the provided code to align with the requirements of your framework. Merge relevant components seamlessly to ensure smooth functionality within your project.
 
 ## Example of use 
+> [!IMPORTANT]
+> Without verifying tge aspects below, you won't be able to run the *nnet-enzyme* properly.
+
 > **WIP**
 
 ## Supplementary information: Unstructured tips & tricks 
