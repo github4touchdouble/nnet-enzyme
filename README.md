@@ -51,7 +51,7 @@ Follow these steps to set up and configure the environment for your specific nee
 
 2. **Run configuration:**   
 > [!IMPORTANT]
-> Without verifying tge aspects below, you won't be able to run the *nnet-enzyme* properly.
+> Without following the run config instructions as denoted below, you won't be able to run *nnet-enzyme*.
 
    > **WIP**
 3. **Classification Pipelines:**
